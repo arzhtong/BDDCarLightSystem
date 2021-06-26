@@ -1,17 +1,17 @@
 Feature: Direction Blinking Indicator
 
-  The pitman arm is used for controlling the direction blinking indicator. This feature is for defining the positions available by the pitman arm for indicating through blinking.
+  The pitman arm is used for controlling the direction blinking indicator. This feature is for defining positions available by the pitman arm for indicating through blinking.
 
   Rule: Direction blinking is only available when ignition is on.
     Background:
       Given the Ignition is on
 
     @requirement(ELS-1,ELS-5)
-    Scenario Outline: Engage Direction Blinking
-      When the pitman arm is moved in the "<arm state>" position
-      Then the vehicle flashes all "<direction>" indicators synchronously
+    Scenario: Engage Direction Blinking in an upward position
+      When the pitman arm is moved in the upward position
+      Then the vehicle flashes all right indicators synchronously
 
-      Examples:
-        | arm state | direction |
-        | Upward    | Right     |
-        | Downward  | Left      |
+
+    Scenario: Engage Direction Blinking in a downward position
+      When the pitman arm is moved in the downward position
+      Then the vehicle flashes all left indicators synchronously
