@@ -17,3 +17,15 @@ Feature: Direction Blinking Indicator
       Then the vehicle flashes all left indicators synchronously
 
 
+    Rule: Tip-Blinking is only available when ignition is on
+      
+    @requirement(ELS-2,ELS-5)
+    Scenario: Engage Tip-Blinking in an upward position
+      When the pitman arm is moved in the tip-blinking upward position for less than 0.5 seconds
+      Then all right indicators should flash for 3 flashing cycles
+
+    @requirement(ELS-2,ELS-5)
+    Scenario: Engage Tip-Blinking in a downward position
+      When the pitman arm is moved in the tip-blinking downward position for less than 0.5 seconds
+      Then all left indicators should flash for 3 flashing cycles
+
