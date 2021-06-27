@@ -13,6 +13,10 @@ public class CarView extends JFrame{
     public Graphics2D g2d;
     Polygon leftFrontIndicator;
     Polygon rightFrontIndicator;
+    Polygon leftSideIndicator;
+    Polygon rightSideIndicator;
+    Polygon leftBackIndicator;
+    Polygon rightBackIndicator;
     public boolean leftIndicatorFlashed;
     public boolean rightIndicatorFlashed;
     ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
@@ -29,30 +33,45 @@ public class CarView extends JFrame{
     public void paint(Graphics g) {
         super.paint(g);
         g2d = (Graphics2D) g;
-
-
         leftFrontIndicator = new Polygon(new int[]{getWidth() / 3 + 70, getWidth() / 3 + 25, getWidth() / 3 + 20}, new int[]{getHeight() / 3 + 20, getHeight() / 3 + 45, getHeight() / 3 + 90}, 3);
         rightFrontIndicator = new Polygon(new int[]{getWidth() / 3 - 30, getWidth() / 3, getWidth() / 3}, new int[]{getHeight() / 3 + 20, getHeight() / 3 + 45, getHeight() / 3 + 90}, 3);
-        leftFrontIndicator.translate(1, -100);
-        rightFrontIndicator.translate(260, -100);
+        leftSideIndicator = new Polygon(new int[]{getWidth() / 3 + 70, getWidth() / 3 + 25, getWidth() / 3 + 20}, new int[]{getHeight() / 3 + 20, getHeight() / 3 + 45, getHeight() / 3 + 90}, 3);
+        rightSideIndicator = new Polygon(new int[]{getWidth() / 3 - 30, getWidth() / 3, getWidth() / 3}, new int[]{getHeight() / 3 + 20, getHeight() / 3 + 45, getHeight() / 3 + 90}, 3);
+        leftBackIndicator = new Polygon(new int[]{getWidth() / 3 + 70, getWidth() / 3 + 25, getWidth() / 3 + 20}, new int[]{getHeight() / 3 + 20, getHeight() / 3 + 45, getHeight() / 3 + 90}, 3);
+        rightBackIndicator = new Polygon(new int[]{getWidth() / 3 - 30, getWidth() / 3, getWidth() / 3}, new int[]{getHeight() / 3 + 20, getHeight() / 3 + 45, getHeight() / 3 + 90}, 3);
+        leftFrontIndicator.translate(1, -180);
+        rightFrontIndicator.translate(260, -180);
+        leftSideIndicator.translate(-70,-60);
+        rightSideIndicator.translate(330,-60);
+        leftBackIndicator.translate(1,300);
+        rightBackIndicator.translate(260,300);
         g.drawRect(getWidth() / 3, getHeight() / 8, 300, 600);
         g.drawPolygon(leftFrontIndicator);
         g.drawPolygon(rightFrontIndicator);
-
+        g.drawPolygon(leftSideIndicator);
+        g.drawPolygon(rightSideIndicator);
+        g.drawPolygon(leftBackIndicator);
+        g.drawPolygon(rightBackIndicator);
             if (model.getBlinkingState("Left") == Blinking.FLASHING) {
                 rightDirection.setSelected(false);
                 if (leftIndicatorFlashed == false) {
                     g2d.setPaint(new Color(255, 255, 0));
                     g.fillPolygon(leftFrontIndicator);
+                    g.fillPolygon(leftSideIndicator);
+                    g.fillPolygon(leftBackIndicator);
                     leftIndicatorFlashed=true;
                 } else {
                     g2d.setPaint(new Color(211, 211, 211));
                     g.fillPolygon(leftFrontIndicator);
+                    g.fillPolygon(leftSideIndicator);
+                    g.fillPolygon(leftBackIndicator);
                     leftIndicatorFlashed=false;
                 }
             }else{
                 g2d.setPaint(new Color(211, 211, 211));
                 g.fillPolygon(leftFrontIndicator);
+                g.fillPolygon(leftSideIndicator);
+                g.fillPolygon(leftBackIndicator);
                 leftIndicatorFlashed=false;
             }
 
@@ -62,16 +81,22 @@ public class CarView extends JFrame{
                 if (rightIndicatorFlashed == false) {
                     g2d.setPaint(new Color(255, 255, 0));
                     g.fillPolygon(rightFrontIndicator);
+                    g.fillPolygon(rightSideIndicator);
+                    g.fillPolygon(rightBackIndicator);
                     rightIndicatorFlashed=true;
                 } else {
                     g2d.setPaint(new Color(211, 211, 211));
                     g.fillPolygon(rightFrontIndicator);
+                    g.fillPolygon(rightSideIndicator);
+                    g.fillPolygon(rightBackIndicator);
                     rightIndicatorFlashed=false;
                 }
             }else{
 
                 g2d.setPaint(new Color(211, 211, 211));
                 g.fillPolygon(rightFrontIndicator);
+                g.fillPolygon(rightSideIndicator);
+                g.fillPolygon(rightBackIndicator);
                 rightIndicatorFlashed=false;
             }
         }

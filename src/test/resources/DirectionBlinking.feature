@@ -15,3 +15,5 @@ Feature: Direction Blinking Indicator
     Scenario: Engage Direction Blinking in a downward position
       When the pitman arm is moved in the downward position
       Then the vehicle flashes all left indicators synchronously
+
+
