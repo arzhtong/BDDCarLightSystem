@@ -8,6 +8,11 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+
+        CarModel model=new CarModel();
+        CarView view=new CarView(model);
+        CarController controller=new CarController(view,model);
+        controller.addButtonFunctions();
+
     }
 }
