@@ -46,4 +46,29 @@ public class DirectionBlinkingTest {
         Assert.assertEquals(car.getBlinkingState("Left"), Blinking.FLASHING);
     }
 
+    @When("the pitman arm is moved in the tip-blinking upward position for less than {double} seconds")
+    public void the_pitman_arm_is_moved_in_the_tip_blinking_upward_position_for_less_than_seconds(Double double1) {
+        car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
+        car.setTimeInPosition(car.getPitmanArmState(),0.4);
+    }
+
+    @Then("all right indicators should flash for {int} flashing cycles")
+    public void all_right_indicators_should_flash_for_flashing_cycles(Integer int1) {
+        Assert.assertEquals(car.getFlashingCycles("Right"),true);
+    }
+
+    @When("the pitman arm is moved in the tip-blinking downward position for less than {double} seconds")
+    public void the_pitman_arm_is_moved_in_the_tip_blinking_downward_position_for_less_than_seconds(Double double1) {
+        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
+        car.setTimeInPosition(car.getPitmanArmState(),0.4);
+
+    }
+
+    @Then("all left indicators should flash for {int} flashing cycles")
+    public void all_left_indicators_should_flash_for_flashing_cycles(Integer int1) {
+        Assert.assertEquals(car.getFlashingCycles("Left"),true);
+    }
+
+
+
 }

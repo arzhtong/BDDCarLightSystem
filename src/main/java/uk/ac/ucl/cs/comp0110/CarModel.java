@@ -1,6 +1,6 @@
 package uk.ac.ucl.cs.comp0110;
 enum PitmanArmPosition{
-    UPWARD7,DOWNWARD7,NEUTRAL
+    UPWARD7,DOWNWARD7,NEUTRAL,UPWARD5,DOWNWARD5
 }
 enum IgnitionStatus{
     NOKEYINSERTED,KEYINSERTED,KEYINIGNITIONONPOSITION
@@ -10,7 +10,6 @@ public class CarModel {
     private PitmanArmPosition pitmanArmState;
     private Indicator leftIndicator;
     private Indicator rightIndicator;
-    private String indicatingDirection;
     public CarModel(){
         ignitionState=IgnitionStatus.KEYINIGNITIONONPOSITION;
         leftIndicator=new Indicator();
@@ -42,6 +41,22 @@ public class CarModel {
             }
         }
     }
+    public void setTimeInPosition(PitmanArmPosition position,double time) {
+        if (position == PitmanArmPosition.UPWARD5) {
+            if (time < 0.5) {
+                rightIndicator.setCycle(true);
+            } else {
+                rightIndicator.setCycle(false);
+            }
+        }
+        if (position == PitmanArmPosition.DOWNWARD5) {
+            if (time < 0.5) {
+                leftIndicator.setCycle(true);
+            } else {
+                leftIndicator.setCycle(false);
+            }
+        }
+    }
     public Blinking getBlinkingState(String direction){
         if (direction.equals("Right")){
             return rightIndicator.getState();
@@ -50,5 +65,17 @@ public class CarModel {
             return leftIndicator.getState();
         }
         return null;
+    }
+    public PitmanArmPosition getPitmanArmState(){
+        return pitmanArmState;
+    }
+    public boolean getFlashingCycles(String direction){
+        if (direction.equals("Right")){
+            return rightIndicator.getCycle();
+        }
+        if (direction.equals("Left")){
+            return leftIndicator.getCycle();
+        }
+        return false;
     }
 }
