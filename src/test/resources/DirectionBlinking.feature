@@ -31,5 +31,19 @@ Feature: Direction Blinking Indicator
       When the pitman arm is moved in the tip-blinking downward position for less than 0.5 seconds
       Then all left indicators should flash for 3 flashing cycles
 
-      
+    Rule: Engage Pitman arm in another direction or engaging hazard switch will stop tip-blinking flashing cycle
+      Background:
+        Given the Ignition is on
+
+    Scenario: Engage Pitman Arm in a downward position from upward during tip-blinking flash cycle
+      When the pitman arm is moved in a downward position from upward position during the 3 flashing cycles of tip-blinking
+      Then the tip-blinking will stop and the requesting flashing cycle will be released
+
+    Scenario: Engage Pitman Arm in an upward position during tip-blinking flash cycle
+      When the pitman arm is moved in an upward position from downward during the 3 flashing cycles of tip-blinking
+      Then the tip-blinking will stop and the requesting flashing cycle will be released
+
+    Scenario: Engage Hazard Warning Switch during tip-blinking flash cycle
+      When the hazard warning switch is engaged during the 3 flashing cycles of tip-blinking
+      Then the tip-blinking will stop and the requesting flashing cycle will be released
 
