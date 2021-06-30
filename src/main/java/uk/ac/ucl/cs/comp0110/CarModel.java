@@ -17,6 +17,7 @@ public class CarModel {
     private Indicator rightIndicator;
     private ScheduledExecutorService service;
     private int lengthOfTimeHeld;
+    private Timer timer;
     public CarModel(){
         ignitionState=IgnitionStatus.KEYINIGNITIONONPOSITION;
         leftIndicator=new Indicator();
@@ -59,17 +60,18 @@ public class CarModel {
 
     public void countTimeInPosition() {
         lengthOfTimeHeld=0;
-        Timer timer = new Timer();
+        timer=new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 lengthOfTimeHeld++;
+                System.out.println(lengthOfTimeHeld);
             }
         }, 1,1);
 
     }
     public void stopTimer(){
-        service.shutdown();
+        timer.cancel();
 
     }
     public int getLengthOfTimeHeld(){
@@ -79,11 +81,13 @@ public class CarModel {
         if (position == PitmanArmPosition.UPWARD5) {
             if (time < 500) {
                 rightIndicator.setCycle(true);
+                setPitmanArmPosition(PitmanArmPosition.UPWARD5);
             }
         }
         if (position == PitmanArmPosition.DOWNWARD5) {
             if (time < 500) {
                 leftIndicator.setCycle(true);
+                setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
             }
         }
     }

@@ -114,6 +114,8 @@ public class CarView extends JFrame{
                 model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
                 rightTipBlinking.setSelected(false);
             }
+        }else{
+            rightTipBlinking.setSelected(false);
         }
 
 
@@ -171,7 +173,9 @@ public class CarView extends JFrame{
                 model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
                 leftTipBlinking.setSelected(false);
             }
-            }
+            }else{
+            leftTipBlinking.setSelected(false);
+        }
 
 
         }

@@ -38,7 +38,7 @@ public class CarController {
             }
             @Override
             public void mouseReleased(MouseEvent e) {
-                model.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
+                model.stopTimer();
                 model.setFlashCycleState(PitmanArmPosition.UPWARD5,model.getLengthOfTimeHeld());
             }
         });
@@ -50,7 +50,7 @@ public class CarController {
             }
             @Override
             public void mouseReleased(MouseEvent e) {
-                model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
+                model.stopTimer();
                 model.setFlashCycleState(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
             }
         });
