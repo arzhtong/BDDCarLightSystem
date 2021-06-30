@@ -1,8 +1,5 @@
 package uk.ac.ucl.cs.comp0110;
 import java.util.TimerTask;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.Executors;
 import java.util.Timer;
 enum PitmanArmPosition{
     UPWARD7,DOWNWARD7,NEUTRAL,UPWARD5,DOWNWARD5
@@ -15,7 +12,6 @@ public class CarModel {
     private PitmanArmPosition pitmanArmState;
     private Indicator leftIndicator;
     private Indicator rightIndicator;
-    private ScheduledExecutorService service;
     private int lengthOfTimeHeld;
     private Timer timer;
     public CarModel(){
@@ -24,7 +20,6 @@ public class CarModel {
         rightIndicator=new Indicator();
         leftIndicator.setState(Blinking.NONFLASHING);
         rightIndicator.setState(Blinking.NONFLASHING);
-        service= Executors.newScheduledThreadPool(5);
         lengthOfTimeHeld=0;
     }
     public void isIgnitionOn(IgnitionStatus ignitionState){
@@ -32,6 +27,9 @@ public class CarModel {
     }
     public void setLengthOfTimeHeld(int lengthOfTimeHeld){
         this.lengthOfTimeHeld=lengthOfTimeHeld;
+    }
+    public void setHazardSwitch(boolean hazardSwitchState){
+
     }
     public void setPitmanArmPosition(PitmanArmPosition position) {
         pitmanArmState=position;
@@ -112,5 +110,12 @@ public class CarModel {
             return leftIndicator.getCycle();
         }
         return false;
+    }
+    public Indicator getLeftIndicator(){
+        return leftIndicator;
+    }
+
+    public Indicator getRightIndicator() {
+        return rightIndicator;
     }
 }

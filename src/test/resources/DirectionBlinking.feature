@@ -37,13 +37,16 @@ Feature: Direction Blinking Indicator
 
     Scenario: Engage Pitman Arm in a downward position from upward during tip-blinking flash cycle
       When the pitman arm is moved in a downward position from upward position during the 3 flashing cycles of tip-blinking
-      Then the tip-blinking will stop and the requesting flashing cycle will be released
+      Then the right indicator tip-blinking will stop
+      And the requesting left indicator flashing cycle will be released
 
     Scenario: Engage Pitman Arm in an upward position during tip-blinking flash cycle
       When the pitman arm is moved in an upward position from downward during the 3 flashing cycles of tip-blinking
-      Then the tip-blinking will stop and the requesting flashing cycle will be released
+      Then the left indicator tip-blinking will stop
+      And the requesting right indicator flashing cycle will be released
 
     Scenario: Engage Hazard Warning Switch during tip-blinking flash cycle
       When the hazard warning switch is engaged during the 3 flashing cycles of tip-blinking
-      Then the tip-blinking will stop and the requesting flashing cycle will be released
+      Then the tip-blinking will stop
+      And the requesting flashing cycle will be released
 

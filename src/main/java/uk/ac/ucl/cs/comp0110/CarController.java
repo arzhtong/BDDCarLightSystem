@@ -19,6 +19,7 @@ public class CarController {
     }
 
     public void addButtonFunctions() {
+
         view.getLeftDirection().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
