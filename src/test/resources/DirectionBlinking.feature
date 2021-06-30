@@ -31,3 +31,5 @@ Feature: Direction Blinking Indicator
       When the pitman arm is moved in the tip-blinking downward position for less than 0.5 seconds
       Then all left indicators should flash for 3 flashing cycles
 
+      
+
