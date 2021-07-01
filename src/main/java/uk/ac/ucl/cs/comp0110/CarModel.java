@@ -39,7 +39,6 @@ public class CarModel {
         if (hazardSwitchState==true){
             leftIndicator.setState(Blinking.FLASHING);
             rightIndicator.setState(Blinking.FLASHING);
-
         }
     }
     public boolean getHazardSwitchState(){
@@ -91,15 +90,19 @@ public class CarModel {
     }
     public void setFlashCycleState(PitmanArmPosition position,double time) {
         if (position == PitmanArmPosition.UPWARD5) {
+            setPitmanArmPosition(PitmanArmPosition.UPWARD5);
             if (time < 500) {
                 rightIndicator.setCycle(true);
-                setPitmanArmPosition(PitmanArmPosition.UPWARD5);
+            }else{
+                rightIndicator.setCycle(false);
             }
         }
         if (position == PitmanArmPosition.DOWNWARD5) {
+            setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
             if (time < 500) {
                 leftIndicator.setCycle(true);
-                setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
+            }else{
+                leftIndicator.setCycle(false);
             }
         }
     }

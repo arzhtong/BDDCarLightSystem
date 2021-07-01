@@ -44,8 +44,8 @@ public class CarController {
             }
             @Override
             public void mouseReleased(MouseEvent e) {
-                model.stopTimer();
-                model.setFlashCycleState(PitmanArmPosition.UPWARD5,model.getLengthOfTimeHeld());
+                leftTipBlinkingPressed();
+
             }
         });
         view.getRightTipBlinking().addMouseListener(new MouseAdapter() {
@@ -56,8 +56,7 @@ public class CarController {
             }
             @Override
             public void mouseReleased(MouseEvent e) {
-                model.stopTimer();
-                model.setFlashCycleState(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
+                rightTipBlinkingPressed();
             }
         });
     }
@@ -65,15 +64,17 @@ public class CarController {
 
 
     public void leftDirectionPressed() {
-        if (model.getBlinkingState("Left") == Blinking.FLASHING) {
+        if (model.getBlinkingState("Right") == Blinking.FLASHING) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         } else {
-            model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
+            model.setFlashCycleState(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
         }
     }
     public void hazardSwitchPressed(){
         if (model.getHazardSwitchState()==false){
             model.setHazardSwitch(true);
+        }else{
+            model.setHazardSwitch(false);
         }
     }
 
@@ -88,11 +89,24 @@ public class CarController {
         }
 
     }
+    public void leftTipBlinkingPressed(){
+        if (model.getBlinkingState("Left")==Blinking.FLASHING){
+            System.out.println("testing12345678");
+            model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
+            model.stopTimer();
+        }else{
+            model.stopTimer();
+            model.setFlashCycleState(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
+        }
+    }
     public void rightTipBlinkingPressed(){
         if (model.getBlinkingState("Right")==Blinking.FLASHING){
+            System.out.println("testing12345678");
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
+            model.stopTimer();
         }else{
-            model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
+            model.stopTimer();
+            model.setFlashCycleState(PitmanArmPosition.UPWARD5,model.getLengthOfTimeHeld());
         }
     }
 }

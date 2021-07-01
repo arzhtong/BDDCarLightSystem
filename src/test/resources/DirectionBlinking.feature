@@ -23,12 +23,12 @@ Feature: Direction Blinking Indicator
 
     @requirement(ELS-2,ELS-5)
     Scenario: Engage Tip-Blinking in an upward position
-      When the pitman arm is moved in the tip-blinking upward position for less than 0.5 seconds
+      When the pitman arm is moved in the tip-blinking upward position for less than 0.5 seconds (500 ms)
       Then all right indicators should flash for 3 flashing cycles
 
     @requirement(ELS-2,ELS-5)
     Scenario: Engage Tip-Blinking in a downward position
-      When the pitman arm is moved in the tip-blinking downward position for less than 0.5 seconds
+      When the pitman arm is moved in the tip-blinking downward position for less than 0.5 seconds (500 ms)
       Then all left indicators should flash for 3 flashing cycles
 
     Rule: Engage Pitman arm in another direction or engaging hazard switch will stop tip-blinking flashing cycle
@@ -59,12 +59,12 @@ Feature: Direction Blinking Indicator
         Given the Ignition is on
 
     @requirement(ELS-4,ELS-5)
-    Scenario: Engage pitman arm for more than 0.5 seconds in tip-blinking left
+    Scenario: Engage pitman arm for more than 0.5 seconds (500 ms) in tip-blinking left
       When the pitman arm is held for more than 0.5 seconds in tip-blinking left
       Then flash-cycles are released for all direction indicators on the left until the pitman arm leaves tip-blinking left
 
     @requirement(ELS-4,ELS-5)
-    Scenario: Engage pitman arm for more than 0.5 seconds in tip-blinking right
+    Scenario: Engage pitman arm for more than 0.5 seconds (500 ms) in tip-blinking right
       When the pitman arm is held for more than 0.5 seconds in tip-blinking right
       Then flash-cycles are released for all direction indicators on the right until the pitman arm leaves tip-blinking right
 

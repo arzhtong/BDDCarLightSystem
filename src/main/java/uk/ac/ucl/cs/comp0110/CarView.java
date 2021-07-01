@@ -35,8 +35,8 @@ public class CarView extends JFrame{
         service= Executors.newSingleThreadScheduledExecutor();
         leftDirection = new JRadioButton("Downward Direction Blinking");
         rightDirection = new JRadioButton("Upward Direction Blinking");
-        leftTipBlinking=new JRadioButton("Upward Tip-Blinking");
-        rightTipBlinking=new JRadioButton("Downward Tip-Blinking");
+        leftTipBlinking=new JRadioButton("Downward Tip-Blinking");
+        rightTipBlinking=new JRadioButton("Upward Tip-Blinking");
         hazardSwitch=new JRadioButton("Hazard Warning Button");
         numberOfFlashCycles=0;
         makeFrame();
@@ -139,9 +139,10 @@ public class CarView extends JFrame{
                 model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
                 rightTipBlinking.setSelected(false);
             }
-        }else{
-            rightTipBlinking.setSelected(false);
         }
+
+
+
 
 
         if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == false  && model.getHazardSwitchState()==false) {
@@ -198,12 +199,11 @@ public class CarView extends JFrame{
                 model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
                 leftTipBlinking.setSelected(false);
             }
-            }else{
-            leftTipBlinking.setSelected(false);
+            }
         }
 
 
-        }
+
 
 
     public void makeFrame() {
@@ -239,8 +239,8 @@ public class CarView extends JFrame{
         JLabel direction = new JLabel("Direction of Pitarm");
         blinkingDirection.add(direction);
         blinkingDirection.add(leftDirection);
-        blinkingDirection.add(rightTipBlinking);
         blinkingDirection.add(leftTipBlinking);
+        blinkingDirection.add(rightTipBlinking);
         blinkingDirection.add(rightDirection);
         blinkingDirection.add(hazardSwitch);
         typeOfBlinking.add(blinkingType);
