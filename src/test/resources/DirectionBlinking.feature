@@ -74,13 +74,13 @@ Feature: Direction Blinking Indicator
 
     @requirement(ELS-6)
     Scenario: Engage direction blinking by car sold in the USA
-      When direction blinking is engaged on the blinking side
+      When direction blinking is engaged on the blinking side by a car sold in the USA
       Then the daytime running light must be dimmed by 50%
 
     @requirement(ELS-6)
     Scenario: Engage direction blinking by car sold in the UK
-      When direction blinking is engaged on the blinking side
-      Then the daytime running light will not be dimmed for reasons related to car retailing
+      When direction blinking is engaged on the blinking side by a car sold in the UK
+      Then the daytime running light will not be dimmed for reasons related to where the car was sold
 
 
 

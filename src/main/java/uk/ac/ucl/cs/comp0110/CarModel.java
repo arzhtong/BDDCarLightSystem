@@ -44,6 +44,12 @@ public class CarModel {
     public boolean getHazardSwitchState(){
         return hazardSwitchState;
     }
+    public double getDimmedLightStatus(){
+        return 0;
+    }
+    public void setCountrySoldIn(String countrySoldIn){
+
+    }
     public void setPitmanArmPosition(PitmanArmPosition position) {
         pitmanArmState=position;
         if (ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION){
@@ -62,10 +68,7 @@ public class CarModel {
             if (position ==PitmanArmPosition.NEUTRAL){
                 leftIndicator.setState(Blinking.NONFLASHING);
                 rightIndicator.setState(Blinking.NONFLASHING);
-
             }
-
-
             }
         }
 

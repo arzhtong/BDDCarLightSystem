@@ -152,5 +152,28 @@ public class DirectionBlinking_StepDefinitions {
     public void flash_cycles_are_released_for_all_direction_indicators_on_the_right_until_the_pitman_arm_leaves_tip_blinking_right() {
         Assert.assertEquals(car.getFlashingCycles("Right"),false);
     }
+    @When("direction blinking is engaged on the blinking side by a car sold in the USA")
+    public void direction_blinking_is_engaged_on_the_blinking_side_by_a_car_sold_in_the_USA() {
+        car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
+        car.setCountrySoldIn("USA");
+    }
+
+    @Then("the daytime running light must be dimmed by {int}%")
+    public void the_daytime_running_light_must_be_dimmed_by(Integer int1) {
+        Assert.assertEquals(car.getDimmedLightStatus(),50);
+    }
+
+    @When("direction blinking is engaged on the blinking side by a car sold in the UK")
+    public void direction_blinking_is_engaged_on_the_blinking_side_by_a_car_sold_in_the_UK() {
+        car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
+        car.setCountrySoldIn("UK");
+    }
+
+    @Then("the daytime running light will not be dimmed for reasons related to where the car was sold")
+    public void the_daytime_running_light_will_not_be_dimmed_for_reasons_related_to_where_the_car_was_sold() {
+        Assert.assertEquals(car.getDimmedLightStatus(),0);
+    }
+
+
 
 }
