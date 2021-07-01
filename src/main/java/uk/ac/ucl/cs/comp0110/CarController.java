@@ -19,7 +19,12 @@ public class CarController {
     }
 
     public void addButtonFunctions() {
-
+        view.getHazardSwitch().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hazardSwitchPressed();
+            }
+        });
         view.getLeftDirection().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,6 +71,12 @@ public class CarController {
             model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
         }
     }
+    public void hazardSwitchPressed(){
+        if (model.getHazardSwitchState()==false){
+            model.setHazardSwitch(true);
+        }
+    }
+
 
     public void rightDirectionPressed() {
 

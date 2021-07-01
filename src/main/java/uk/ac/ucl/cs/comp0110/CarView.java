@@ -25,6 +25,7 @@ public class CarView extends JFrame{
     public JRadioButton rightDirection;
     public JRadioButton leftTipBlinking;
     public JRadioButton rightTipBlinking;
+    public JRadioButton hazardSwitch;
     private int numberOfFlashCycles;
 
     public CarView(CarModel model) {
@@ -36,6 +37,7 @@ public class CarView extends JFrame{
         rightDirection = new JRadioButton("Upward Direction Blinking");
         leftTipBlinking=new JRadioButton("Upward Tip-Blinking");
         rightTipBlinking=new JRadioButton("Downward Tip-Blinking");
+        hazardSwitch=new JRadioButton("Hazard Warning Button");
         numberOfFlashCycles=0;
         makeFrame();
 
@@ -64,8 +66,31 @@ public class CarView extends JFrame{
         g.drawPolygon(rightSideIndicator);
         g.drawPolygon(leftBackIndicator);
         g.drawPolygon(rightBackIndicator);
+        if (model.getHazardSwitchState()==true){
+            if (leftIndicatorFlashed == false && rightIndicatorFlashed==false) {
+                g2d.setPaint(new Color(255, 255, 0));
+                g.fillPolygon(leftFrontIndicator);
+                g.fillPolygon(leftSideIndicator);
+                g.fillPolygon(leftBackIndicator);
+                g.fillPolygon(rightFrontIndicator);
+                g.fillPolygon(rightSideIndicator);
+                g.fillPolygon(rightBackIndicator);
+                leftIndicatorFlashed = true;
+                rightIndicatorFlashed=true;
+            } else {
+                g2d.setPaint(new Color(211, 211, 211));
+                g.fillPolygon(leftFrontIndicator);
+                g.fillPolygon(leftSideIndicator);
+                g.fillPolygon(leftBackIndicator);
+                g.fillPolygon(rightFrontIndicator);
+                g.fillPolygon(rightSideIndicator);
+                g.fillPolygon(rightBackIndicator);
+                leftIndicatorFlashed = false;
+                rightIndicatorFlashed=false;
+            }
+        }
 
-        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getFlashingCycles("Left") == false) {
+        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getFlashingCycles("Left") == false && model.getHazardSwitchState()==false) {
 
             if (leftIndicatorFlashed == false) {
                 g2d.setPaint(new Color(255, 255, 0));
@@ -88,7 +113,7 @@ public class CarView extends JFrame{
             g.fillPolygon(leftBackIndicator);
             leftIndicatorFlashed = false;
         }
-        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getFlashingCycles("Left") == true) {
+        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getFlashingCycles("Left") == true  && model.getHazardSwitchState()==false) {
             rightDirection.setSelected(false);
 
             if (leftIndicatorFlashed == false) {
@@ -119,7 +144,7 @@ public class CarView extends JFrame{
         }
 
 
-        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == false) {
+        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == false  && model.getHazardSwitchState()==false) {
 
 
 
@@ -147,7 +172,7 @@ public class CarView extends JFrame{
             g.fillPolygon(rightBackIndicator);
             rightIndicatorFlashed = false;
         }
-        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == true) {
+        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == true  && model.getHazardSwitchState()==false) {
 
 
                 if (rightIndicatorFlashed == false) {
@@ -203,10 +228,6 @@ public class CarView extends JFrame{
         },0,1,TimeUnit.SECONDS);
 
     }
-
-
-
-
     public JPanel makeBottomInputs() {
         final JPanel typeOfBlinking = new JPanel();
         final JPanel blinkingDirection = new JPanel();
@@ -221,6 +242,7 @@ public class CarView extends JFrame{
         blinkingDirection.add(rightTipBlinking);
         blinkingDirection.add(leftTipBlinking);
         blinkingDirection.add(rightDirection);
+        blinkingDirection.add(hazardSwitch);
         typeOfBlinking.add(blinkingType);
         bottomPanel.add(typeOfBlinking);
         bottomPanel.add(blinkingDirection);
@@ -238,7 +260,9 @@ public class CarView extends JFrame{
     public JRadioButton getRightTipBlinking(){
         return rightTipBlinking;
     }
-
+    public JRadioButton getHazardSwitch(){
+        return hazardSwitch;
+    }
 
 
 }

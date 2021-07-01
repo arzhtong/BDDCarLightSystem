@@ -14,6 +14,7 @@ public class CarModel {
     private Indicator rightIndicator;
     private int lengthOfTimeHeld;
     private Timer timer;
+    private boolean hazardSwitchState;
     public CarModel(){
         ignitionState=IgnitionStatus.KEYINIGNITIONONPOSITION;
         leftIndicator=new Indicator();
@@ -21,6 +22,7 @@ public class CarModel {
         leftIndicator.setState(Blinking.NONFLASHING);
         rightIndicator.setState(Blinking.NONFLASHING);
         lengthOfTimeHeld=0;
+        hazardSwitchState=false;
     }
     public void isIgnitionOn(IgnitionStatus ignitionState){
         this.ignitionState=ignitionState;
@@ -29,7 +31,19 @@ public class CarModel {
         this.lengthOfTimeHeld=lengthOfTimeHeld;
     }
     public void setHazardSwitch(boolean hazardSwitchState){
+        this.hazardSwitchState=hazardSwitchState;
+        leftIndicator.setState(Blinking.NONFLASHING);
+        rightIndicator.setState(Blinking.NONFLASHING);
+        leftIndicator.setCycle(false);
+        rightIndicator.setCycle(false);
+        if (hazardSwitchState==true){
+            leftIndicator.setState(Blinking.FLASHING);
+            rightIndicator.setState(Blinking.FLASHING);
 
+        }
+    }
+    public boolean getHazardSwitchState(){
+        return hazardSwitchState;
     }
     public void setPitmanArmPosition(PitmanArmPosition position) {
         pitmanArmState=position;

@@ -48,5 +48,6 @@ Feature: Direction Blinking Indicator
     Scenario: Engage Hazard Warning Switch during tip-blinking flash cycle
       When the hazard warning switch is engaged during the 3 flashing cycles of tip-blinking
       Then the tip-blinking will stop
-      And the requesting flashing cycle will be released
+      And the requested flashing cycle for the left indicator will be released
+      And the same type of cycle for the right indicator will also be released
 
