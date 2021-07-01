@@ -126,6 +126,26 @@ public class DirectionBlinking_StepDefinitions {
         Assert.assertEquals(car.getBlinkingState("Left"),Blinking.FLASHING);
     }
 
+    @When("the pitman arm is held for more than 0.5 seconds in tip-blinking left")
+    public void the_pitman_arm_is_held_for_more_than_seconds_in_tip_blinking_left() {
+        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
+        car.setFlashCycleState(PitmanArmPosition.DOWNWARD5,0.6);
+    }
 
+    @Then("flash-cycles are released for all direction indicators on the left until the pitman arm leaves tip-blinking left")
+    public void flash_cycles_are_released_for_all_direction_indicators_on_the_left_until_the_pitman_arm_leaves_tip_blinking_left() {
+        Assert.assertEquals(car.getFlashingCycles("Left"),false);
+    }
+
+    @When("the pitman arm is held for more than 0.5 seconds in tip-blinking right")
+    public void the_pitman_arm_is_held_for_more_than_seconds_in_tip_blinking_right() {
+        car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
+        car.setFlashCycleState(PitmanArmPosition.UPWARD5,0.6);
+    }
+
+    @Then("flash-cycles are released for all direction indicators on the right until the pitman arm leaves tip-blinking right")
+    public void flash_cycles_are_released_for_all_direction_indicators_on_the_right_until_the_pitman_arm_leaves_tip_blinking_right() {
+        Assert.assertEquals(car.getFlashingCycles("Right"),false);
+    }
 
 }
