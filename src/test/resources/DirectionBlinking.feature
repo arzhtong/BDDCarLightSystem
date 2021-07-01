@@ -35,19 +35,36 @@ Feature: Direction Blinking Indicator
       Background:
         Given the Ignition is on
 
+    @requirement(ELS-3,ELS-5)
     Scenario: Engage Pitman Arm in a downward position from upward during tip-blinking flash cycle
       When the pitman arm is moved in a downward position from upward position during the 3 flashing cycles of tip-blinking
       Then the right indicator tip-blinking will stop
       And the requesting left indicator flashing cycle will be released
 
+    @requirement(ELS-3,ELS-5)
     Scenario: Engage Pitman Arm in an upward position during tip-blinking flash cycle
       When the pitman arm is moved in an upward position from downward during the 3 flashing cycles of tip-blinking
       Then the left indicator tip-blinking will stop
       And the requesting right indicator flashing cycle will be released
 
+    @requirement(ELS-3,ELS-5)
     Scenario: Engage Hazard Warning Switch during tip-blinking flash cycle
       When the hazard warning switch is engaged during the 3 flashing cycles of tip-blinking
       Then the tip-blinking will stop
       And the requested flashing cycle for the left indicator will be released
       And the same type of cycle for the right indicator will also be released
+
+    Rule: If the pitman arm is held for more than 0.5 seconds in a tip-blinking position then direction indicators cycles are released until pitman arm leaves the position
+      Background:
+        Given the Ignition is on
+
+    @requirement(ELS-4,ELS-5)
+    Scenario: Engage pitman arm for more than 0.5 seconds in tip-blinking left
+      When the pitman arm is held for more than 0.5 seconds in tip-blinking left
+      Then flash-cycles are released for all direction indicators on the left until the pitman arm leaves tip-blinking left
+
+    @requirement(ELS-4,ELS-5)
+    Scenario: Engage pitman arm for more than 0.5 seconds in tip-blinking right
+      When the pitman arm is held for more than 0.5 seconds in tip-blinking right
+      Then flash-cycles are released for all direction indicators on the right until the pitman arm leaves tip-blinking right
 
