@@ -68,3 +68,20 @@ Feature: Direction Blinking Indicator
       When the pitman arm is held for more than 0.5 seconds in tip-blinking right
       Then flash-cycles are released for all direction indicators on the right until the pitman arm leaves tip-blinking right
 
+    Rule: Cars sold in the USA or Canada will have daytime running light dimmed by 50% during direction blinking
+      Background:
+        Given the Ignition is on
+
+    @requirement(ELS-6)
+    Scenario: Engage direction blinking by car sold in the USA
+      When direction blinking is engaged on the blinking side
+      Then the daytime running light must be dimmed by 50%
+
+    @requirement(ELS-6)
+    Scenario: Engage direction blinking by car sold in the UK
+      When direction blinking is engaged on the blinking side
+      Then the daytime running light will not be dimmed for reasons related to car retailing
+
+
+
+

@@ -76,7 +76,6 @@ public class CarModel {
             @Override
             public void run() {
                 lengthOfTimeHeld++;
-                System.out.println(lengthOfTimeHeld);
             }
         }, 1,1);
 

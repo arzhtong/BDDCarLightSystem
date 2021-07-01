@@ -91,7 +91,6 @@ public class CarController {
     }
     public void leftTipBlinkingPressed(){
         if (model.getBlinkingState("Left")==Blinking.FLASHING){
-            System.out.println("testing12345678");
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
             model.stopTimer();
         }else{
@@ -101,7 +100,6 @@ public class CarController {
     }
     public void rightTipBlinkingPressed(){
         if (model.getBlinkingState("Right")==Blinking.FLASHING){
-            System.out.println("testing12345678");
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
             model.stopTimer();
         }else{
