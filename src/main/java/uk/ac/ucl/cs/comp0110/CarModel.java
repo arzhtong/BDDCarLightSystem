@@ -15,6 +15,7 @@ public class CarModel {
     private int lengthOfTimeHeld;
     private Timer timer;
     private boolean hazardSwitchState;
+    private boolean inUSAOrCanada;
     public CarModel(){
         ignitionState=IgnitionStatus.KEYINIGNITIONONPOSITION;
         leftIndicator=new Indicator();
@@ -32,8 +33,6 @@ public class CarModel {
     }
     public void setHazardSwitch(boolean hazardSwitchState){
         this.hazardSwitchState=hazardSwitchState;
-        leftIndicator.setState(Blinking.NONFLASHING);
-        rightIndicator.setState(Blinking.NONFLASHING);
         leftIndicator.setCycle(false);
         rightIndicator.setCycle(false);
         if (hazardSwitchState==true){
@@ -44,11 +43,27 @@ public class CarModel {
     public boolean getHazardSwitchState(){
         return hazardSwitchState;
     }
-    public double getDimmedLightStatus(){
+    public int getDimmedLightStatus(String direction){
+        if (direction.equals("Right")){
+            return rightIndicator.getDimmedLight();
+        }
+        if (direction.equals("Left")){
+            return leftIndicator.getDimmedLight();
+        }
         return 0;
     }
-    public void setCountrySoldIn(String countrySoldIn){
-
+    public void setInUSAOrCanada(boolean inUSAOrCanada){
+        this.inUSAOrCanada=inUSAOrCanada;
+        if (inUSAOrCanada==true){
+            leftIndicator.setDimmedLight(50);
+            rightIndicator.setDimmedLight(50);
+        }else{
+            leftIndicator.setDimmedLight(0);
+            rightIndicator.setDimmedLight(0);
+        }
+    }
+    public boolean getInUSAOrCanada(){
+        return inUSAOrCanada;
     }
     public void setPitmanArmPosition(PitmanArmPosition position) {
         pitmanArmState=position;
@@ -56,14 +71,10 @@ public class CarModel {
             if (position==PitmanArmPosition.UPWARD7 || position==PitmanArmPosition.UPWARD5){
                 rightIndicator.setState(Blinking.FLASHING);
                 leftIndicator.setState(Blinking.NONFLASHING);
-
-
             }
             if (position==PitmanArmPosition.DOWNWARD7 || position==PitmanArmPosition.DOWNWARD5){
                 leftIndicator.setState(Blinking.FLASHING);
                 rightIndicator.setState(Blinking.NONFLASHING);
-
-
             }
             if (position ==PitmanArmPosition.NEUTRAL){
                 leftIndicator.setState(Blinking.NONFLASHING);
@@ -130,10 +141,9 @@ public class CarModel {
         }
         return false;
     }
-    public Indicator getLeftIndicator(){
+    public Indicator getLeftIndicator() {
         return leftIndicator;
     }
-
     public Indicator getRightIndicator() {
         return rightIndicator;
     }

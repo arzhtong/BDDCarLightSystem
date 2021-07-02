@@ -26,6 +26,7 @@ public class CarView extends JFrame{
     public JRadioButton leftTipBlinking;
     public JRadioButton rightTipBlinking;
     public JRadioButton hazardSwitch;
+    public JRadioButton soldInUKOrCanada;
     private int numberOfFlashCycles;
 
     public CarView(CarModel model) {
@@ -38,6 +39,7 @@ public class CarView extends JFrame{
         leftTipBlinking=new JRadioButton("Downward Tip-Blinking");
         rightTipBlinking=new JRadioButton("Upward Tip-Blinking");
         hazardSwitch=new JRadioButton("Hazard Warning Button");
+        soldInUKOrCanada=new JRadioButton("Country sold in UK or Canada");
         numberOfFlashCycles=0;
         makeFrame();
 
@@ -94,6 +96,9 @@ public class CarView extends JFrame{
 
             if (leftIndicatorFlashed == false) {
                 g2d.setPaint(new Color(255, 255, 0));
+                if (model.getDimmedLightStatus("Left")==50){
+                    g2d.setPaint(new Color(127,127,0));
+                }
                 g.fillPolygon(leftFrontIndicator);
                 g.fillPolygon(leftSideIndicator);
                 g.fillPolygon(leftBackIndicator);
@@ -137,21 +142,16 @@ public class CarView extends JFrame{
                 numberOfFlashCycles=0;
                 model.setLengthOfTimeHeld(0);
                 model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
-                rightTipBlinking.setSelected(false);
+                leftTipBlinking.setSelected(false);
             }
         }
-
-
-
-
-
         if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == false  && model.getHazardSwitchState()==false) {
-
-
-
             if (rightIndicatorFlashed == false) {
 
                 g2d.setPaint(new Color(255, 255, 0));
+                if (model.getDimmedLightStatus("Right")==50){
+                    g2d.setPaint(new Color(127,127,0));
+                }
                 g.fillPolygon(rightFrontIndicator);
                 g.fillPolygon(rightSideIndicator);
                 g.fillPolygon(rightBackIndicator);
@@ -197,15 +197,10 @@ public class CarView extends JFrame{
                 numberOfFlashCycles=0;
                 model.setLengthOfTimeHeld(0);
                 model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
-                leftTipBlinking.setSelected(false);
+                rightTipBlinking.setSelected(false);
             }
             }
         }
-
-
-
-
-
     public void makeFrame() {
         Container contentPane = getContentPane();
         JPanel centralGrid = new JPanel();
@@ -243,6 +238,7 @@ public class CarView extends JFrame{
         blinkingDirection.add(rightTipBlinking);
         blinkingDirection.add(rightDirection);
         blinkingDirection.add(hazardSwitch);
+        blinkingDirection.add(soldInUKOrCanada);
         typeOfBlinking.add(blinkingType);
         bottomPanel.add(typeOfBlinking);
         bottomPanel.add(blinkingDirection);
@@ -262,6 +258,9 @@ public class CarView extends JFrame{
     }
     public JRadioButton getHazardSwitch(){
         return hazardSwitch;
+    }
+    public JRadioButton getSoldInUKOrCanada(){
+        return soldInUKOrCanada;
     }
 
 

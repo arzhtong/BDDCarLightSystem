@@ -5,6 +5,7 @@ enum Blinking{
 public class Indicator {
     private Blinking blinkingState;
     private boolean flashCycle;
+    private int dimmedLight;
     public Indicator(){
         blinkingState=Blinking.NONFLASHING;
     }
@@ -19,5 +20,11 @@ public class Indicator {
     }
     public boolean getCycle(){
         return flashCycle;
+    }
+    public void setDimmedLight(int dimmedLight){
+        this.dimmedLight=dimmedLight;
+    }
+    public int getDimmedLight(){
+        return dimmedLight;
     }
 }

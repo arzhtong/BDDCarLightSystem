@@ -37,6 +37,12 @@ public class CarController {
                 rightDirectionPressed();
             }
         });
+        view.getSoldInUKOrCanada().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                soldInUKOrCanadaPressed();
+            }
+        });
         view.getLeftTipBlinking().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -64,10 +70,10 @@ public class CarController {
 
 
     public void leftDirectionPressed() {
-        if (model.getBlinkingState("Right") == Blinking.FLASHING) {
+        if (model.getBlinkingState("Left") == Blinking.FLASHING) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         } else {
-            model.setFlashCycleState(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
+            model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
         }
     }
     public void hazardSwitchPressed(){
@@ -105,6 +111,13 @@ public class CarController {
         }else{
             model.stopTimer();
             model.setFlashCycleState(PitmanArmPosition.UPWARD5,model.getLengthOfTimeHeld());
+        }
+    }
+    public void soldInUKOrCanadaPressed(){
+        if (model.getDimmedLightStatus("Left")==0 || model.getDimmedLightStatus("Right")==0){
+            model.setInUSAOrCanada(true);
+        }else{
+            model.setInUSAOrCanada(false);
         }
     }
 }
