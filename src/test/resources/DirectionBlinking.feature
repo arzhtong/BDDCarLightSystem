@@ -85,7 +85,7 @@ Feature: Direction Blinking Indicator
 
     @requirement(ELS-7)
     Scenario: Engage the pitman arm in a downward tip-blinking position during the 3 flashing cycles where the pitman arm was already put in a downward position
-      When the pitman arm is moved in a downward direction blinking position during the 3 flashing cycles where the pitman arm was in a downward position
+      When the pitman arm is moved in a downward tip-blinking position during the 3 flashing cycles where the pitman arm was in a downward position
       Then the 3 flashing cycles must finish before the left indicators start the new cycle of tip-blinking
 
 

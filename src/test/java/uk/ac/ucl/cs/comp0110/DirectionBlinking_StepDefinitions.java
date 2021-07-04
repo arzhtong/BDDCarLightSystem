@@ -170,6 +170,29 @@ public class DirectionBlinking_StepDefinitions {
         Assert.assertEquals(car.getDimmedLightStatus("Right"),0);
     }
 
+    @When("the pitman arm is moved in an upward direction blinking position during the 3 flashing cycles where the pitman arm was in an upward position")
+    public void the_pitman_arm_is_moved_in_an_upward_direction_blinking_position_during_the_flashing_cycles_where_the_pitman_arm_was_in_an_upward_position() {
+        car.tipPitmanArm(PitmanArmPosition.UPWARD5,400);
+        car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
+    }
+
+    @Then("the 3 flashing cycles must finish before the right indicators start the direction blinking")
+    public void the_flashing_cycles_must_finish_before_the_right_indicators_start_the_direction_blinking() {
+        Assert.assertEquals(car.getFlashingCycles("Right"),true);
+    }
+    @When("the pitman arm is moved in a downward tip-blinking position during the 3 flashing cycles where the pitman arm was in a downward position")
+    public void the_pitman_arm_is_moved_in_a_downward_tip_blinking_position_during_the_flashing_cycles_where_the_pitman_arm_was_in_a_downward_position() {
+        car.tipPitmanArm(PitmanArmPosition.DOWNWARD5,400);
+        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
+    }
+
+
+    @Then("the 3 flashing cycles must finish before the left indicators start the new cycle of tip-blinking")
+    public void the_flashing_cycles_must_finish_before_the_left_indicators_start_the_new_cycle_of_tip_blinking() {
+        Assert.assertEquals(car.getFlashingCycles("Left"),true);
+    }
+
+
 
 
 }
