@@ -1,18 +1,12 @@
 package uk.ac.ucl.cs.comp0110;
-import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.Executors;
 
 public class CarController {
     public CarView view;
-    private CarModel model;
+    private Car model;
 
     private double lengthOfTimeHeld=0;
-    public CarController(CarView view, CarModel model) {
+    public CarController(CarView view, Car model) {
         this.view = view;
         this.model = model;
 
@@ -76,15 +70,6 @@ public class CarController {
             model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
         }
     }
-    public void hazardSwitchPressed(){
-        if (model.getHazardSwitchState()==false){
-            model.setHazardSwitch(true);
-        }else{
-            model.setHazardSwitch(false);
-        }
-    }
-
-
     public void rightDirectionPressed() {
 
         if (model.getBlinkingState("Right") == Blinking.FLASHING) {
@@ -101,7 +86,7 @@ public class CarController {
             model.stopTimer();
         }else{
             model.stopTimer();
-            model.setFlashCycleState(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
+            model.tipPitmanArm(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
         }
     }
     public void rightTipBlinkingPressed(){
@@ -110,9 +95,17 @@ public class CarController {
             model.stopTimer();
         }else{
             model.stopTimer();
-            model.setFlashCycleState(PitmanArmPosition.UPWARD5,model.getLengthOfTimeHeld());
+            model.tipPitmanArm(PitmanArmPosition.UPWARD5,model.getLengthOfTimeHeld());
         }
     }
+    public void hazardSwitchPressed(){
+        if (model.getHazardSwitchState()==false){
+            model.setHazardSwitch(true);
+        }else{
+            model.setHazardSwitch(false);
+        }
+    }
+
     public void soldInUKOrCanadaPressed(){
         if (model.getDimmedLightStatus("Left")==0 || model.getDimmedLightStatus("Right")==0){
             model.setInUSAOrCanada(true);

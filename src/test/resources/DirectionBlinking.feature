@@ -23,7 +23,7 @@ Feature: Direction Blinking Indicator
 
     @requirement(ELS-2,ELS-5)
     Scenario: Engage Tip-Blinking in an upward position
-      When the pitman arm is moved in the tip-blinking upward position for less than 0.5 seconds (500 ms)
+      When the pitman arm is moved in the tip-blinking upward position for less than 0.5 seconds
       Then all right indicators should flash for 3 flashing cycles
 
     @requirement(ELS-2,ELS-5)
@@ -81,6 +81,9 @@ Feature: Direction Blinking Indicator
     Scenario: Engage direction blinking by car sold in the UK
       When direction blinking is engaged on the blinking side by a car sold in the UK
       Then the daytime running light will not be dimmed for reasons related to where the car was sold
+
+
+
 
 
 

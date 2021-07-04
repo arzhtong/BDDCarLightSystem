@@ -7,9 +7,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Semaphore;
+
 public class CarView extends JFrame{
-    public CarModel model;
+    public Car model;
     public Graphics2D g2d;
     Polygon leftFrontIndicator;
     Polygon rightFrontIndicator;
@@ -28,8 +29,8 @@ public class CarView extends JFrame{
     public JRadioButton hazardSwitch;
     public JRadioButton soldInUKOrCanada;
     private int numberOfFlashCycles;
-
-    public CarView(CarModel model) {
+    public Semaphore sem;
+    public CarView(Car model) {
         this.model=model;
         leftIndicatorFlashed=false;
         rightIndicatorFlashed=false;
@@ -39,8 +40,9 @@ public class CarView extends JFrame{
         leftTipBlinking=new JRadioButton("Downward Tip-Blinking");
         rightTipBlinking=new JRadioButton("Upward Tip-Blinking");
         hazardSwitch=new JRadioButton("Hazard Warning Button");
-        soldInUKOrCanada=new JRadioButton("Country sold in UK or Canada");
+        soldInUKOrCanada=new JRadioButton("Car sold in UK or Canada");
         numberOfFlashCycles=0;
+        sem=new Semaphore(1);
         makeFrame();
 
 
@@ -70,6 +72,9 @@ public class CarView extends JFrame{
         g.drawPolygon(rightBackIndicator);
         if (model.getHazardSwitchState()==true){
             if (leftIndicatorFlashed == false && rightIndicatorFlashed==false) {
+                try{
+                System.out.println("testing1");
+                sem.acquire();
                 g2d.setPaint(new Color(255, 255, 0));
                 g.fillPolygon(leftFrontIndicator);
                 g.fillPolygon(leftSideIndicator);
@@ -79,36 +84,61 @@ public class CarView extends JFrame{
                 g.fillPolygon(rightBackIndicator);
                 leftIndicatorFlashed = true;
                 rightIndicatorFlashed=true;
-            } else {
-                g2d.setPaint(new Color(211, 211, 211));
-                g.fillPolygon(leftFrontIndicator);
-                g.fillPolygon(leftSideIndicator);
-                g.fillPolygon(leftBackIndicator);
-                g.fillPolygon(rightFrontIndicator);
-                g.fillPolygon(rightSideIndicator);
-                g.fillPolygon(rightBackIndicator);
-                leftIndicatorFlashed = false;
-                rightIndicatorFlashed=false;
+                repaint();
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {}
+                    sem.release();
+                } else {
+                try {
+                    sem.acquire();
+                    g2d.setPaint(new Color(211, 211, 211));
+                    g.fillPolygon(leftFrontIndicator);
+                    g.fillPolygon(leftSideIndicator);
+                    g.fillPolygon(leftBackIndicator);
+                    g.fillPolygon(rightFrontIndicator);
+                    g.fillPolygon(rightSideIndicator);
+                    g.fillPolygon(rightBackIndicator);
+                    leftIndicatorFlashed = false;
+                    rightIndicatorFlashed = false;
+                    repaint();
+                    Thread.sleep(1000);
+                }catch(InterruptedException e){}
+                sem.release();
             }
         }
 
         if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getFlashingCycles("Left") == false && model.getHazardSwitchState()==false) {
-
+            System.out.println("testing3");
             if (leftIndicatorFlashed == false) {
-                g2d.setPaint(new Color(255, 255, 0));
-                if (model.getDimmedLightStatus("Left")==50){
-                    g2d.setPaint(new Color(127,127,0));
-                }
-                g.fillPolygon(leftFrontIndicator);
-                g.fillPolygon(leftSideIndicator);
-                g.fillPolygon(leftBackIndicator);
-                leftIndicatorFlashed = true;
+
+                try {
+                    sem.acquire();
+                    g2d.setPaint(new Color(255, 255, 0));
+                    if (model.getDimmedLightStatus("Left") == 50) {
+                        g2d.setPaint(new Color(127, 127, 0));
+                    }
+                    g.fillPolygon(leftFrontIndicator);
+                    g.fillPolygon(leftSideIndicator);
+                    g.fillPolygon(leftBackIndicator);
+                    leftIndicatorFlashed = true;
+                    repaint();
+                    Thread.sleep(1000);
+
+                }catch(InterruptedException e){}
+                sem.release();
             } else {
-                g2d.setPaint(new Color(211, 211, 211));
-                g.fillPolygon(leftFrontIndicator);
-                g.fillPolygon(leftSideIndicator);
-                g.fillPolygon(leftBackIndicator);
-                leftIndicatorFlashed = false;
+                System.out.println("testing1");
+                try {
+                    sem.acquire();
+                    g2d.setPaint(new Color(211, 211, 211));
+                    g.fillPolygon(leftFrontIndicator);
+                    g.fillPolygon(leftSideIndicator);
+                    g.fillPolygon(leftBackIndicator);
+                    leftIndicatorFlashed = false;
+                    repaint();
+                    Thread.sleep(1000);
+                }catch(InterruptedException e){}
+                sem.release();
             }
         } else if (model.getBlinkingState("Left") == Blinking.NONFLASHING)  {
 
@@ -122,20 +152,30 @@ public class CarView extends JFrame{
             rightDirection.setSelected(false);
 
             if (leftIndicatorFlashed == false) {
-
-                g2d.setPaint(new Color(255, 255, 0));
-                g.fillPolygon(leftBackIndicator);
-                g.fillPolygon(leftSideIndicator);
-                g.fillPolygon(leftFrontIndicator);
-                leftIndicatorFlashed = true;
-                numberOfFlashCycles++;
+                try {
+                    sem.acquire();
+                    g2d.setPaint(new Color(255, 255, 0));
+                    g.fillPolygon(leftBackIndicator);
+                    g.fillPolygon(leftSideIndicator);
+                    g.fillPolygon(leftFrontIndicator);
+                    leftIndicatorFlashed = true;
+                    numberOfFlashCycles++;
+                    repaint();
+                    Thread.sleep(1000);
+                }catch(InterruptedException e){}
+                sem.release();
             } else {
-
-                g2d.setPaint(new Color(211, 211, 211));
-                g.fillPolygon(leftSideIndicator);
-                g.fillPolygon(leftBackIndicator);
-                g.fillPolygon(leftFrontIndicator);
-                leftIndicatorFlashed = false;
+                try {
+                    sem.acquire();
+                    g2d.setPaint(new Color(211, 211, 211));
+                    g.fillPolygon(leftSideIndicator);
+                    g.fillPolygon(leftBackIndicator);
+                    g.fillPolygon(leftFrontIndicator);
+                    leftIndicatorFlashed = false;
+                    repaint();
+                    Thread.sleep(1000);
+                }catch(InterruptedException e){}
+                sem.release();
 
             }
             if (numberOfFlashCycles==3) {
@@ -147,26 +187,35 @@ public class CarView extends JFrame{
         }
         if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == false  && model.getHazardSwitchState()==false) {
             if (rightIndicatorFlashed == false) {
-
-                g2d.setPaint(new Color(255, 255, 0));
-                if (model.getDimmedLightStatus("Right")==50){
-                    g2d.setPaint(new Color(127,127,0));
-                }
-                g.fillPolygon(rightFrontIndicator);
-                g.fillPolygon(rightSideIndicator);
-                g.fillPolygon(rightBackIndicator);
-                rightIndicatorFlashed = true;
+                try {
+                    sem.acquire();
+                    g2d.setPaint(new Color(255, 255, 0));
+                    if (model.getDimmedLightStatus("Right") == 50) {
+                        g2d.setPaint(new Color(127, 127, 0));
+                    }
+                    g.fillPolygon(rightFrontIndicator);
+                    g.fillPolygon(rightSideIndicator);
+                    g.fillPolygon(rightBackIndicator);
+                    rightIndicatorFlashed = true;
+                    repaint();
+                    Thread.sleep(1000);
+                }catch(InterruptedException e){}
+                sem.release();
             } else {
-
-                g2d.setPaint(new Color(211, 211, 211));
-                g.fillPolygon(rightFrontIndicator);
-                g.fillPolygon(rightSideIndicator);
-                g.fillPolygon(rightBackIndicator);
-                rightIndicatorFlashed = false;
+                try {
+                    sem.acquire();
+                    g2d.setPaint(new Color(211, 211, 211));
+                    g.fillPolygon(rightFrontIndicator);
+                    g.fillPolygon(rightSideIndicator);
+                    g.fillPolygon(rightBackIndicator);
+                    rightIndicatorFlashed = false;
+                    repaint();
+                    Thread.sleep(1000);
+                }catch(InterruptedException e){}
+                sem.release();
             }
 
         } else if (model.getBlinkingState("Right") == Blinking.NONFLASHING) {
-
             g2d.setPaint(new Color(211, 211, 211));
             g.fillPolygon(rightFrontIndicator);
             g.fillPolygon(rightSideIndicator);
@@ -174,30 +223,38 @@ public class CarView extends JFrame{
             rightIndicatorFlashed = false;
         }
         if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == true  && model.getHazardSwitchState()==false) {
-
-
+             rightTipBlinking.setSelected(false);
                 if (rightIndicatorFlashed == false) {
-
-                    g2d.setPaint(new Color(255, 255, 0));
-                    g.fillPolygon(rightFrontIndicator);
-                    g.fillPolygon(rightSideIndicator);
-                    g.fillPolygon(rightBackIndicator);
-                    rightIndicatorFlashed = true;
-                    numberOfFlashCycles++;
+                    try {
+                        sem.acquire();
+                        g2d.setPaint(new Color(255, 255, 0));
+                        g.fillPolygon(rightFrontIndicator);
+                        g.fillPolygon(rightSideIndicator);
+                        g.fillPolygon(rightBackIndicator);
+                        rightIndicatorFlashed = true;
+                        numberOfFlashCycles++;
+                        repaint();
+                        Thread.sleep(1000);
+                    }catch(InterruptedException e){}
+                    sem.release();
                 } else {
-
-                    g2d.setPaint(new Color(211, 211, 211));
-                    g.fillPolygon(rightFrontIndicator);
-                    g.fillPolygon(rightSideIndicator);
-                    g.fillPolygon(rightBackIndicator);
-                    rightIndicatorFlashed = false;
-
+                    try {
+                        sem.acquire();
+                        g2d.setPaint(new Color(211, 211, 211));
+                        g.fillPolygon(rightFrontIndicator);
+                        g.fillPolygon(rightSideIndicator);
+                        g.fillPolygon(rightBackIndicator);
+                        rightIndicatorFlashed = false;
+                        repaint();
+                        Thread.sleep(1000);
+                    }catch(InterruptedException e){}
+                    sem.release();
                 }
             if (numberOfFlashCycles==3) {
                 numberOfFlashCycles=0;
                 model.setLengthOfTimeHeld(0);
                 model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
-                rightTipBlinking.setSelected(false);
+
             }
             }
         }
@@ -214,13 +271,13 @@ public class CarView extends JFrame{
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         pack();
         setVisible(true);
-        service.scheduleAtFixedRate(new Runnable(){
-            @Override
-            public void run() {
-                repaint();
-
-            }
-        },0,1,TimeUnit.SECONDS);
+//        service.scheduleAtFixedRate(new Runnable(){
+//            @Override
+//            public void run() {
+//                repaint();
+//
+//            }
+//        },0,1,TimeUnit.SECONDS);
 
     }
     public JPanel makeBottomInputs() {
@@ -237,9 +294,9 @@ public class CarView extends JFrame{
         blinkingDirection.add(leftTipBlinking);
         blinkingDirection.add(rightTipBlinking);
         blinkingDirection.add(rightDirection);
-        blinkingDirection.add(hazardSwitch);
-        blinkingDirection.add(soldInUKOrCanada);
         typeOfBlinking.add(blinkingType);
+        typeOfBlinking.add(hazardSwitch);
+        typeOfBlinking.add(soldInUKOrCanada);
         bottomPanel.add(typeOfBlinking);
         bottomPanel.add(blinkingDirection);
         return bottomPanel;

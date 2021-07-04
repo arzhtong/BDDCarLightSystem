@@ -9,7 +9,7 @@ public class App
     public static void main( String[] args )
     {
 
-        CarModel model=new CarModel();
+        Car model=new Car();
         CarView view=new CarView(model);
         CarController controller=new CarController(view,model);
         controller.addButtonFunctions();

@@ -8,7 +8,7 @@ import org.junit.Assert;
 
 
 public class DirectionBlinking_StepDefinitions {
-    private CarModel car;
+    private Car car=new Car();
     private PitmanArmPosition pitmanArmState;
 
     @ParameterType("\\w+")
@@ -19,10 +19,8 @@ public class DirectionBlinking_StepDefinitions {
             return null;
         }
     }
-
     @Given("the Ignition is on")
     public void the_Ignition_is_on() {
-        car = new CarModel();
         car.isIgnitionOn(IgnitionStatus.KEYINIGNITIONONPOSITION);
     }
 
@@ -47,30 +45,28 @@ public class DirectionBlinking_StepDefinitions {
     }
 
 
-    @When("the pitman arm is moved in the tip-blinking upward position for less than 0.5 seconds \\({int} ms)")
-    public void the_pitman_arm_is_moved_in_the_tip_blinking_upward_position_for_less_than_seconds_ms(Integer int1) {
-        car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
-        car.setFlashCycleState(car.getPitmanArmState(),400);
+    @When("the pitman arm is moved in the tip-blinking upward position for less than 0.5 seconds")
+    public void the_pitman_arm_is_moved_in_the_tip_blinking_upward_position_for_less_than_seconds_ms() {
+        car.tipPitmanArm(PitmanArmPosition.UPWARD5,400);
     }
 
 
-    @Then("all right indicators should flash for {int} flashing cycles")
-    public void all_right_indicators_should_flash_for_flashing_cycles(Integer int1) {
+    @Then("all right indicators should flash for 3 flashing cycles")
+    public void all_right_indicators_should_flash_for_flashing_cycles() {
         Assert.assertEquals(car.getFlashingCycles("Right"),true);
     }
 
     @When("the pitman arm is moved in the tip-blinking downward position for less than 0.5 seconds \\({int} ms)")
     public void the_pitman_arm_is_moved_in_the_tip_blinking_downward_position_for_less_than_seconds_ms(Integer int1) {
-        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
-        car.setFlashCycleState(car.getPitmanArmState(),0.4);
+        car.tipPitmanArm(PitmanArmPosition.DOWNWARD5,400);
     }
 
-    @Then("all left indicators should flash for {int} flashing cycles")
-    public void all_left_indicators_should_flash_for_flashing_cycles(Integer int1) {
+    @Then("all left indicators should flash for 3 flashing cycles")
+    public void all_left_indicators_should_flash_for_flashing_cycles() {
         Assert.assertEquals(car.getFlashingCycles("Left"),true);
     }
-    @When("the pitman arm is moved in a downward position from upward position during the {int} flashing cycles of tip-blinking")
-    public void the_pitman_arm_is_moved_in_a_downward_position_from_upward_position_during_the_flashing_cycles_of_tip_blinking(Integer int1) {
+    @When("the pitman arm is moved in a downward position from upward position during the 3 flashing cycles of tip-blinking")
+    public void the_pitman_arm_is_moved_in_a_downward_position_from_upward_position_during_the_flashing_cycles_of_tip_blinking() {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
         car.getRightIndicator().setCycle(true);
         car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
@@ -87,8 +83,8 @@ public class DirectionBlinking_StepDefinitions {
         Assert.assertEquals(car.getBlinkingState("Left"),Blinking.FLASHING);
     }
 
-    @When("the pitman arm is moved in an upward position from downward during the {int} flashing cycles of tip-blinking")
-    public void the_pitman_arm_is_moved_in_an_upward_position_from_downward_during_the_flashing_cycles_of_tip_blinking(Integer int1) {
+    @When("the pitman arm is moved in an upward position from downward during the 3 flashing cycles of tip-blinking")
+    public void the_pitman_arm_is_moved_in_an_upward_position_from_downward_during_the_flashing_cycles_of_tip_blinking() {
         car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
         car.getLeftIndicator().setCycle(true);
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
@@ -104,9 +100,9 @@ public class DirectionBlinking_StepDefinitions {
         Assert.assertEquals(car.getBlinkingState("Right"),Blinking.FLASHING);
     }
 
-    @When("the hazard warning switch is engaged during the {int} flashing cycles of tip-blinking")
-    public void the_hazard_warning_switch_is_engaged_during_the_flashing_cycles_of_tip_blinking(Integer int1) {
-        car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
+    @When("the hazard warning switch is engaged during the 3 flashing cycles of tip-blinking")
+    public void the_hazard_warning_switch_is_engaged_during_the_flashing_cycles_of_tip_blinking() {
+        car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
         car.getRightIndicator().setCycle(true);
         car.setHazardSwitch(true);
     }
@@ -130,7 +126,7 @@ public class DirectionBlinking_StepDefinitions {
     @When("the pitman arm is held for more than 0.5 seconds in tip-blinking left")
     public void the_pitman_arm_is_held_for_more_than_seconds_in_tip_blinking_left() {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
-        car.setFlashCycleState(PitmanArmPosition.UPWARD5,600);
+        car.tipPitmanArm(PitmanArmPosition.UPWARD5,600);
     }
 
 
@@ -145,7 +141,7 @@ public class DirectionBlinking_StepDefinitions {
     @When("the pitman arm is held for more than 0.5 seconds in tip-blinking right")
     public void the_pitman_arm_is_held_for_more_than_seconds_in_tip_blinking_right() {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
-        car.setFlashCycleState(PitmanArmPosition.UPWARD5,600);
+        car.tipPitmanArm(PitmanArmPosition.UPWARD5,600);
     }
 
     @Then("flash-cycles are released for all direction indicators on the right until the pitman arm leaves tip-blinking right")
@@ -158,8 +154,8 @@ public class DirectionBlinking_StepDefinitions {
         car.setInUSAOrCanada(true);
     }
 
-    @Then("the daytime running light must be dimmed by {int}%")
-    public void the_daytime_running_light_must_be_dimmed_by(Integer int1) {
+    @Then("the daytime running light must be dimmed by 50%")
+    public void the_daytime_running_light_must_be_dimmed_by() {
         Assert.assertEquals(car.getDimmedLightStatus("Right"),50);
     }
 
