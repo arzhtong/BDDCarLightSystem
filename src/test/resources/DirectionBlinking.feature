@@ -2,9 +2,10 @@ Feature: Direction Blinking Indicator
 
   The pitman arm is used for controlling the direction blinking indicator. This feature is for defining positions available by the pitman arm for indicating through blinking.
 
-  Rule: Direction blinking is only available when ignition is on.
     Background:
       Given the Ignition is on
+
+     Rule: Direction blinking is only available when ignition is on.
 
     @requirement(ELS-1,ELS-5)
     Scenario: Engage Direction Blinking in an upward position
@@ -18,8 +19,6 @@ Feature: Direction Blinking Indicator
 
 
     Rule: Tip-Blinking is only available when ignition is on
-      Background:
-        Given the Ignition is on
 
     @requirement(ELS-2,ELS-5)
     Scenario: Engage Tip-Blinking in an upward position
@@ -32,8 +31,6 @@ Feature: Direction Blinking Indicator
       Then all left indicators should flash for 3 flashing cycles
 
     Rule: Engage Pitman arm in another direction or engaging hazard switch will stop tip-blinking flashing cycle
-      Background:
-        Given the Ignition is on
 
     @requirement(ELS-3,ELS-5)
     Scenario: Engage Pitman Arm in a downward position from upward during tip-blinking flash cycle
@@ -55,8 +52,6 @@ Feature: Direction Blinking Indicator
       And the same type of cycle for the right indicator will also be released
 
     Rule: If the pitman arm is held for more than 0.5 seconds in a tip-blinking position then direction indicators cycles are released until pitman arm leaves the position
-      Background:
-        Given the Ignition is on
 
     @requirement(ELS-4,ELS-5)
     Scenario: Engage pitman arm for more than 0.5 seconds (500 ms) in tip-blinking left
@@ -69,8 +64,6 @@ Feature: Direction Blinking Indicator
       Then flash-cycles are released for all direction indicators on the right until the pitman arm leaves tip-blinking right
 
     Rule: Cars sold in the USA or Canada will have daytime running light dimmed by 50% during direction blinking
-      Background:
-        Given the Ignition is on
 
     @requirement(ELS-6)
     Scenario: Engage direction blinking by car sold in the USA
@@ -81,6 +74,20 @@ Feature: Direction Blinking Indicator
     Scenario: Engage direction blinking by car sold in the UK
       When direction blinking is engaged on the blinking side by a car sold in the UK
       Then the daytime running light will not be dimmed for reasons related to where the car was sold
+
+    Rule: When pitman arm is engaged in the same direction, the 3 flashing cycles must first finish before new command is processed
+
+    @requirement(ELS-7)
+    Scenario: Engage the pitman arm in an upward direction blinking position during the 3 flashing cycles where the pitman arm was already put in an upward position
+
+      When the pitman arm is moved in an upward direction blinking position during the 3 flashing cycles where the pitman arm was in an upward position
+      Then the 3 flashing cycles must finish before the right indicators start the direction blinking
+
+    @requirement(ELS-7)
+    Scenario: Engage the pitman arm in a downward tip-blinking position during the 3 flashing cycles where the pitman arm was already put in a downward position
+      When the pitman arm is moved in a downward direction blinking position during the 3 flashing cycles where the pitman arm was in a downward position
+      Then the 3 flashing cycles must finish before the left indicators start the new cycle of tip-blinking
+
 
 
 
