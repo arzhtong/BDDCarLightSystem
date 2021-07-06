@@ -35,8 +35,6 @@ public class Car {
 
     public void setHazardSwitch(boolean hazardSwitchState){
         this.hazardSwitchState=hazardSwitchState;
-        leftIndicator.setCycle(false);
-        rightIndicator.setCycle(false);
         if (hazardSwitchState==true){
             leftIndicator.setState(Blinking.FLASHING);
             rightIndicator.setState(Blinking.FLASHING);
@@ -93,6 +91,9 @@ public class Car {
 
     public boolean getHazardSwitchState(){
         return hazardSwitchState;
+    }
+    public int getLengthOfHazardCycle(){
+        return 0;
     }
     public int getDimmedLightStatus(String direction){
         if (direction.equals("Right")){

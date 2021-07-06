@@ -4,7 +4,7 @@ The hazard warning light is interacted through a switch that lights up both dire
 This feature defines the different pulse ratios and states for indicators when engaged and disengaged.
 
   Background:
-    Given the hazard warning light is engaged
+    Given the hazard warning light switch is engaged
 
     @requirement(ELS-10)
     Scenario: Engage flashing cycle of direction blinking indicators
