@@ -76,7 +76,6 @@ public class CarController {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         }else{
             model.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
-
         }
 
     }

@@ -30,7 +30,9 @@ public class Car {
     }
     public void setLengthOfTimeHeld(int lengthOfTimeHeld){
         this.lengthOfTimeHeld=lengthOfTimeHeld;
+
     }
+
     public void setHazardSwitch(boolean hazardSwitchState){
         this.hazardSwitchState=hazardSwitchState;
         leftIndicator.setCycle(false);
@@ -56,6 +58,7 @@ public class Car {
             if (position==PitmanArmPosition.UPWARD7 || position==PitmanArmPosition.UPWARD5){
                 rightIndicator.setState(Blinking.FLASHING);
                 leftIndicator.setState(Blinking.NONFLASHING);
+
             }
             if (position==PitmanArmPosition.DOWNWARD7 || position==PitmanArmPosition.DOWNWARD5){
                 leftIndicator.setState(Blinking.FLASHING);
@@ -64,6 +67,7 @@ public class Car {
             if (position ==PitmanArmPosition.NEUTRAL){
                 leftIndicator.setState(Blinking.NONFLASHING);
                 rightIndicator.setState(Blinking.NONFLASHING);
+
             }
         }
     }
