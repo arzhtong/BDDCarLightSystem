@@ -67,6 +67,7 @@ public class CarController {
         if (model.getBlinkingState("Left") == Blinking.FLASHING) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         } else {
+            model.setNumberofFlashCycles(0);
             model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
         }
     }
@@ -75,6 +76,7 @@ public class CarController {
         if (model.getBlinkingState("Right") == Blinking.FLASHING) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         }else{
+            model.setNumberofFlashCycles(0);
             model.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
         }
 
@@ -85,6 +87,7 @@ public class CarController {
             model.stopTimer();
         }else{
             model.stopTimer();
+            model.setNumberofFlashCycles(0);
             model.tipPitmanArm(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
         }
     }
@@ -92,7 +95,9 @@ public class CarController {
         if (model.getBlinkingState("Right")==Blinking.FLASHING){
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
             model.stopTimer();
+            model.setNumberofFlashCycles(0);
         }else{
+            model.setNumberofFlashCycles(0);
             model.stopTimer();
             model.tipPitmanArm(PitmanArmPosition.UPWARD5,model.getLengthOfTimeHeld());
         }
@@ -100,6 +105,7 @@ public class CarController {
     public void hazardSwitchPressed(){
         if (model.getHazardSwitchState()==false){
             model.setHazardSwitch(true);
+            model.setNumberofFlashCycles(0);
         }else{
             model.setHazardSwitch(false);
         }

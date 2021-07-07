@@ -16,6 +16,7 @@ public class Car {
     private Timer timer;
     private boolean hazardSwitchState;
     private boolean inUSAOrCanada;
+    private int numberofFlashCycles;
     public Car(){
         ignitionState=IgnitionStatus.KEYINIGNITIONONPOSITION;
         leftIndicator=new Indicator();
@@ -23,6 +24,7 @@ public class Car {
         leftIndicator.setState(Blinking.NONFLASHING);
         rightIndicator.setState(Blinking.NONFLASHING);
         lengthOfTimeHeld=0;
+        numberofFlashCycles=0;
         hazardSwitchState=false;
     }
     public void isIgnitionOn(IgnitionStatus ignitionState){
@@ -38,8 +40,12 @@ public class Car {
         if (hazardSwitchState==true){
             leftIndicator.setState(Blinking.FLASHING);
             rightIndicator.setState(Blinking.FLASHING);
+            leftIndicator.setHazardCycleLength(1);
+            rightIndicator.setHazardCycleLength(1);
         }
     }
+
+
     public void setInUSAOrCanada(boolean inUSAOrCanada){
         this.inUSAOrCanada=inUSAOrCanada;
         if (inUSAOrCanada==true){
@@ -65,7 +71,8 @@ public class Car {
             if (position ==PitmanArmPosition.NEUTRAL){
                 leftIndicator.setState(Blinking.NONFLASHING);
                 rightIndicator.setState(Blinking.NONFLASHING);
-
+                leftIndicator.setCycle(false);
+                rightIndicator.setCycle(false);
             }
         }
     }
@@ -93,7 +100,7 @@ public class Car {
         return hazardSwitchState;
     }
     public int getLengthOfHazardCycle(){
-        return 0;
+        return leftIndicator.getHazardCycleLength();
     }
     public int getDimmedLightStatus(String direction){
         if (direction.equals("Right")){
@@ -153,6 +160,23 @@ public class Car {
     }
     public void stopTimer(){
         timer.cancel();
+    }
+    public int getNumberofFlashCycles(){
+        if (leftIndicator.getState()==Blinking.FLASHING){
+            return leftIndicator.getNumberofFlashCycles();
+        }
+        if (rightIndicator.getState()==Blinking.FLASHING){
+            return rightIndicator.getNumberofFlashCycles();
+        }
+        return 0;
+    }
+    public void setNumberofFlashCycles(int numberofFlashCycles){
+        if (leftIndicator.getState()==Blinking.FLASHING){
+            leftIndicator.setNumberofFlashCycles(numberofFlashCycles);
+        }
+        if (rightIndicator.getState()==Blinking.FLASHING){
+            rightIndicator.setNumberofFlashCycles(numberofFlashCycles);
+        }
     }
 }
 

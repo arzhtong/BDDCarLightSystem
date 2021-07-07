@@ -112,17 +112,19 @@ public class CarView extends JFrame{
         }
     }
     public void drawLeftTipBlinking(Graphics g){
+
         if (model.getBlinkingState("Left")==Blinking.FLASHING && model.getFlashingCycles("Left") == true  && model.getHazardSwitchState()==false) {
 
             leftTipBlinking.setSelected(false);
-
             if (leftIndicatorFlashed == false) {
                 g2d.setPaint(new Color(255, 255, 0));
                 g.fillPolygon(leftBackIndicator);
                 g.fillPolygon(leftSideIndicator);
                 g.fillPolygon(leftFrontIndicator);
                 leftIndicatorFlashed = true;
-                numberOfFlashCycles++;
+                int flashCycle=model.getNumberofFlashCycles()+1;
+                System.out.println(flashCycle);
+                model.setNumberofFlashCycles(flashCycle);
             } else {
                 g2d.setPaint(new Color(211, 211, 211));
                 g.fillPolygon(leftSideIndicator);
@@ -131,15 +133,18 @@ public class CarView extends JFrame{
                 leftIndicatorFlashed = false;
 
             }
-            if (numberOfFlashCycles==3) {
-                numberOfFlashCycles=0;
+            if (model.getNumberofFlashCycles()==3) {
+                System.out.println("testing12");
+                model.setNumberofFlashCycles(0);
                 model.setLengthOfTimeHeld(0);
                 model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
                 leftTipBlinking.setSelected(false);
+
             }
         }
     }
     public void drawRightBlinking(Graphics g){
+
         if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == false  && model.getHazardSwitchState()==false) {
             if (rightIndicatorFlashed == false) {
 
@@ -170,6 +175,7 @@ public class CarView extends JFrame{
         }
     }
     public void drawRightTipBlinking(Graphics g){
+
         if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == true  && model.getHazardSwitchState()==false) {
             rightTipBlinking.setSelected(false);
 
@@ -180,7 +186,8 @@ public class CarView extends JFrame{
                 g.fillPolygon(rightSideIndicator);
                 g.fillPolygon(rightBackIndicator);
                 rightIndicatorFlashed = true;
-                numberOfFlashCycles++;
+                int flashCycle=model.getNumberofFlashCycles()+1;
+                model.setNumberofFlashCycles(flashCycle);
             } else {
 
                 g2d.setPaint(new Color(211, 211, 211));
@@ -190,8 +197,8 @@ public class CarView extends JFrame{
                 rightIndicatorFlashed = false;
 
             }
-            if (numberOfFlashCycles==3) {
-                numberOfFlashCycles=0;
+            if (model.getNumberofFlashCycles()==3) {
+                model.setNumberofFlashCycles(0);
                 model.setLengthOfTimeHeld(0);
                 model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
                 rightTipBlinking.setSelected(false);
@@ -251,7 +258,7 @@ public class CarView extends JFrame{
 
 
             }
-        },0,1,TimeUnit.SECONDS);
+        },0,500,TimeUnit.MILLISECONDS);
 
     }
     public JPanel makeBottomInputs() {
