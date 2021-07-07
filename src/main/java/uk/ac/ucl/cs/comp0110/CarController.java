@@ -108,6 +108,7 @@ public class CarController {
             model.setNumberofFlashCycles(0);
         }else{
             model.setHazardSwitch(false);
+
         }
     }
 

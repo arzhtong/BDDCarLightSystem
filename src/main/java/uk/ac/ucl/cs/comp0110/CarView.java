@@ -123,7 +123,6 @@ public class CarView extends JFrame{
                 g.fillPolygon(leftFrontIndicator);
                 leftIndicatorFlashed = true;
                 int flashCycle=model.getNumberofFlashCycles()+1;
-                System.out.println(flashCycle);
                 model.setNumberofFlashCycles(flashCycle);
             } else {
                 g2d.setPaint(new Color(211, 211, 211));
@@ -134,7 +133,6 @@ public class CarView extends JFrame{
 
             }
             if (model.getNumberofFlashCycles()==3) {
-                System.out.println("testing12");
                 model.setNumberofFlashCycles(0);
                 model.setLengthOfTimeHeld(0);
                 model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);

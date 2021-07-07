@@ -43,6 +43,16 @@ public class Car {
             leftIndicator.setHazardCycleLength(1);
             rightIndicator.setHazardCycleLength(1);
         }
+        if (hazardSwitchState==false){
+            leftIndicator.setState(Blinking.NONFLASHING);
+            rightIndicator.setState(Blinking.NONFLASHING);
+            if (pitmanArmState==PitmanArmPosition.DOWNWARD7){
+                leftIndicator.setState(Blinking.FLASHING);
+            }
+            if (pitmanArmState==PitmanArmPosition.UPWARD7){
+                rightIndicator.setState(Blinking.FLASHING);
+            }
+        }
     }
 
 
