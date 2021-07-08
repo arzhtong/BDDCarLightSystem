@@ -82,7 +82,7 @@ public class CarView extends JFrame{
         changeSelectedButton();
 
         if (model.getBlinkingState("Left")==Blinking.FLASHING && model.getFlashingCycles("Left") == false && model.getHazardSwitchState()==false) {
-
+            
             if (model.getFlashState()==Flashing.DARK) {
                 g2d.setPaint(new Color(255, 255, 0));
                 if (model.getDimmedLightStatus("Left")==50){

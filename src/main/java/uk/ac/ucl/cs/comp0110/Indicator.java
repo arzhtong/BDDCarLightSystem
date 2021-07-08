@@ -11,6 +11,15 @@ public class Indicator {
     private int dimmedLight;
     private int hazardCycleLength;
     private int numberofFlashCycles;
+    private Flashing flashState;
+
+    public Flashing getFlashState(){
+        return flashState;
+    }
+    public void setFlashState(Flashing flashState){
+        this.flashState=flashState;
+    }
+
 
     public Indicator(){
         blinkingState=Blinking.NONFLASHING;

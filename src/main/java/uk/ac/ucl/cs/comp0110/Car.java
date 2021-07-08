@@ -104,7 +104,32 @@ public class Car {
             }
         }
     }
+    public Flashing getFlashState(){
+        if (rightIndicator.getState()==Blinking.FLASHING){
+            return rightIndicator.getFlashState();
+        }
+        if (leftIndicator.getState()==Blinking.FLASHING){
+            return leftIndicator.getFlashState();
+        }
+        return null;
 
+    }
+    public void changeFlashState() {
+        if (rightIndicator.getState() == Blinking.FLASHING) {
+            if (rightIndicator.getFlashState() == Flashing.BRIGHT) {
+                rightIndicator.setFlashState(Flashing.DARK);
+            } else {
+                rightIndicator.setFlashState(Flashing.BRIGHT);
+            }
+        }
+        if (leftIndicator.getState() == Blinking.FLASHING) {
+            if (leftIndicator.getFlashState() == Flashing.BRIGHT) {
+                leftIndicator.setFlashState(Flashing.DARK);
+            } else {
+                leftIndicator.setFlashState(Flashing.BRIGHT);
+            }
+        }
+    }
     public boolean getHazardSwitchState(){
         return hazardSwitchState;
     }
