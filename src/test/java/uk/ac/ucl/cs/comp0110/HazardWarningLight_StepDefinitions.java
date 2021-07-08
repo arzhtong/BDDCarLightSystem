@@ -85,9 +85,20 @@ public class HazardWarningLight_StepDefinitions {
     public void the_tip_blinking_cycle_will_start_when_the_current_cycle_of_direction_blinking_is_finished() {
         Assert.assertEquals(car.getRightIndicator().getFlashState(),Flashing.BRIGHT);
     }
+    @Given("there is a tip-blinking cycle occuring on the right direction indicator")
+    public void there_is_a_tip_blinking_cycle_occuring_on_the_right_direction_indicator() {
+       car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
+       car.tipPitmanArm(PitmanArmPosition.UPWARD5,400);
+    }
 
+    @When("the hazard warning light switch is pressed")
+    public void the_hazard_warning_light_switch_is_pressed() {
+       car.setHazardSwitch(true);
+    }
 
-
-
+    @Then("the right indicator ongoing tip-blinking will stop")
+    public void the_right_indicator_ongoing_tip_blinking_will_stop() {
+        Assert.assertEquals(car.getFlashingCycles("Right"),false);
+    }
 
 }

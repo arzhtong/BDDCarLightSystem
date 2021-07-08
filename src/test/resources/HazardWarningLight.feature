@@ -13,7 +13,7 @@ This feature defines the different pulse ratios and states for indicators when e
       When the flashing cycle of indicators are released
       Then the duration of the cycle should be 1 second
 
-      Rule: There is no change in the state of the behaviour of the indicator until the current flashing cycle is complete
+  Rule: There is no change in the state of the behaviour of the indicator until the current flashing cycle is complete
 
     @requirement(ELS-11)
     Scenario: Engage flashing cycle of tip-blinking indicators during direction blinking
@@ -44,9 +44,10 @@ This feature defines the different pulse ratios and states for indicators when e
   Rule: When the warning light is activated any tip-blinking that is ongoing will be stopped or ignored
 
    @requirement(ELS-13)
-   Scenario: Engage hazard warning light during tip-blinking of right indicator
-     When the hazard warning light switch is engaged
-     Then the right indicator tip-blinking will stop
+   Scenario: Engage hazard warning light during tip-blinking of right indicators
+     Given there is a tip-blinking cycle occuring on the right direction indicator
+     When the hazard warning light switch is pressed
+     Then the right indicator ongoing tip-blinking will stop
 
 
 
