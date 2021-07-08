@@ -64,6 +64,7 @@ public class CarController {
 
 
     public void leftDirectionPressed() {
+
         if (model.getBlinkingState("Left") == Blinking.FLASHING) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         } else {
@@ -75,6 +76,7 @@ public class CarController {
 
         if (model.getBlinkingState("Right") == Blinking.FLASHING) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
+
         }else{
             model.setNumberofFlashCycles(0);
             model.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
@@ -82,6 +84,7 @@ public class CarController {
 
     }
     public void leftTipBlinkingPressed(){
+
         if (model.getBlinkingState("Left")==Blinking.FLASHING){
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
             model.stopTimer();
@@ -92,6 +95,7 @@ public class CarController {
         }
     }
     public void rightTipBlinkingPressed(){
+
         if (model.getBlinkingState("Right")==Blinking.FLASHING){
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
             model.stopTimer();

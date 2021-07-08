@@ -18,14 +18,7 @@ This feature defines the different pulse ratios and states for indicators when e
     @requirement(ELS-11)
     Scenario: Engage flashing cycle of tip-blinking indicators during direction blinking
     When the flashing cycle of tip-blinking is occuring
-    Then the direction blinking cycle will start when the current cycle of tip-blinking is finished
-
-    @requirement(ELS-11)
-    Scenario: Engage flashing cycle of direction indicators during tip-blinking
-      When the flashing cycle of direction blinking is occuring
-      Then the tip blinking cycle will start when the current cycle of direction blinking is finished
-
-  Rule: When the hazard warning cycle is disengaged, the indicator that corresponds to the pitarm direction should start
+    Then the direction blinking will start when the current cycle of tip-blinking is finished
 
     Rule: When the hazard warning cycle is disengaged, the indicator that corresponds to the pitarm direction should start
 

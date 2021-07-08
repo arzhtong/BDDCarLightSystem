@@ -77,11 +77,13 @@ public class CarView extends JFrame{
             }
         }
     }
+
     public void drawLeftBlinking(Graphics g){
+        changeSelectedButton();
 
         if (model.getBlinkingState("Left")==Blinking.FLASHING && model.getFlashingCycles("Left") == false && model.getHazardSwitchState()==false) {
 
-            if (leftIndicatorFlashed == false) {
+            if (model.getFlashState()==Flashing.DARK) {
                 g2d.setPaint(new Color(255, 255, 0));
                 if (model.getDimmedLightStatus("Left")==50){
                     g2d.setPaint(new Color(127,127,0));
@@ -89,7 +91,7 @@ public class CarView extends JFrame{
                 g.fillPolygon(leftFrontIndicator);
                 g.fillPolygon(leftSideIndicator);
                 g.fillPolygon(leftBackIndicator);
-                leftIndicatorFlashed = true;
+                model.changeFlashState();
 
 
 
@@ -98,7 +100,7 @@ public class CarView extends JFrame{
                 g.fillPolygon(leftFrontIndicator);
                 g.fillPolygon(leftSideIndicator);
                 g.fillPolygon(leftBackIndicator);
-                leftIndicatorFlashed = false;
+                model.changeFlashState();
 
 
             }
@@ -108,20 +110,20 @@ public class CarView extends JFrame{
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(leftSideIndicator);
             g.fillPolygon(leftBackIndicator);
-            leftIndicatorFlashed = false;
+
         }
     }
     public void drawLeftTipBlinking(Graphics g){
-
+        changeSelectedButton();
         if (model.getBlinkingState("Left")==Blinking.FLASHING && model.getFlashingCycles("Left") == true  && model.getHazardSwitchState()==false) {
 
             leftTipBlinking.setSelected(false);
-            if (leftIndicatorFlashed == false) {
+            if (model.getFlashState()==Flashing.DARK) {
                 g2d.setPaint(new Color(255, 255, 0));
                 g.fillPolygon(leftBackIndicator);
                 g.fillPolygon(leftSideIndicator);
                 g.fillPolygon(leftFrontIndicator);
-                leftIndicatorFlashed = true;
+                model.changeFlashState();
                 int flashCycle=model.getNumberofFlashCycles()+1;
                 model.setNumberofFlashCycles(flashCycle);
             } else {
@@ -129,7 +131,7 @@ public class CarView extends JFrame{
                 g.fillPolygon(leftSideIndicator);
                 g.fillPolygon(leftBackIndicator);
                 g.fillPolygon(leftFrontIndicator);
-                leftIndicatorFlashed = false;
+                model.changeFlashState();
 
             }
             if (model.getNumberofFlashCycles()==3) {
@@ -141,10 +143,20 @@ public class CarView extends JFrame{
             }
         }
     }
+    public void changeSelectedButton(){
+        if (model.getBlinkingState("Left")==Blinking.FLASHING){
+            rightTipBlinking.setSelected(false);
+            rightDirection.setSelected(false);
+        }
+        if (model.getBlinkingState("Right")==Blinking.FLASHING){
+            leftTipBlinking.setSelected(false);
+            leftDirection.setSelected(false);
+        }
+    }
     public void drawRightBlinking(Graphics g){
-
+        changeSelectedButton();
         if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == false  && model.getHazardSwitchState()==false) {
-            if (rightIndicatorFlashed == false) {
+            if (model.getFlashState()==Flashing.DARK) {
 
                 g2d.setPaint(new Color(255, 255, 0));
                 if (model.getDimmedLightStatus("Right")==50){
@@ -153,14 +165,14 @@ public class CarView extends JFrame{
                 g.fillPolygon(rightFrontIndicator);
                 g.fillPolygon(rightSideIndicator);
                 g.fillPolygon(rightBackIndicator);
-                rightIndicatorFlashed = true;
+                model.changeFlashState();
             } else {
 
                 g2d.setPaint(new Color(211, 211, 211));
                 g.fillPolygon(rightFrontIndicator);
                 g.fillPolygon(rightSideIndicator);
                 g.fillPolygon(rightBackIndicator);
-                rightIndicatorFlashed = false;
+                model.changeFlashState();
             }
 
         } else if (model.getBlinkingState("Right") == Blinking.NONFLASHING) {
@@ -169,21 +181,21 @@ public class CarView extends JFrame{
             g.fillPolygon(rightFrontIndicator);
             g.fillPolygon(rightSideIndicator);
             g.fillPolygon(rightBackIndicator);
-            rightIndicatorFlashed = false;
+
         }
     }
     public void drawRightTipBlinking(Graphics g){
-
+        changeSelectedButton();
         if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == true  && model.getHazardSwitchState()==false) {
             rightTipBlinking.setSelected(false);
 
-            if (rightIndicatorFlashed == false) {
+            if (model.getFlashState()==Flashing.DARK) {
 
                 g2d.setPaint(new Color(255, 255, 0));
                 g.fillPolygon(rightFrontIndicator);
                 g.fillPolygon(rightSideIndicator);
                 g.fillPolygon(rightBackIndicator);
-                rightIndicatorFlashed = true;
+                model.changeFlashState();
                 int flashCycle=model.getNumberofFlashCycles()+1;
                 model.setNumberofFlashCycles(flashCycle);
             } else {
@@ -192,7 +204,7 @@ public class CarView extends JFrame{
                 g.fillPolygon(rightFrontIndicator);
                 g.fillPolygon(rightSideIndicator);
                 g.fillPolygon(rightBackIndicator);
-                rightIndicatorFlashed = false;
+                model.changeFlashState();
 
             }
             if (model.getNumberofFlashCycles()==3) {
@@ -205,7 +217,6 @@ public class CarView extends JFrame{
     }
 
     public void paint(final Graphics g) {
-
         super.paint(g);
         g2d = (Graphics2D) g;
         leftFrontIndicator = new Polygon(new int[]{getWidth() / 3 + 70, getWidth() / 3 + 25, getWidth() / 3 + 20}, new int[]{getHeight() / 3 + 20, getHeight() / 3 + 45, getHeight() / 3 + 90}, 3);

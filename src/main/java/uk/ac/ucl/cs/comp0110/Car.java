@@ -105,7 +105,6 @@ public class Car {
         }
     }
 
-
     public boolean getHazardSwitchState(){
         return hazardSwitchState;
     }
@@ -120,10 +119,6 @@ public class Car {
             return leftIndicator.getDimmedLight();
         }
         return 0;
-    }
-
-    public boolean getInUSAOrCanada(){
-        return inUSAOrCanada;
     }
 
     public int getLengthOfTimeHeld(){
