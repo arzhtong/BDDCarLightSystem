@@ -1,13 +1,16 @@
 package uk.ac.ucl.cs.comp0110;
 
-/**
- * Hello world!
- *
- */
+
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+
+        Car model=new Car();
+        CarView view=new CarView(model);
+        CarController controller=new CarController(view,model);
+        controller.addButtonFunctions();
+
+
     }
 }
