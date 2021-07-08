@@ -41,6 +41,14 @@ This feature defines the different pulse ratios and states for indicators when e
       And pitarm is in direction blinking right
       Then the direction blinking cycle for the right indicator should start
 
+  Rule: When the warning light is activated any tip-blinking that is ongoing will be stopped or ignored
+
+   @requirement(ELS-13)
+   Scenario: Engage hazard warning light during tip-blinking of right indicator
+     When the hazard warning light switch is engaged
+     Then the right indicator tip-blinking will stop
+
+
 
 
 
