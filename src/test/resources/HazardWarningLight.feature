@@ -17,17 +17,17 @@ This feature defines the different pulse ratios and states for indicators when e
 
     @requirement(ELS-11)
     Scenario: Engage flashing cycle of tip-blinking indicators during direction blinking
-    When the flashing cycle of tip-blinking is occuring
+    When the flashing cycle of tip-blinking is occuring with the cycle being bright
+    And the pitman arm is moved in the direction blinking position
     Then the direction blinking cycle will start when the current cycle of tip-blinking is finished
 
     @requirement(ELS-11)
     Scenario: Engage flashing cycle of direction indicators during tip-blinking
-      When the flashing cycle of direction blinking is occuring
+      When the flashing cycle of direction blinking is occuring with the cycle being bright
+      And the pitman arm is moved in the tip-blinking position
       Then the tip blinking cycle will start when the current cycle of direction blinking is finished
 
   Rule: When the hazard warning cycle is disengaged, the indicator that corresponds to the pitarm direction should start
-
-    Rule: When the hazard warning cycle is disengaged, the indicator that corresponds to the pitarm direction should start
 
     @requirement(ELS-12)
     Scenario: Disengage hazard warning light with pitarm in direction blinking position

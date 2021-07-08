@@ -103,7 +103,7 @@ public class DirectionBlinking_StepDefinitions {
     @When("the hazard warning switch is engaged during the 3 flashing cycles of tip-blinking")
     public void the_hazard_warning_switch_is_engaged_during_the_flashing_cycles_of_tip_blinking() {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
-        car.setLengthOfTimeHeld(400);
+        car.getRightIndicator().setCycle(true);
         car.setHazardSwitch(true);
     }
 

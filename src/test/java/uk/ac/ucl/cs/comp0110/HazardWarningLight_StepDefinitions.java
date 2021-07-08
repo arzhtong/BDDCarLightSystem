@@ -53,6 +53,39 @@ public class HazardWarningLight_StepDefinitions {
         Assert.assertEquals(car.getBlinkingState("Right"),Blinking.FLASHING);
     }
 
+    @When("the flashing cycle of tip-blinking is occuring with the cycle being bright")
+    public void the_flashing_cycle_of_tip_blinking_is_occuring() {
+        car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
+        car.tipPitmanArm(PitmanArmPosition.UPWARD5,400);
+        car.getRightIndicator().setFlashState(Flashing.BRIGHT);
+    }
+
+    @When("the pitman arm is moved in the direction blinking position")
+    public void the_pitman_arm_is_moved_in_the_direction_blinking_position() {
+        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
+    }
+
+    @Then("the direction blinking cycle will start when the current cycle of tip-blinking is finished")
+    public void the_direction_blinking_cycle_will_start_when_the_current_cycle_of_tip_blinking_is_finished() {
+        Assert.assertEquals(car.getFlashingCycles("Right"),true);
+    }
+
+    @When("the flashing cycle of direction blinking is occuring with the cycle being bright")
+    public void the_flashing_cycle_of_direction_blinking_is_occuring() {
+        car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
+        car.getRightIndicator().setFlashState(Flashing.BRIGHT);
+    }
+
+    @When("the pitman arm is moved in the tip-blinking position")
+    public void the_pitman_arm_is_moved_in_the_tip_blinking_position() {
+        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
+    }
+
+    @Then("the tip blinking cycle will start when the current cycle of direction blinking is finished")
+    public void the_tip_blinking_cycle_will_start_when_the_current_cycle_of_direction_blinking_is_finished() {
+        Assert.assertEquals(car.getFlashingCycles("Right"),true);
+    }
+
 
 
 

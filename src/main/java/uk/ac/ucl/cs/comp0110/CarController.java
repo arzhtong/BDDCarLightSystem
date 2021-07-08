@@ -109,7 +109,6 @@ public class CarController {
     public void hazardSwitchPressed(){
         if (model.getHazardSwitchState()==false){
             model.setHazardSwitch(true);
-            model.setNumberofFlashCycles(0);
         }else{
             model.setHazardSwitch(false);
 
