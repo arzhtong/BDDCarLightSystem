@@ -73,11 +73,13 @@ public class Car {
         pitmanArmState=position;
         if (ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION){
             if (position==PitmanArmPosition.UPWARD7 || position==PitmanArmPosition.UPWARD5){
+
                 rightIndicator.setState(Blinking.FLASHING);
                 leftIndicator.setState(Blinking.NONFLASHING);
 
             }
             if (position==PitmanArmPosition.DOWNWARD7 || position==PitmanArmPosition.DOWNWARD5){
+
                 leftIndicator.setState(Blinking.FLASHING);
                 rightIndicator.setState(Blinking.NONFLASHING);
             }
@@ -86,6 +88,7 @@ public class Car {
                 rightIndicator.setState(Blinking.NONFLASHING);
                 leftIndicator.setCycle(false);
                 rightIndicator.setCycle(false);
+                darkenIndicators();
             }
         }
     }
@@ -105,6 +108,14 @@ public class Car {
             }else{
                 leftIndicator.setCycle(false);
             }
+        }
+    }
+    public void darkenIndicators(){
+        if (leftIndicator.getState()==Blinking.FLASHING) {
+            rightIndicator.setFlashState(Flashing.DARK);
+        }
+        if (rightIndicator.getState()==Blinking.FLASHING) {
+            leftIndicator.setFlashState(Flashing.DARK);
         }
     }
     public Flashing getFlashState(){
