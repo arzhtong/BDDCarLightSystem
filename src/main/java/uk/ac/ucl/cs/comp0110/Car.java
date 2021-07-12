@@ -38,12 +38,12 @@ public class Car {
     public void setHazardSwitch(boolean hazardSwitchState){
         this.hazardSwitchState=hazardSwitchState;
         if (hazardSwitchState==true){
-            leftIndicator.setCycle(false);
-            rightIndicator.setCycle(false);
-            leftIndicator.setState(Blinking.FLASHING);
-            rightIndicator.setState(Blinking.FLASHING);
-            leftIndicator.setHazardCycleLength(1);
-            rightIndicator.setHazardCycleLength(1);
+                leftIndicator.setCycle(false);
+                rightIndicator.setCycle(false);
+                leftIndicator.setState(Blinking.FLASHING);
+                rightIndicator.setState(Blinking.FLASHING);
+                leftIndicator.setHazardCycleLength(1);
+                rightIndicator.setHazardCycleLength(1);
 
         }
         if (hazardSwitchState==false){
