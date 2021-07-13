@@ -8,7 +8,7 @@ enum IgnitionStatus{
     NOKEYINSERTED,KEYINSERTED,KEYINIGNITIONONPOSITION
 }
 enum LightRotarySwitchState{
-    ON,OFF
+    ON,OFF,AUTO
 }
 public class Car {
     private IgnitionStatus ignitionState;

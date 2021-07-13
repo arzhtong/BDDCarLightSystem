@@ -46,5 +46,20 @@ public class LowBeamHeadLights_StepDefinitions {
     public void the_low_beam_headlight_is_activated_with_brightness() {
         Assert.assertEquals(car.getRightIndicator().getDimmedLight(),50);
     }
+    @When("the driver turns the light rotary switch to auto")
+    public void the_driver_turns_the_light_rotary_switch_to_auto() {
+        car.setLightRotarySwitch(LightRotarySwitchState.AUTO);
+    }
+
+    @Given("light rotary switch is auto")
+    public void light_rotary_switch_is_auto() {
+        car.setLightRotarySwitch(LightRotarySwitchState.AUTO);
+    }
+
+    @When("the driver turns the ignition on")
+    public void the_driver_turns_the_ignition_on() {
+        car.isIgnitionOn(IgnitionStatus.KEYINIGNITIONONPOSITION);
+    }
+
 
 }
