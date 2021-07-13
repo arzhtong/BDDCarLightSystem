@@ -24,6 +24,7 @@ public class Car {
     public Car(){
         ignitionState=IgnitionStatus.NOKEYINSERTED;
         lightRotarySwitchState=LightRotarySwitchState.OFF;
+
         leftIndicator=new Indicator();
         rightIndicator=new Indicator();
         leftIndicator.setState(Blinking.NONFLASHING);
@@ -122,6 +123,9 @@ public class Car {
     public void setLightRotarySwitch(LightRotarySwitchState lightRotarySwitchState) {
         if (ignitionState == IgnitionStatus.KEYINIGNITIONONPOSITION) {
             this.lightRotarySwitchState = lightRotarySwitchState;
+            leftIndicator.setDimmedLight(0);
+            rightIndicator.setDimmedLight(0);
+
             if (lightRotarySwitchState == LightRotarySwitchState.ON) {
                 leftIndicator.setLowBeamState(LowBeamState.ACTIVE);
                 rightIndicator.setLowBeamState(LowBeamState.ACTIVE);
@@ -129,9 +133,19 @@ public class Car {
             if (lightRotarySwitchState == LightRotarySwitchState.OFF) {
                 leftIndicator.setLowBeamState(LowBeamState.INACTIVE);
                 rightIndicator.setLowBeamState(LowBeamState.INACTIVE);
+
             }
         }
-   
+        if (ignitionState == IgnitionStatus.NOKEYINSERTED) {
+            if (this.lightRotarySwitchState == LightRotarySwitchState.OFF) {
+                this.lightRotarySwitchState = lightRotarySwitchState;
+                if (lightRotarySwitchState == LightRotarySwitchState.ON) {
+                    leftIndicator.setDimmedLight(50);
+                    rightIndicator.setDimmedLight(50);
+                }
+            }
+        }
+        this.lightRotarySwitchState=lightRotarySwitchState;
     }
     public void tipPitmanArm(PitmanArmPosition position,double time) {
         if (position == PitmanArmPosition.UPWARD5) {
@@ -170,6 +184,9 @@ public class Car {
             return LowBeamState.INACTIVE;
         }
         return LowBeamState.ACTIVE;
+    }
+    public LightRotarySwitchState getLightRotarySwitchState(){
+        return lightRotarySwitchState;
     }
     public Flashing getFlashState(){
         if (rightIndicator.getState()==Blinking.FLASHING){

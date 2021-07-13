@@ -161,10 +161,10 @@ public class CarController {
         model.checkPitmanArmState();
     }
     public void lightRotarySwitchPressed(){
-        if (view.getLightRotarySwitch().getSelectedItem()=="On"){
+        if (view.getLightRotarySwitch().getSelectedItem().equals("On")){
             model.setLightRotarySwitch(LightRotarySwitchState.ON);
         }
-        if (view.getLightRotarySwitch().getSelectedItem()=="Off"){
+        if (view.getLightRotarySwitch().getSelectedItem().equals("Off")){
             model.setLightRotarySwitch(LightRotarySwitchState.OFF);
         }
     }
