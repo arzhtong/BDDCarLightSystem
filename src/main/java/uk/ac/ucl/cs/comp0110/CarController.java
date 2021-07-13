@@ -163,11 +163,9 @@ public class CarController {
     public void lightRotarySwitchPressed(){
         if (view.getLightRotarySwitch().getSelectedItem()=="On"){
             model.setLightRotarySwitch(LightRotarySwitchState.ON);
-            System.out.println(model.getLowBeamState());
         }
         if (view.getLightRotarySwitch().getSelectedItem()=="Off"){
             model.setLightRotarySwitch(LightRotarySwitchState.OFF);
-            System.out.println(model.getLowBeamState());
         }
     }
 }
