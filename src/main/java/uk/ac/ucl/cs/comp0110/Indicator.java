@@ -61,7 +61,7 @@ public class Indicator {
     public void setLowBeamState(LowBeamState lowBeamState){
         this.lowBeamState=lowBeamState;
     }
-    public LowBeamState lowBeamState(){
+    public LowBeamState getLowBeamState(){
         return lowBeamState;
     }
 }

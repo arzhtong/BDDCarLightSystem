@@ -144,6 +144,15 @@ public class Car {
                     rightIndicator.setDimmedLight(50);
                 }
             }
+            this.lightRotarySwitchState=lightRotarySwitchState;
+            if (lightRotarySwitchState==LightRotarySwitchState.AUTO){
+                leftIndicator.setLowBeamState(LowBeamState.INACTIVE);
+                rightIndicator.setLowBeamState(LowBeamState.INACTIVE);
+            }
+            if (lightRotarySwitchState==LightRotarySwitchState.OFF){
+                leftIndicator.setLowBeamState(LowBeamState.INACTIVE);
+                rightIndicator.setLowBeamState(LowBeamState.INACTIVE);
+            }
         }
         this.lightRotarySwitchState=lightRotarySwitchState;
     }
@@ -177,13 +186,7 @@ public class Car {
         return ignitionState;
     }
     public LowBeamState getLowBeamState(){
-        if (lightRotarySwitchState==LightRotarySwitchState.ON){
-            return LowBeamState.ACTIVE;
-        }
-        if (lightRotarySwitchState==LightRotarySwitchState.OFF){
-            return LowBeamState.INACTIVE;
-        }
-        return LowBeamState.ACTIVE;
+        return leftIndicator.getLowBeamState();
     }
     public LightRotarySwitchState getLightRotarySwitchState(){
         return lightRotarySwitchState;

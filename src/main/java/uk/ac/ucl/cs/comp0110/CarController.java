@@ -167,5 +167,8 @@ public class CarController {
         if (view.getLightRotarySwitch().getSelectedItem().equals("Off")){
             model.setLightRotarySwitch(LightRotarySwitchState.OFF);
         }
+        if (view.getLightRotarySwitch().getSelectedItem().equals("Auto")){
+            model.setLightRotarySwitch(LightRotarySwitchState.AUTO);
+        }
     }
 }

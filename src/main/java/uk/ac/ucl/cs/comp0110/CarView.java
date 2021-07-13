@@ -48,7 +48,7 @@ public class CarView extends JFrame{
         keyInserted=new JRadioButton("Key Inserted");
         noKeyInserted=new JRadioButton("No Key Inserted");
         keyInPosition=new JRadioButton("Key In Position");
-        lightRotarySwitch= new JComboBox(new String[]{"Off", "On"});
+        lightRotarySwitch= new JComboBox(new String[]{"Off", "On","Auto"});
         numberOfFlashCycles=0;
         service= Executors.newSingleThreadScheduledExecutor();
         makeFrame();
