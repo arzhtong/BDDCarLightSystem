@@ -28,6 +28,9 @@ public class CarView extends JFrame{
     public JRadioButton rightTipBlinking;
     public JRadioButton hazardSwitch;
     public JRadioButton soldInUKOrCanada;
+    public JRadioButton keyInPosition;
+    public JRadioButton keyInserted;
+    public JRadioButton noKeyInserted;
     private int numberOfFlashCycles;
     public long numseconds=0;
     public CarView(Car model) {
@@ -41,6 +44,9 @@ public class CarView extends JFrame{
         rightTipBlinking=new JRadioButton("Upward Tip-Blinking");
         hazardSwitch=new JRadioButton("Hazard Warning Button");
         soldInUKOrCanada=new JRadioButton("Country sold in UK or Canada");
+        keyInserted=new JRadioButton("Key Inserted");
+        noKeyInserted=new JRadioButton("No Key Inserted");
+        keyInPosition=new JRadioButton("Key In Position");
         numberOfFlashCycles=0;
         service= Executors.newSingleThreadScheduledExecutor();
         makeFrame();
@@ -77,6 +83,7 @@ public class CarView extends JFrame{
             }
         }
     }
+
 
     public void drawLeftBlinking(Graphics g){
         changeSelectedButton();
@@ -144,13 +151,27 @@ public class CarView extends JFrame{
         }
     }
     public void changeSelectedButton(){
-        if (model.getBlinkingState("Left")==Blinking.FLASHING){
+        if (model.getBlinkingState("Left")==Blinking.FLASHING && model.getHazardSwitchState()==false){
             rightTipBlinking.setSelected(false);
             rightDirection.setSelected(false);
+            if (model.getFlashingCycles("Left")==false){
+                leftDirection.setSelected(true);
+                leftTipBlinking.setSelected(false);
+            }else{
+                leftTipBlinking.setSelected(true);
+                leftDirection.setSelected(false);
+            }
         }
-        if (model.getBlinkingState("Right")==Blinking.FLASHING){
+        if (model.getBlinkingState("Right")==Blinking.FLASHING && model.getHazardSwitchState()==false){
             leftTipBlinking.setSelected(false);
             leftDirection.setSelected(false);
+            if (model.getFlashingCycles("Right")==false){
+                rightDirection.setSelected(true);
+                rightTipBlinking.setSelected(false);
+            }else{
+                rightDirection.setSelected(false);
+                rightTipBlinking.setSelected(true);
+            }
         }
     }
     public void drawRightBlinking(Graphics g){
@@ -238,7 +259,7 @@ public class CarView extends JFrame{
         g.drawPolygon(rightSideIndicator);
         g.drawPolygon(leftBackIndicator);
         g.drawPolygon(rightBackIndicator);
-
+        checkIgnition();
         drawLeftBlinking(g);
         drawRightBlinking(g);
         drawLeftTipBlinking(g);
@@ -286,10 +307,40 @@ public class CarView extends JFrame{
         blinkingDirection.add(rightDirection);
         blinkingDirection.add(hazardSwitch);
         blinkingDirection.add(soldInUKOrCanada);
+        blinkingDirection.add(noKeyInserted);
+        blinkingDirection.add(keyInPosition);
+        blinkingDirection.add(keyInserted);
         typeOfBlinking.add(blinkingType);
         bottomPanel.add(typeOfBlinking);
         bottomPanel.add(blinkingDirection);
         return bottomPanel;
+    }
+    public void checkIgnition(){
+        if (model.getIgnitionState()==IgnitionStatus.KEYINIGNITIONONPOSITION){
+            noKeyInserted.setSelected(false);
+            keyInserted.setSelected(false);
+        }else if (model.getIgnitionState()==IgnitionStatus.KEYINSERTED){
+            noKeyInserted.setSelected(false);
+            keyInPosition.setSelected(false);
+        }else{
+            keyInPosition.setSelected(false);
+            keyInserted.setSelected(false);
+        }
+        if (model.getIgnitionState()!=IgnitionStatus.KEYINIGNITIONONPOSITION){
+            leftDirection.setEnabled(false);
+            rightDirection.setEnabled(false);
+            leftTipBlinking.setEnabled(false);
+            rightTipBlinking.setEnabled(false);
+            hazardSwitch.setEnabled(false);
+            soldInUKOrCanada.setEnabled(false);
+        }else{
+            leftDirection.setEnabled(true);
+            rightDirection.setEnabled(true);
+            leftTipBlinking.setEnabled(true);
+            rightTipBlinking.setEnabled(true);
+            hazardSwitch.setEnabled(true);
+            soldInUKOrCanada.setEnabled(true);
+        }
     }
     public JRadioButton getLeftDirection(){
         return leftDirection;
@@ -309,5 +360,13 @@ public class CarView extends JFrame{
     public JRadioButton getSoldInUKOrCanada(){
         return soldInUKOrCanada;
     }
-
+    public JRadioButton getKeyInPosition(){
+        return keyInPosition;
+    }
+    public JRadioButton getKeyInserted(){
+        return keyInserted;
+    }
+    public JRadioButton getNoKeyInserted(){
+        return noKeyInserted;
+    }
 }
