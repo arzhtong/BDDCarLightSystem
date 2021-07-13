@@ -17,6 +17,8 @@ Feature: Low Beam Headlights
       When the driver turns the light rotary switch to the off position
       Then the low beam headlight will be deactivated
 
+    Rule: Low beam headlights have 50% brightness when ignition is off
+
     @requirement(ELS-15)
     Scenario: Driver turns light rotary switch on when ignition is off
       Given the ignition is off
@@ -28,3 +30,18 @@ Feature: Low Beam Headlights
       Given the ignition is off
       When the driver turns the light rotary switch to the off position
       Then the low beam headlight will be deactivated
+
+    Rule: Low Beam Headlights are off with ignition off and light rotary switch in auto
+
+    @requirement(ELS-16)
+    Scenario: Driver turns light rotary switch to auto with ignition off
+      Given the ignition is off
+      When the driver turns the light rotary switch to auto
+      Then the low beam headlight will be deactivated
+
+    Scenario: Driver turns light rotary switch from auto to on with ignition on
+      Given the ignition is off
+      And light rotary switch is auto
+      When the driver turns the ignition on
+      And the driver turns the light rotary switch on
+      Then the low beam headlight will be activated
