@@ -119,8 +119,18 @@ public class Car {
             }
         }
     }
-    public void setLightRotarySwitch(LightRotarySwitchState lightRotarySwitchState){
-        this.lightRotarySwitchState=lightRotarySwitchState;
+    public void setLightRotarySwitch(LightRotarySwitchState lightRotarySwitchState) {
+        if (ignitionState == IgnitionStatus.KEYINIGNITIONONPOSITION) {
+            this.lightRotarySwitchState = lightRotarySwitchState;
+            if (lightRotarySwitchState == LightRotarySwitchState.ON) {
+                leftIndicator.setLowBeamState(LowBeamState.ACTIVE);
+                rightIndicator.setLowBeamState(LowBeamState.ACTIVE);
+            }
+            if (lightRotarySwitchState == LightRotarySwitchState.OFF) {
+                leftIndicator.setLowBeamState(LowBeamState.INACTIVE);
+                rightIndicator.setLowBeamState(LowBeamState.INACTIVE);
+            }
+        }
     }
     public void tipPitmanArm(PitmanArmPosition position,double time) {
         if (position == PitmanArmPosition.UPWARD5) {
@@ -152,7 +162,13 @@ public class Car {
         return ignitionState;
     }
     public LowBeamState getLowBeamState(){
-        return LowBeamState.INACTIVE;
+        if (lightRotarySwitchState==LightRotarySwitchState.ON){
+            return LowBeamState.ACTIVE;
+        }
+        if (lightRotarySwitchState==LightRotarySwitchState.OFF){
+            return LowBeamState.INACTIVE;
+        }
+        return LowBeamState.ACTIVE;
     }
     public Flashing getFlashState(){
         if (rightIndicator.getState()==Blinking.FLASHING){

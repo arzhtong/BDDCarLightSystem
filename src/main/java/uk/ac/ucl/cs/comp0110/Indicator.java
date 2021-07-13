@@ -15,6 +15,7 @@ public class Indicator {
     private int hazardCycleLength;
     private int numberofFlashCycles;
     private Flashing flashState;
+    private LowBeamState lowBeamState;
 
     public Flashing getFlashState(){
         return flashState;
@@ -57,5 +58,10 @@ public class Indicator {
     public int getNumberofFlashCycles(){
         return numberofFlashCycles;
     }
-
+    public void setLowBeamState(LowBeamState lowBeamState){
+        this.lowBeamState=lowBeamState;
+    }
+    public LowBeamState lowBeamState(){
+        return lowBeamState;
+    }
 }

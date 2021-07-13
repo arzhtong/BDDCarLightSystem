@@ -31,6 +31,7 @@ public class CarView extends JFrame{
     public JRadioButton keyInPosition;
     public JRadioButton keyInserted;
     public JRadioButton noKeyInserted;
+    public JComboBox lightRotarySwitch;
     private int numberOfFlashCycles;
     public long numseconds=0;
     public CarView(Car model) {
@@ -47,6 +48,7 @@ public class CarView extends JFrame{
         keyInserted=new JRadioButton("Key Inserted");
         noKeyInserted=new JRadioButton("No Key Inserted");
         keyInPosition=new JRadioButton("Key In Position");
+        lightRotarySwitch= new JComboBox(new String[]{"Off", "On"});
         numberOfFlashCycles=0;
         service= Executors.newSingleThreadScheduledExecutor();
         makeFrame();
@@ -310,6 +312,7 @@ public class CarView extends JFrame{
         blinkingDirection.add(noKeyInserted);
         blinkingDirection.add(keyInPosition);
         blinkingDirection.add(keyInserted);
+        blinkingDirection.add(lightRotarySwitch);
         typeOfBlinking.add(blinkingType);
         bottomPanel.add(typeOfBlinking);
         bottomPanel.add(blinkingDirection);
@@ -333,6 +336,7 @@ public class CarView extends JFrame{
             rightTipBlinking.setEnabled(false);
             hazardSwitch.setEnabled(false);
             soldInUKOrCanada.setEnabled(false);
+            lightRotarySwitch.setEnabled(false);
         }else{
             leftDirection.setEnabled(true);
             rightDirection.setEnabled(true);
@@ -340,6 +344,7 @@ public class CarView extends JFrame{
             rightTipBlinking.setEnabled(true);
             hazardSwitch.setEnabled(true);
             soldInUKOrCanada.setEnabled(true);
+            lightRotarySwitch.setEnabled(true);
         }
     }
     public JRadioButton getLeftDirection(){
@@ -368,5 +373,8 @@ public class CarView extends JFrame{
     }
     public JRadioButton getNoKeyInserted(){
         return noKeyInserted;
+    }
+    public JComboBox getLightRotarySwitch(){
+        return lightRotarySwitch;
     }
 }

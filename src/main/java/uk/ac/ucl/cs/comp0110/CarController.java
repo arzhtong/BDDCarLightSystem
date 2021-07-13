@@ -55,6 +55,12 @@ public class CarController {
                 keyInsertedPressed();
             }
         });
+        view.getLightRotarySwitch().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lightRotarySwitchPressed();
+            }
+        });
         view.getLeftTipBlinking().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -153,5 +159,15 @@ public class CarController {
     public void keyInPosition(){
         model.isIgnitionOn(IgnitionStatus.KEYINIGNITIONONPOSITION);
         model.checkPitmanArmState();
+    }
+    public void lightRotarySwitchPressed(){
+        if (view.getLightRotarySwitch().getSelectedItem()=="On"){
+            model.setLightRotarySwitch(LightRotarySwitchState.ON);
+            System.out.println(model.getLowBeamState());
+        }
+        if (view.getLightRotarySwitch().getSelectedItem()=="Off"){
+            model.setLightRotarySwitch(LightRotarySwitchState.OFF);
+            System.out.println(model.getLowBeamState());
+        }
     }
 }
