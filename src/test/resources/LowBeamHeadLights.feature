@@ -17,7 +17,7 @@ Feature: Low Beam Headlights
       When the driver turns the light rotary switch to the off position
       Then the low beam headlight will be deactivated
 
-    @requirement(ELs-15)
+    @requirement(ELS-15)
     Scenario: Driver turns light rotary switch on when ignition is off
       Given the ignition is off
       When the driver turns the light rotary switch on

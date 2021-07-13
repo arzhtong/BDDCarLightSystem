@@ -131,6 +131,7 @@ public class Car {
                 rightIndicator.setLowBeamState(LowBeamState.INACTIVE);
             }
         }
+   
     }
     public void tipPitmanArm(PitmanArmPosition position,double time) {
         if (position == PitmanArmPosition.UPWARD5) {
