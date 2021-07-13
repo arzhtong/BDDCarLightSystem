@@ -88,6 +88,8 @@ public class CarController {
         } else {
             model.setNumberofFlashCycles(0);
             model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
+            model.getLeftIndicator().setCycle(false);
+            model.getRightIndicator().setCycle(false);
         }
     }
     public void rightDirectionPressed() {
@@ -98,6 +100,8 @@ public class CarController {
         }else{
             model.setNumberofFlashCycles(0);
             model.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
+            model.getLeftIndicator().setCycle(false);
+            model.getRightIndicator().setCycle(false);
         }
 
     }

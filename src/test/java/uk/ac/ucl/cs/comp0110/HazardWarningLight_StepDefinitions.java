@@ -28,14 +28,14 @@ public class HazardWarningLight_StepDefinitions {
         Assert.assertEquals(car.getLengthOfHazardCycle(),1);
     }
 
+    @When("the pitarm is in direction blinking left")
+    public void the_pitarm_is_in_direction_blinking_left() {
+        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
+    }
+
     @When("the hazard warning light switch is deactivated")
     public void the_hazard_warning_light_switch_is_deactivated() {
         car.setHazardSwitch(false);
-    }
-
-    @When("pitarm is in direction blinking left")
-    public void pitarm_is_in_direction_blinking_left() {
-        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
     }
 
     @Then("the direction blinking cycle for the left indicator should start")
@@ -43,8 +43,8 @@ public class HazardWarningLight_StepDefinitions {
         Assert.assertEquals(car.getBlinkingState("Left"),Blinking.FLASHING);
     }
 
-    @When("pitarm is in direction blinking right")
-    public void pitarm_is_in_direction_blinking_right() {
+    @When("the pitarm is in direction blinking right")
+    public void the_pitarm_is_in_direction_blinking_right() {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
     }
 

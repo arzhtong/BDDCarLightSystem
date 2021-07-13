@@ -104,10 +104,7 @@ public class Car {
                 leftIndicator.setState(Blinking.FLASHING);
                 rightIndicator.setState(Blinking.NONFLASHING);
             }
-            if (position==PitmanArmPosition.DOWNWARD7 || position==PitmanArmPosition.UPWARD7){
-                leftIndicator.setCycle(false);
-                rightIndicator.setCycle(false);
-            }
+
             if (position ==PitmanArmPosition.NEUTRAL){
                 leftIndicator.setState(Blinking.NONFLASHING);
                 rightIndicator.setState(Blinking.NONFLASHING);
