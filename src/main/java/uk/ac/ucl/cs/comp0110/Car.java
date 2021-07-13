@@ -7,6 +7,9 @@ enum PitmanArmPosition{
 enum IgnitionStatus{
     NOKEYINSERTED,KEYINSERTED,KEYINIGNITIONONPOSITION
 }
+enum LightRotarySwitchState{
+    ON,OFF
+}
 public class Car {
     private IgnitionStatus ignitionState;
     private PitmanArmPosition pitmanArmState;
@@ -17,8 +20,10 @@ public class Car {
     private boolean hazardSwitchState;
     private boolean inUSAOrCanada;
     private int numberofFlashCycles;
+    private LightRotarySwitchState lightRotarySwitchState;
     public Car(){
         ignitionState=IgnitionStatus.NOKEYINSERTED;
+        lightRotarySwitchState=LightRotarySwitchState.OFF;
         leftIndicator=new Indicator();
         rightIndicator=new Indicator();
         leftIndicator.setState(Blinking.NONFLASHING);
@@ -114,6 +119,9 @@ public class Car {
             }
         }
     }
+    public void setLightRotarySwitch(LightRotarySwitchState lightRotarySwitchState){
+        this.lightRotarySwitchState=lightRotarySwitchState;
+    }
     public void tipPitmanArm(PitmanArmPosition position,double time) {
         if (position == PitmanArmPosition.UPWARD5) {
             setPitmanArmPosition(PitmanArmPosition.UPWARD5);
@@ -142,6 +150,9 @@ public class Car {
     }
     public IgnitionStatus getIgnitionState(){
         return ignitionState;
+    }
+    public LowBeamState getLowBeamState(){
+        return LowBeamState.INACTIVE;
     }
     public Flashing getFlashState(){
         if (rightIndicator.getState()==Blinking.FLASHING){

@@ -7,4 +7,30 @@ import org.junit.Assert;
 
 public class LowBeamHeadLights_StepDefinitions {
     private Car car = new Car();
+
+    @Given("the ignition is on")
+    public void the_ignition_is_on() {
+        car.isIgnitionOn(IgnitionStatus.KEYINIGNITIONONPOSITION);
+    }
+
+    @When("the driver turns the light rotary switch to the on position")
+    public void the_driver_turns_the_light_rotary_switch_to_the_on_position() {
+        car.setLightRotarySwitch(LightRotarySwitchState.ON);
+    }
+
+    @Then("the low beam headlight will be activated")
+    public void the_low_beam_headlight_will_be_activated() {
+        Assert.assertEquals(car.getLowBeamState(),LowBeamState.ACTIVE);
+    }
+
+    @When("the driver turns the light rotary switch to the off position")
+    public void the_driver_turns_the_light_rotary_switch_to_the_off_position() {
+        car.setLightRotarySwitch(LightRotarySwitchState.OFF);
+    }
+
+    @Then("the low beam headlight will be deactivated")
+    public void the_low_beam_headlight_will_be_deactivated() {
+        Assert.assertEquals(car.getLowBeamState(),LowBeamState.INACTIVE);
+    }
+
 }

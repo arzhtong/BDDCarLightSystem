@@ -5,6 +5,9 @@ enum Blinking{
 enum Flashing{
     BRIGHT,DARK
 }
+enum LowBeamState{
+    ACTIVE,INACTIVE
+}
 public class Indicator {
     private Blinking blinkingState;
     private boolean flashCycle;
