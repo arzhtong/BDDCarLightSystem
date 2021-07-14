@@ -15,6 +15,7 @@ public class Car {
     private PitmanArmPosition pitmanArmState;
     private Indicator leftIndicator;
     private Indicator rightIndicator;
+    private Light headLight;
     private int lengthOfTimeHeld;
     private Timer timer;
     private boolean hazardSwitchState;
@@ -26,6 +27,7 @@ public class Car {
         lightRotarySwitchState=LightRotarySwitchState.OFF;
 
         leftIndicator=new Indicator();
+        headLight=new Light();
         rightIndicator=new Indicator();
         leftIndicator.setState(Blinking.NONFLASHING);
         rightIndicator.setState(Blinking.NONFLASHING);
@@ -127,12 +129,12 @@ public class Car {
             rightIndicator.setDimmedLight(0);
 
             if (lightRotarySwitchState == LightRotarySwitchState.ON) {
-                leftIndicator.setLowBeamState(LowBeamState.ACTIVE);
-                rightIndicator.setLowBeamState(LowBeamState.ACTIVE);
+                headLight.setLowBeamState(LowBeamState.ACTIVE);
+                headLight.setLowBeamState(LowBeamState.ACTIVE);
             }
             if (lightRotarySwitchState == LightRotarySwitchState.OFF) {
-                leftIndicator.setLowBeamState(LowBeamState.INACTIVE);
-                rightIndicator.setLowBeamState(LowBeamState.INACTIVE);
+                headLight.setLowBeamState(LowBeamState.INACTIVE);
+                headLight.setLowBeamState(LowBeamState.INACTIVE);
 
             }
         }
@@ -146,12 +148,12 @@ public class Car {
             }
             this.lightRotarySwitchState=lightRotarySwitchState;
             if (lightRotarySwitchState==LightRotarySwitchState.AUTO){
-                leftIndicator.setLowBeamState(LowBeamState.INACTIVE);
-                rightIndicator.setLowBeamState(LowBeamState.INACTIVE);
+                headLight.setLowBeamState(LowBeamState.INACTIVE);
+                headLight.setLowBeamState(LowBeamState.INACTIVE);
             }
             if (lightRotarySwitchState==LightRotarySwitchState.OFF){
-                leftIndicator.setLowBeamState(LowBeamState.INACTIVE);
-                rightIndicator.setLowBeamState(LowBeamState.INACTIVE);
+                headLight.setLowBeamState(LowBeamState.INACTIVE);
+                headLight.setLowBeamState(LowBeamState.INACTIVE);
             }
         }
         this.lightRotarySwitchState=lightRotarySwitchState;
@@ -186,7 +188,7 @@ public class Car {
         return ignitionState;
     }
     public LowBeamState getLowBeamState(){
-        return leftIndicator.getLowBeamState();
+        return headLight.getLowBeamState();
     }
     public LightRotarySwitchState getLightRotarySwitchState(){
         return lightRotarySwitchState;
