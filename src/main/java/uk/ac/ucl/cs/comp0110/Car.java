@@ -10,6 +10,9 @@ enum IgnitionStatus{
 enum LightRotarySwitchState{
     ON,OFF,AUTO
 }
+enum DoorPosition{
+    OPEN,CLOSED
+}
 public class Car {
     private IgnitionStatus ignitionState;
     private PitmanArmPosition pitmanArmState;
@@ -97,6 +100,26 @@ public class Car {
             leftIndicator.setDimmedLight(0);
             rightIndicator.setDimmedLight(0);
         }
+    }
+    public void setNumberofFlashCycles(int numberofFlashCycles){
+        if (leftIndicator.getState()==Blinking.FLASHING){
+            leftIndicator.setNumberofFlashCycles(numberofFlashCycles);
+        }
+        if (rightIndicator.getState()==Blinking.FLASHING){
+            rightIndicator.setNumberofFlashCycles(numberofFlashCycles);
+        }
+    }
+    public void setDayTimeRunningLight(boolean dayTimeRunningLight){
+
+    }
+    public void setAmbientLight(boolean ambientLight){
+
+    }
+    public void setDoorStatus(DoorPosition position){
+
+    }
+    public void durationOfAmbientLight(int ambientLightDuration){
+
     }
     public void setPitmanArmPosition(PitmanArmPosition position) {
         pitmanArmState=position;
@@ -238,6 +261,10 @@ public class Car {
     public int getLengthOfTimeHeld(){
         return lengthOfTimeHeld;
     }
+    public Light getHeadLight(){
+        return headLight;
+    }
+
 
     public Blinking getBlinkingState(String direction){
         if (direction.equals("Right")){
@@ -289,13 +316,7 @@ public class Car {
         }
         return 0;
     }
-    public void setNumberofFlashCycles(int numberofFlashCycles){
-        if (leftIndicator.getState()==Blinking.FLASHING){
-            leftIndicator.setNumberofFlashCycles(numberofFlashCycles);
-        }
-        if (rightIndicator.getState()==Blinking.FLASHING){
-            rightIndicator.setNumberofFlashCycles(numberofFlashCycles);
-        }
-    }
+
+
 }
 
