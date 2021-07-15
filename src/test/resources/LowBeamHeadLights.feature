@@ -58,20 +58,22 @@ Feature: Low Beam Headlights
     Scenario: Driver engages daytime running light with ignition off
     Given the ignition is off
     When the driver turns daytime running light on
-    Then the low beam headlights will not be activated
+    And the driver has turned ambient light off
+    Then the low beam headlight will be deactivated
 
     Rule: Ambient light is started when engine is turned off
 
     @requirement(ELS-17,ELS-20)
     Scenario: Driver engages ambient light
     Given the ignition is on
-    When the driver turns ambient light on
-    And the ignition is off
+    When the ignition is off
+    And the driver has turned ambient light on
     Then the low beam headlight will be activated
 
     @requirement(ELS-17,ELS-20)
     Scenario: Driver opens the door with ambient light on
     Given the ambient light is on
+    And the ignition is off
     And 30 seconds have passed since the ambient light was activated
     When the driver opens the door
     Then the low beam headlight will be deactivated
@@ -79,13 +81,15 @@ Feature: Low Beam Headlights
     @requirement(ELS-17,ELS-20)
     Scenario: Driver removes ignition key with ambient light on
     Given the Ignition is on
-    And 30 seconds have passed since the ambient light was activated
+    And the ambient light is on
     When the driver removes the ignition key
+    And 30 seconds have passed since the ambient light was activated
     Then the low beam headlight will be activated
 
     @requirement(ELS-17,ELS-20)
     Scenario: Driver opens the door before 30 seconds pass of activation of ambient light
     Given the ambient light is on
+    And the ignition is off
     And 30 seconds have not passed since the ambient light was activated
     When the driver opens the door
     Then the low beam headlight will be activated
@@ -93,6 +97,7 @@ Feature: Low Beam Headlights
     @requirement(ELS-17,ELS-20)
     Scenario: Driver removes ignition key before 30 seconds pass of activation of ambient light
     Given the Ignition is on
+    And the ambient light is on
     And 30 seconds have not passed since the ambient light was activated
     When the driver removes the ignition key
     Then the low beam headlight will be activated
@@ -100,6 +105,7 @@ Feature: Low Beam Headlights
     @requirement(ELS-17,ELS-20)
     Scenario: Driver removes ignition key before 30 seconds pass of activation of ambient light
     Given the Ignition is on
+    And the ambient light is on
     And 30 seconds have not passed since the ambient light was activated
     When the driver removes the ignition key
     Then the low beam headlight will be activated
@@ -108,7 +114,7 @@ Feature: Low Beam Headlights
     Scenario: Driver changes from daytime running light to ambient light
     Given the ignition is on
     And daytime running light is on
-    When the driver turns on ambient light
+    When the driver has turned ambient light on
     And the driver removes the ignition key
     And the driver immediately opens the door
     Then the low beam headlight will be activated

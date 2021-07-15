@@ -24,11 +24,15 @@ public class Car {
     private boolean hazardSwitchState;
     private boolean inUSAOrCanada;
     private int numberofFlashCycles;
+    private DoorPosition doorPosition;
+    private boolean dayTimeRunningLight;
+    private boolean ambientLight;
+    private int ambientLightDuration;
     private LightRotarySwitchState lightRotarySwitchState;
     public Car(){
-        ignitionState=IgnitionStatus.NOKEYINSERTED;
-        lightRotarySwitchState=LightRotarySwitchState.OFF;
 
+        lightRotarySwitchState=LightRotarySwitchState.OFF;
+        doorPosition=DoorPosition.CLOSED;
         leftIndicator=new Indicator();
         headLight=new Light();
         rightIndicator=new Indicator();
@@ -38,16 +42,30 @@ public class Car {
         numberofFlashCycles=0;
         hazardSwitchState=false;
     }
-    public void isIgnitionOn(IgnitionStatus ignitionState){
-        this.ignitionState=ignitionState;
-        if (ignitionState==IgnitionStatus.KEYINSERTED || ignitionState==IgnitionStatus.NOKEYINSERTED){
+    public void isIgnitionOn(IgnitionStatus ignitionState) {
+        this.ignitionState = ignitionState;
+        if (ignitionState == IgnitionStatus.KEYINSERTED || ignitionState == IgnitionStatus.NOKEYINSERTED) {
             leftIndicator.setState(Blinking.NONFLASHING);
             rightIndicator.setState(Blinking.NONFLASHING);
             leftIndicator.setCycle(false);
             rightIndicator.setCycle(false);
-            if (pitmanArmState==PitmanArmPosition.DOWNWARD5 || pitmanArmState==PitmanArmPosition.UPWARD5){
-                pitmanArmState=PitmanArmPosition.NEUTRAL;
+            if (pitmanArmState == PitmanArmPosition.DOWNWARD5 || pitmanArmState == PitmanArmPosition.UPWARD5) {
+                pitmanArmState = PitmanArmPosition.NEUTRAL;
             }
+        }
+        if (ambientLight == true && ambientLightDuration > 30000) {
+            headLight.setLowBeamState(LowBeamState.INACTIVE);
+            stopTimer();
+            ambientLightDuration=0;
+        } else {
+            if (ambientLight == true && ignitionState==IgnitionStatus.NOKEYINSERTED) {
+                headLight.setLowBeamState(LowBeamState.ACTIVE);
+                countAmbientLightTime();
+            }
+        if (ambientLightDuration != 0) {
+            stopTimer();
+
+        }
         }
     }
 
@@ -110,16 +128,43 @@ public class Car {
         }
     }
     public void setDayTimeRunningLight(boolean dayTimeRunningLight){
+        this.dayTimeRunningLight=dayTimeRunningLight;
+        if (dayTimeRunningLight==true && (ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION || ignitionState==IgnitionStatus.KEYINSERTED)){
+            headLight.setLowBeamState(LowBeamState.ACTIVE);
+        }else{
+            headLight.setLowBeamState(LowBeamState.INACTIVE);
 
+        }
     }
     public void setAmbientLight(boolean ambientLight){
-
+        this.ambientLight=ambientLight;
+        if (ambientLight==true && ignitionState==IgnitionStatus.NOKEYINSERTED){
+            headLight.setLowBeamState(LowBeamState.ACTIVE);
+        }else{
+            headLight.setLowBeamState(LowBeamState.INACTIVE);
+        }
     }
-    public void setDoorStatus(DoorPosition position){
+    public void setDoorStatus(DoorPosition doorPosition){
+        this.doorPosition=doorPosition;
+        if (ambientLight==true && ambientLightDuration==0) {
+            headLight.setLowBeamState(LowBeamState.ACTIVE);
+            countAmbientLightTime();
+        }
+        if (ambientLightDuration>30000 && ambientLight==true){
+            headLight.setLowBeamState(LowBeamState.INACTIVE);
+            stopTimer();
+            ambientLightDuration=0;
+        }
 
+        if (ambientLightDuration!=0){
+            stopTimer();
+        }
     }
-    public void durationOfAmbientLight(int ambientLightDuration){
-
+    public void setAmberLightDuration(int amberLightDuration){
+        this.ambientLightDuration=amberLightDuration;
+    }
+    public int getAmbientLightDuration(){
+        return ambientLightDuration;
     }
     public void setPitmanArmPosition(PitmanArmPosition position) {
         pitmanArmState=position;
@@ -146,6 +191,8 @@ public class Car {
         }
     }
     public void setLightRotarySwitch(LightRotarySwitchState lightRotarySwitchState) {
+        leftIndicator.setDimmedLight(0);
+        rightIndicator.setDimmedLight(0);
         if (ignitionState == IgnitionStatus.KEYINIGNITIONONPOSITION) {
             this.lightRotarySwitchState = lightRotarySwitchState;
             leftIndicator.setDimmedLight(0);
@@ -153,13 +200,13 @@ public class Car {
 
             if (lightRotarySwitchState == LightRotarySwitchState.ON) {
                 headLight.setLowBeamState(LowBeamState.ACTIVE);
-                headLight.setLowBeamState(LowBeamState.ACTIVE);
             }
             if (lightRotarySwitchState == LightRotarySwitchState.OFF) {
+                leftIndicator.setDimmedLight(0);
+                rightIndicator.setDimmedLight(0);
                 headLight.setLowBeamState(LowBeamState.INACTIVE);
-                headLight.setLowBeamState(LowBeamState.INACTIVE);
-
             }
+
         }
         if (ignitionState == IgnitionStatus.NOKEYINSERTED) {
             if (this.lightRotarySwitchState == LightRotarySwitchState.OFF) {
@@ -167,6 +214,7 @@ public class Car {
                 if (lightRotarySwitchState == LightRotarySwitchState.ON) {
                     leftIndicator.setDimmedLight(50);
                     rightIndicator.setDimmedLight(50);
+                    headLight.setLowBeamState(LowBeamState.ACTIVE);
                 }
             }
             this.lightRotarySwitchState=lightRotarySwitchState;
@@ -304,7 +352,21 @@ public class Car {
         }, 1,1);
 
     }
+    public void countAmbientLightTime(){
+        ambientLightDuration=0;
+        timer=new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ambientLightDuration++;
+                System.out.println(ambientLightDuration);
+
+            }
+        }, 1,1);
+
+    }
     public void stopTimer(){
+
         timer.cancel();
     }
     public int getNumberofFlashCycles(){
@@ -316,7 +378,15 @@ public class Car {
         }
         return 0;
     }
-
+    public boolean getDayTimeRunningLight(){
+        return dayTimeRunningLight;
+    }
+    public DoorPosition getDoorPosition(){
+        return doorPosition;
+    }
+    public boolean getAmbientLight(){
+        return ambientLight;
+    }
 
 }
 

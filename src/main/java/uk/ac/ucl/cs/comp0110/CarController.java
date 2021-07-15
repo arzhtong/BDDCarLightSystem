@@ -83,8 +83,25 @@ public class CarController {
                 rightTipBlinkingPressed();
             }
         });
+        view.getDoorPosition().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                doorPressed();
+            }
+        });
+        view.getAmbientLight().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ambientLightPressed();
+            }
+        });
+        view.getDayTimeRunningLight().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dayTimeRunningLightPressed();
+            }
+        });
     }
-
 
 
     public void leftDirectionPressed() {
@@ -169,6 +186,30 @@ public class CarController {
         }
         if (view.getLightRotarySwitch().getSelectedItem().equals("Auto")){
             model.setLightRotarySwitch(LightRotarySwitchState.AUTO);
+        }
+    }
+    public void dayTimeRunningLightPressed(){
+        if (model.getDayTimeRunningLight()==false){
+            model.setDayTimeRunningLight(true);
+        }else{
+            model.setDayTimeRunningLight(false);
+        }
+    }
+    public void doorPressed(){
+        if (model.getDoorPosition()==DoorPosition.CLOSED){
+            model.setDoorStatus(DoorPosition.OPEN);
+
+        }else{
+            model.setDoorStatus(DoorPosition.CLOSED);
+        }
+    }
+    public void ambientLightPressed(){
+        if (model.getAmbientLight()==true){
+            model.setAmbientLight(false);
+
+        }else{
+            model.setAmbientLight(true);
+            model.countAmbientLightTime();
         }
     }
 }

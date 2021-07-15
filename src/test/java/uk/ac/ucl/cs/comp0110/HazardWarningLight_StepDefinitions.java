@@ -1,5 +1,6 @@
 package uk.ac.ucl.cs.comp0110;
 import io.cucumber.java.ParameterType;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -101,4 +102,8 @@ public class HazardWarningLight_StepDefinitions {
         Assert.assertEquals(car.getFlashingCycles("Right"),false);
     }
 
+    @And("the driver has turned ambient light off")
+    public void theDriverHasTurnedAmbientLightOff() {
+        car.setAmbientLight(false);
+    }
 }

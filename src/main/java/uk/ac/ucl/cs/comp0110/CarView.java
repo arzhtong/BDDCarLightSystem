@@ -31,7 +31,11 @@ public class CarView extends JFrame{
     public JRadioButton keyInPosition;
     public JRadioButton keyInserted;
     public JRadioButton noKeyInserted;
+    public JRadioButton ambientLight;
+    public JRadioButton dayTimeRunningLight;
     public JComboBox lightRotarySwitch;
+    public JRadioButton doorPosition;
+
     private int numberOfFlashCycles;
     public long numseconds=0;
     public CarView(Car model) {
@@ -48,7 +52,10 @@ public class CarView extends JFrame{
         keyInserted=new JRadioButton("Key Inserted");
         noKeyInserted=new JRadioButton("No Key Inserted");
         keyInPosition=new JRadioButton("Key In Position");
+        ambientLight=new JRadioButton("Ambient Light Status");
+        dayTimeRunningLight=new JRadioButton("Daytime Running Light Status");
         lightRotarySwitch= new JComboBox(new String[]{"Off", "On","Auto"});
+        doorPosition=new JRadioButton("Door Open");
         numberOfFlashCycles=0;
         service= Executors.newSingleThreadScheduledExecutor();
         makeFrame();
@@ -132,12 +139,12 @@ public class CarView extends JFrame{
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
         }
-        if (model.getIgnitionState() == IgnitionStatus.NOKEYINSERTED && model.getLightRotarySwitchState() == LightRotarySwitchState.ON) {
+        if ((model.getLowBeamState()==LowBeamState.ACTIVE)) {
             g2d.setPaint(new Color(100, 150, 0));
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
         }
-        if (model.getIgnitionState() == IgnitionStatus.KEYINIGNITIONONPOSITION && model.getLightRotarySwitchState() == LightRotarySwitchState.ON) {
+        if ((model.getHeadLight().getLowBeamState()==LowBeamState.ACTIVE && model.getLeftIndicator().getDimmedLight()==50)) {
             g2d.setPaint(new Color(100, 100, 0));
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
@@ -306,10 +313,14 @@ public class CarView extends JFrame{
         Container contentPane = getContentPane();
         JPanel centralGrid = new JPanel();
         JPanel southPanel = new JPanel();
+        JPanel westPanel=new JPanel();
+        westPanel.setBorder(new EtchedBorder());
         southPanel.setBorder(new EtchedBorder());
-        southPanel.add(makeBottomInputs());
+        southPanel.add(makeBlinkingInputs());
+        westPanel.add(makeOptionalInputs());
         centralGrid.setLayout(new BorderLayout(6, 6));
         centralGrid.add(southPanel, BorderLayout.SOUTH);
+        centralGrid.add(westPanel,BorderLayout.WEST);
         contentPane.add(centralGrid);
         setTitle("Exterior Light System");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -327,7 +338,20 @@ public class CarView extends JFrame{
         },0,500,TimeUnit.MILLISECONDS);
 
     }
-    public JPanel makeBottomInputs() {
+    public JPanel makeOptionalInputs(){
+        final JPanel optionalInputs=new JPanel();
+        optionalInputs.setLayout(new BoxLayout(optionalInputs, BoxLayout.Y_AXIS));
+        optionalInputs.add(soldInUKOrCanada);
+        optionalInputs.add(noKeyInserted);
+        optionalInputs.add(keyInPosition);
+        optionalInputs.add(keyInserted);
+        optionalInputs.add(lightRotarySwitch);
+        optionalInputs.add(doorPosition);
+        optionalInputs.add(ambientLight);
+        optionalInputs.add(dayTimeRunningLight);
+        return optionalInputs;
+    }
+    public JPanel makeBlinkingInputs() {
         final JPanel typeOfBlinking = new JPanel();
         final JPanel blinkingDirection = new JPanel();
 
@@ -342,11 +366,6 @@ public class CarView extends JFrame{
         blinkingDirection.add(rightTipBlinking);
         blinkingDirection.add(rightDirection);
         blinkingDirection.add(hazardSwitch);
-        blinkingDirection.add(soldInUKOrCanada);
-        blinkingDirection.add(noKeyInserted);
-        blinkingDirection.add(keyInPosition);
-        blinkingDirection.add(keyInserted);
-        blinkingDirection.add(lightRotarySwitch);
         typeOfBlinking.add(blinkingType);
         bottomPanel.add(typeOfBlinking);
         bottomPanel.add(blinkingDirection);
@@ -410,5 +429,14 @@ public class CarView extends JFrame{
     }
     public JComboBox getLightRotarySwitch(){
         return lightRotarySwitch;
+    }
+    public JRadioButton getDoorPosition(){
+        return doorPosition;
+    }
+    public JRadioButton getAmbientLight(){
+        return ambientLight;
+    }
+    public JRadioButton getDayTimeRunningLight(){
+        return dayTimeRunningLight;
     }
 }
