@@ -84,7 +84,7 @@ Feature: Low Beam Headlights
     And the ambient light is on
     When the driver removes the ignition key
     And 30 seconds have passed since the ambient light was activated
-    Then the low beam headlight will be activated
+    Then the low beam headlight will be deactivated
 
     @requirement(ELS-17,ELS-20)
     Scenario: Driver opens the door before 30 seconds pass of activation of ambient light

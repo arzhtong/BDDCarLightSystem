@@ -53,21 +53,15 @@ public class Car {
                 pitmanArmState = PitmanArmPosition.NEUTRAL;
             }
         }
-        if (ambientLight == true && ambientLightDuration > 30000) {
-            headLight.setLowBeamState(LowBeamState.INACTIVE);
+        if (ambientLight == true && ignitionState==IgnitionStatus.NOKEYINSERTED) {
+            countAmbientLightTime();
+        }
+        if (ambientLight==true && ambientLightDuration<30000){
             stopTimer();
-            ambientLightDuration=0;
-        } else {
-            if (ambientLight == true && ignitionState==IgnitionStatus.NOKEYINSERTED) {
-                headLight.setLowBeamState(LowBeamState.ACTIVE);
-                countAmbientLightTime();
-            }
-        if (ambientLightDuration != 0) {
-            stopTimer();
+            countAmbientLightTime();
+        }
+        }
 
-        }
-        }
-    }
 
     public void setLengthOfTimeHeld(int lengthOfTimeHeld){
         this.lengthOfTimeHeld=lengthOfTimeHeld;
@@ -146,22 +140,15 @@ public class Car {
     }
     public void setDoorStatus(DoorPosition doorPosition){
         this.doorPosition=doorPosition;
-        if (ambientLight==true && ambientLightDuration==0) {
-            headLight.setLowBeamState(LowBeamState.ACTIVE);
+        if (ambientLight==true && ambientLightDuration<30000) {
             countAmbientLightTime();
-        }
-        if (ambientLightDuration>30000 && ambientLight==true){
-            headLight.setLowBeamState(LowBeamState.INACTIVE);
-            stopTimer();
-            ambientLightDuration=0;
-        }
-
-        if (ambientLightDuration!=0){
-            stopTimer();
         }
     }
     public void setAmberLightDuration(int amberLightDuration){
         this.ambientLightDuration=amberLightDuration;
+        if (ambientLightDuration>30000){
+            headLight.setLowBeamState(LowBeamState.INACTIVE);
+        }
     }
     public int getAmbientLightDuration(){
         return ambientLightDuration;
@@ -355,14 +342,19 @@ public class Car {
     public void countAmbientLightTime(){
         ambientLightDuration=0;
         timer=new Timer();
+        headLight.setLowBeamState(LowBeamState.ACTIVE);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 ambientLightDuration++;
                 System.out.println(ambientLightDuration);
-
+                if (ambientLightDuration==30000){
+                    headLight.setLowBeamState(LowBeamState.INACTIVE);
+                    stopTimer();
+                }
             }
         }, 1,1);
+
 
     }
     public void stopTimer(){
