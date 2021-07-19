@@ -1,6 +1,8 @@
 package uk.ac.ucl.cs.comp0110;
+import java.time.LocalTime;
 import java.util.TimerTask;
 import java.util.Timer;
+import java.time.Clock;
 enum PitmanArmPosition{
     UPWARD7,DOWNWARD7,NEUTRAL,UPWARD5,DOWNWARD5
 }
@@ -340,20 +342,24 @@ public class Car {
 
     }
     public void countAmbientLightTime(){
-        ambientLightDuration=0;
-        timer=new Timer();
-        headLight.setLowBeamState(LowBeamState.ACTIVE);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                ambientLightDuration++;
-                System.out.println(ambientLightDuration);
-                if (ambientLightDuration==30000){
-                    headLight.setLowBeamState(LowBeamState.INACTIVE);
-                    stopTimer();
-                }
-            }
-        }, 1,1);
+        SystemClock currentTime=new SystemClock();
+
+        Clock newClock=currentTime.setTime(10);
+        System.out.println(LocalTime.now(currentTime.getConstantClock()));
+//        ambientLightDuration=0;
+//        timer=new Timer();
+//        headLight.setLowBeamState(LowBeamState.ACTIVE);
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                ambientLightDuration++;
+//                System.out.println(ambientLightDuration);
+//                if (ambientLightDuration==30000){
+//                    headLight.setLowBeamState(LowBeamState.INACTIVE);
+//                    stopTimer();
+//                }
+//            }
+//        }, 1,1);
 
 
     }
