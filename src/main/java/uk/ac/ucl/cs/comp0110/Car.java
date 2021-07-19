@@ -77,16 +77,8 @@ public class Car {
 
     public void setHazardSwitch(boolean hazardSwitchState){
         this.hazardSwitchState=hazardSwitchState;
-        if (hazardSwitchState==true){
-                leftIndicator.setCycle(false);
-                rightIndicator.setCycle(false);
-                leftIndicator.setState(Blinking.FLASHING);
-                rightIndicator.setState(Blinking.FLASHING);
-                leftIndicator.setHazardCycleLength(1);
-                rightIndicator.setHazardCycleLength(1);
-
-        }
         if (hazardSwitchState==false){
+            System.out.println("testing");
             leftIndicator.setState(Blinking.NONFLASHING);
             rightIndicator.setState(Blinking.NONFLASHING);
             if (pitmanArmState==PitmanArmPosition.DOWNWARD7){
@@ -95,13 +87,26 @@ public class Car {
             if (pitmanArmState==PitmanArmPosition.UPWARD7){
                 rightIndicator.setState(Blinking.FLASHING);
             }
+
         }
+        if (hazardSwitchState==true){
+
+                leftIndicator.setState(Blinking.FLASHING);
+                rightIndicator.setState(Blinking.FLASHING);
+                leftIndicator.setCycle(false);
+                rightIndicator.setCycle(false);
+                leftIndicator.setHazardCycleLength(1);
+                rightIndicator.setHazardCycleLength(1);
+
+        }
+
     }
     public void checkPitmanArmState(){
         if (hazardSwitchState==true){
             rightIndicator.setState(Blinking.FLASHING);
             leftIndicator.setState(Blinking.FLASHING);
         }
+
         if (pitmanArmState==PitmanArmPosition.UPWARD7){
             rightIndicator.setState(Blinking.FLASHING);
         }

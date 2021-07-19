@@ -12,7 +12,6 @@ public class HazardWarningLight_StepDefinitions {
     private Car car = new Car();
     private PitmanArmPosition pitmanArmState;
 
-
     @Given("the hazard warning light switch is engaged")
     public void the_hazard_warning_light_switch_is_engaged() {
         car.setHazardSwitch(true);
@@ -106,4 +105,31 @@ public class HazardWarningLight_StepDefinitions {
     public void theDriverHasTurnedAmbientLightOff() {
         car.setAmbientLight(false);
     }
+    @Given("the left indicator is bright")
+    public void the_left_indicator_is_bright() {
+        car.getLeftIndicator().setFlashState(Flashing.BRIGHT);
+    }
+
+
+
+    @When("the driver deactivates hazard warning switch")
+    public void the_driver_deactivates_hazard_warning_switch() {
+        car.setHazardSwitch(false);
+    }
+
+    @Then("the left indicator will not blink")
+    public void the_left_indicator_will_not_blink() {
+        Assert.assertEquals(car.getBlinkingState("Left"),Blinking.NONFLASHING);
+    }
+    @Then("tip-blinking on right starts when direction blinking cycle finishes")
+    public void tip_blinking_on_right_starts_when_direction_blinking_cycle_finishes() {
+        Assert.assertEquals(car.getRightIndicator().getCycle(),false);
+    }
+
+    @Then("direction-blinking on right starts when tip-blinking cycle finishes")
+    public void direction_blinking_on_right_starts_when_tip_blinking_cycle_finishes() {
+        Assert.assertEquals(car.getLeftIndicator().getCycle(),true);
+    }
+
+
 }

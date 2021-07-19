@@ -75,7 +75,7 @@ public class DirectionBlinking_StepDefinitions {
 
     @Then("the right indicator tip-blinking will stop")
     public void the_right_indicator_tip_blinking_will_stop() {
-        Assert.assertEquals(car.getBlinkingState("Right"),Blinking.NONFLASHING);
+        Assert.assertEquals(car.getFlashingCycles("Right"),false);
     }
 
     @Then("the requesting left indicator flashing cycle will be released")
@@ -228,10 +228,6 @@ public class DirectionBlinking_StepDefinitions {
     public void the_right_indicator_will_not_blink() {
         Assert.assertEquals(car.getBlinkingState("Right"),Blinking.NONFLASHING);
     }
-
-
-
-
 
     @Then("all right indicators flash for 3 flashing cycles")
     public void all_right_indicators_flash_for_flashing_cycles() {

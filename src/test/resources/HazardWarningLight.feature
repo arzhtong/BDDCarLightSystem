@@ -22,15 +22,8 @@ This feature defines the different pulse ratios and states for indicators when e
     And the left indicator is bright
     When the driver moves pitman arm upward in tip-blinking position
     And the pitman arm is held for less than 0.5 seconds
-    Then tip-blinking starts when direction blinking cycle finishes
+    Then tip-blinking on right starts when direction blinking cycle finishes
 
-    @requirement(ELS-11)
-    Scenario: Driver engages direction blinking on right while left indicator is bright
-      Given the ignition is on
-      And the driver moves pitman arm downward in tip-blinking position
-      And the left indicator is bright
-      When the driver moves pitman arm upward
-      Then direction-blinking starts when tip-blinking cycle finishes
 
   Rule: When the hazard warning cycle is disengaged, the indicator that corresponds to the pitarm direction should start
 +
@@ -53,12 +46,19 @@ This feature defines the different pulse ratios and states for indicators when e
 
     @requirement(ELS-12)
     Scenario: Driver disengages hazard warning switch with ignition off
-    Given the ignition is on
-    And the driver engages the hazard warning switch
+    And the ignition is on
     When the ignition is off
     And the driver deactivates hazard warning switch
     Then the right indicator will not blink
     And the left indicator will not blink
+
+    @requirement(ELS-12)
+  Scenario: Driver engages hazard warning switch with ignition off
+    Given the ignition is off
+    When the driver engages the hazard warning switch
+    Then the vehicle flashes all left indicators synchronously
+    And the vehicle flashes all left indicators synchronously
+
 
   Rule: When the warning light is activated any tip-blinking that is ongoing will be stopped or ignored
 
