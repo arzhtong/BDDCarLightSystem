@@ -192,7 +192,157 @@ public class DirectionBlinking_StepDefinitions {
         Assert.assertEquals(car.getFlashingCycles("Left"),true);
     }
 
+    @Given("ignition is on")
+    public void ignition_is_on() {
+        car.isIgnitionOn(IgnitionStatus.KEYINIGNITIONONPOSITION);
+    }
 
+
+
+    @When("the driver moves pitman arm downward")
+    public void the_driver_moves_pitman_arm_downward() {
+        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
+    }
+
+    @Given("ignition is off")
+    public void ignition_is_off() {
+        car.isIgnitionOn(IgnitionStatus.NOKEYINSERTED);
+    }
+
+    @Given("the driver moves pitman arm upward")
+    public void the_driver_moves_pitman_arm_upward() {
+        car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
+    }
+
+    @When("the driver turns on ignition")
+    public void the_driver_turns_on_ignition() {
+        car.isIgnitionOn(IgnitionStatus.KEYINIGNITIONONPOSITION);
+    }
+
+    @When("the driver inserts the key without turning on ignition")
+    public void the_driver_inserts_the_key_without_turning_on_ignition() {
+        car.isIgnitionOn(IgnitionStatus.KEYINSERTED);
+    }
+
+    @Then("the right indicator will not blink")
+    public void the_right_indicator_will_not_blink() {
+        Assert.assertEquals(car.getBlinkingState("Right"),Blinking.NONFLASHING);
+    }
+
+
+
+
+
+    @Then("all right indicators flash for 3 flashing cycles")
+    public void all_right_indicators_flash_for_flashing_cycles() {
+        Assert.assertEquals(car.getFlashingCycles("Right"),true);
+    }
+
+    @When("the driver moves pitman arm downward in tip-blinking position")
+    public void the_driver_moves_pitman_arm_downward_in_tip_blinking_position() {
+        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
+    }
+
+    @Then("all left indicators flash for 3 flashing cycles")
+    public void all_left_indicators_flash_for_flashing_cycles() {
+        Assert.assertEquals(car.getFlashingCycles("Left"),true);
+    }
+
+    @Given("the driver moves pitman arm upward in tip-blinking position")
+    public void the_driver_moves_pitman_arm_upward_in_tip_blinking_position() {
+        car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
+    }
+
+    @Given("the pitman arm is held less than 0.5 seconds")
+    public void the_pitman_arm_is_held_less_than_seconds() {
+        car.tipPitmanArm(PitmanArmPosition.DOWNWARD5,300);
+    }
+
+    @When("the driver moves the pitman arm in the downward position")
+    public void the_driver_moves_the_pitman_arm_in_the_downward_position() {
+        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
+    }
+
+
+
+    @When("the driver turns the ignition off")
+    public void the_driver_turns_the_ignition_off() {
+        car.isIgnitionOn(IgnitionStatus.NOKEYINSERTED);
+    }
+
+    @Then("the vehicle will not have flashing cycles")
+    public void the_vehicle_will_not_have_flashing_cycles() {
+        Assert.assertEquals(car.getFlashingCycles("Right"),false);
+    }
+
+    @When("the driver turns on the ignition")
+    public void the_driver_turns_on_the_ignition() {
+        car.isIgnitionOn(IgnitionStatus.NOKEYINSERTED);
+    }
+
+    @When("the pitman arm is held for less than 0.5 seconds")
+    public void the_pitman_arm_is_held_for_less_than_seconds() {
+        car.tipPitmanArm(PitmanArmPosition.DOWNWARD5,300);
+    }
+
+    @When("the driver engages the hazard warning switch")
+    public void the_driver_engages_the_hazard_warning_switch() {
+        car.setHazardSwitch(true);
+    }
+
+    @Then("the right indicator will not tip-blink")
+    public void the_right_indicator_will_not_tip_blink() {
+        Assert.assertEquals(car.getFlashingCycles("Right"),false);
+    }
+
+
+    @Then("stops when pitman arm leaves tip-blinking position")
+    public void stops_when_pitman_arm_leaves_tip_blinking_position() {
+        Assert.assertEquals(car.getFlashingCycles("Left"),false);
+    }
+
+    @Given("the pitman arm is held for more than 0.5 seconds")
+    public void the_pitman_arm_is_held_for_more_than_seconds() {
+        car.tipPitmanArm(PitmanArmPosition.UPWARD5,700);
+    }
+
+    @When("direction blinking is engaged by a car sold in the USA")
+    public void direction_blinking_is_engaged_by_a_car_sold_in_the_usa() {
+        car.setInUSAOrCanada(true);
+    }
+
+    @When("direction blinking is engaged by a car sold in the UK")
+    public void direction_blinking_is_engaged_by_a_car_sold_in_the_uk() {
+        car.setInUSAOrCanada(false);
+    }
+
+    @Then("the daytime running light will not be dimmed")
+    public void the_daytime_running_light_will_not_be_dimmed() {
+        car.setDayTimeRunningLight(false);
+    }
+
+
+
+    @When("the pitman arm is held for less than 0.5 seconds downward position")
+    public void the_pitman_arm_is_held_for_less_than_seconds_downward_position() {
+        car.tipPitmanArm(PitmanArmPosition.UPWARD5,250);
+    }
+
+    @When("the pitman arm is held upward for less than 0.5 seconds")
+    public void the_pitman_arm_is_held_upward_for_less_than_seconds() {
+        car.tipPitmanArm(PitmanArmPosition.UPWARD5,300);
+    }
+
+
+    @Given("the pitman arm is held downward for less than 0.5 seconds")
+    public void the_pitman_arm_is_held_downward_for_less_than_seconds() {
+     car.tipPitmanArm(PitmanArmPosition.DOWNWARD5,300);
+    }
+
+    @Given("all right indicators are flashing for 3 flashing cycles")
+    public void all_right_indicators_are_flashing_for_flashing_cycles() {
+        car.getRightIndicator().setCycle(true);
+    }
 
 
 }

@@ -46,6 +46,11 @@ public class Car {
     }
     public void isIgnitionOn(IgnitionStatus ignitionState) {
         this.ignitionState = ignitionState;
+        if (pitmanArmState==PitmanArmPosition.DOWNWARD7){
+            leftIndicator.setState(Blinking.FLASHING);
+        }else if (pitmanArmState==PitmanArmPosition.UPWARD7){
+            rightIndicator.setState(Blinking.FLASHING);
+        }
         if (ignitionState == IgnitionStatus.KEYINSERTED || ignitionState == IgnitionStatus.NOKEYINSERTED) {
             leftIndicator.setState(Blinking.NONFLASHING);
             rightIndicator.setState(Blinking.NONFLASHING);
