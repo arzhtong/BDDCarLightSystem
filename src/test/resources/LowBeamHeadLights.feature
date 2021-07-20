@@ -122,7 +122,7 @@ Feature: Low Beam Headlights
       And the exterior brightness is below 200lx
       Then the low beam headlight will be activated
       And low beam headlight will be active at least 3 seconds
-      
+
     @requirement(ELS-18)
     Scenario: Driver activates lower beam headlights with exterior brightness above 250lx
       When the driver turns light rotary switch to auto

@@ -189,6 +189,12 @@ public class Car {
             }
         }
     }
+    public void setExteriorBrightness(int exteriorBrightness){
+
+    }
+    public void setLowBeamHeadlightDuration(int lowBeamHeadlightDuration){
+
+    }
     public void setLightRotarySwitch(LightRotarySwitchState lightRotarySwitchState) {
         leftIndicator.setDimmedLight(0);
         rightIndicator.setDimmedLight(0);
@@ -352,24 +358,24 @@ public class Car {
 
     }
     public void countAmbientLightTime(){
-        SystemClock currentTime=new SystemClock();
-
-        Clock newClock=currentTime.setTime(10);
-        System.out.println(LocalTime.now(currentTime.getConstantClock()));
-//        ambientLightDuration=0;
-//        timer=new Timer();
-//        headLight.setLowBeamState(LowBeamState.ACTIVE);
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                ambientLightDuration++;
-//                System.out.println(ambientLightDuration);
-//                if (ambientLightDuration==30000){
-//                    headLight.setLowBeamState(LowBeamState.INACTIVE);
-//                    stopTimer();
-//                }
-//            }
-//        }, 1,1);
+//        SystemClock currentTime=new SystemClock();
+//
+//        Clock newClock=currentTime.setTime(10);
+//        System.out.println(LocalTime.now(currentTime.getConstantClock()));
+        ambientLightDuration=0;
+        timer=new Timer();
+        headLight.setLowBeamState(LowBeamState.ACTIVE);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ambientLightDuration++;
+                System.out.println(ambientLightDuration);
+                if (ambientLightDuration==30000){
+                    headLight.setLowBeamState(LowBeamState.INACTIVE);
+                    stopTimer();
+                }
+            }
+        }, 1,1);
 
 
     }

@@ -119,5 +119,25 @@ public class LowBeamHeadLights_StepDefinitions {
         car.setDoorStatus(DoorPosition.OPEN);
     }
 
+    @Given("the driver turns light rotary switch to auto")
+    public void the_driver_turns_light_rotary_switch_to_auto() {
+        car.setLightRotarySwitch(LightRotarySwitchState.AUTO);
+    }
+
+    @When("the exterior brightness is below 200lx")
+    public void the_exterior_brightness_is_below_200lx() {
+        car.setExteriorBrightness(150);
+    }
+
+    @Then("low beam headlight will be active at least 3 seconds")
+    public void low_beam_headlight_will_be_active_at_least_seconds() {
+        car.setLowBeamHeadlightDuration(5);
+    }
+
+    @When("the exterior brightness is above 250lx")
+    public void the_exterior_brightness_is_above_250lx() {
+        car.setExteriorBrightness(300);
+    }
+
 
 }
