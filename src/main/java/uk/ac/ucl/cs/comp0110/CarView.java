@@ -7,11 +7,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 public class CarView extends JFrame{
     public Car model;
     public Graphics2D g2d;
+    public ScheduledExecutorService service;
     Polygon leftFrontIndicator;
     Polygon rightFrontIndicator;
     Polygon leftSideIndicator;
@@ -20,7 +21,6 @@ public class CarView extends JFrame{
     Polygon rightBackIndicator;
     public boolean leftIndicatorFlashed;
     public boolean rightIndicatorFlashed;
-    ScheduledExecutorService service;
     public JPanel bottomPanel = new JPanel();
     public JRadioButton leftDirection;
     public JRadioButton rightDirection;
@@ -28,27 +28,216 @@ public class CarView extends JFrame{
     public JRadioButton rightTipBlinking;
     public JRadioButton hazardSwitch;
     public JRadioButton soldInUKOrCanada;
+    public JRadioButton keyInPosition;
+    public JRadioButton keyInserted;
+    public JRadioButton noKeyInserted;
     private int numberOfFlashCycles;
-    public Semaphore sem;
+    public long numseconds=0;
     public CarView(Car model) {
         this.model=model;
+
         leftIndicatorFlashed=false;
         rightIndicatorFlashed=false;
-        service= Executors.newSingleThreadScheduledExecutor();
         leftDirection = new JRadioButton("Downward Direction Blinking");
         rightDirection = new JRadioButton("Upward Direction Blinking");
         leftTipBlinking=new JRadioButton("Downward Tip-Blinking");
         rightTipBlinking=new JRadioButton("Upward Tip-Blinking");
         hazardSwitch=new JRadioButton("Hazard Warning Button");
-        soldInUKOrCanada=new JRadioButton("Car sold in UK or Canada");
+        soldInUKOrCanada=new JRadioButton("Country sold in UK or Canada");
+        keyInserted=new JRadioButton("Key Inserted");
+        noKeyInserted=new JRadioButton("No Key Inserted");
+        keyInPosition=new JRadioButton("Key In Position");
         numberOfFlashCycles=0;
-        sem=new Semaphore(1);
+        service= Executors.newSingleThreadScheduledExecutor();
         makeFrame();
 
 
     }
-    public void paint(Graphics g) {
 
+    public void drawHazard(Graphics g){
+        if (model.getHazardSwitchState()==true){
+            if (leftIndicatorFlashed == false && rightIndicatorFlashed==false) {
+                g2d.setPaint(new Color(255, 255, 0));
+                g.fillPolygon(leftFrontIndicator);
+                g.fillPolygon(leftSideIndicator);
+                g.fillPolygon(leftBackIndicator);
+                g.fillPolygon(rightFrontIndicator);
+                g.fillPolygon(rightSideIndicator);
+                g.fillPolygon(rightBackIndicator);
+                leftIndicatorFlashed = true;
+                rightIndicatorFlashed=true;
+
+
+            } else {
+                g2d.setPaint(new Color(211, 211, 211));
+                g.fillPolygon(leftFrontIndicator);
+                g.fillPolygon(leftSideIndicator);
+                g.fillPolygon(leftBackIndicator);
+                g.fillPolygon(rightFrontIndicator);
+                g.fillPolygon(rightSideIndicator);
+                g.fillPolygon(rightBackIndicator);
+                leftIndicatorFlashed = false;
+                rightIndicatorFlashed=false;
+
+
+            }
+        }
+    }
+
+
+    public void drawLeftBlinking(Graphics g){
+        changeSelectedButton();
+
+        if (model.getBlinkingState("Left")==Blinking.FLASHING && model.getFlashingCycles("Left") == false && model.getHazardSwitchState()==false) {
+            
+            if (model.getFlashState()==Flashing.DARK) {
+                g2d.setPaint(new Color(255, 255, 0));
+                if (model.getDimmedLightStatus("Left")==50){
+                    g2d.setPaint(new Color(127,127,0));
+                }
+                g.fillPolygon(leftFrontIndicator);
+                g.fillPolygon(leftSideIndicator);
+                g.fillPolygon(leftBackIndicator);
+                model.changeFlashState();
+
+
+
+            } else {
+                g2d.setPaint(new Color(211, 211, 211));
+                g.fillPolygon(leftFrontIndicator);
+                g.fillPolygon(leftSideIndicator);
+                g.fillPolygon(leftBackIndicator);
+                model.changeFlashState();
+
+
+            }
+        } else if (model.getBlinkingState("Left") == Blinking.NONFLASHING && model.getFlashingCycles("Left")==false)  {
+
+            g2d.setPaint(new Color(211, 211, 211));
+            g.fillPolygon(leftFrontIndicator);
+            g.fillPolygon(leftSideIndicator);
+            g.fillPolygon(leftBackIndicator);
+
+        }
+    }
+    public void drawLeftTipBlinking(Graphics g){
+        changeSelectedButton();
+        if (model.getBlinkingState("Left")==Blinking.FLASHING && model.getFlashingCycles("Left") == true  && model.getHazardSwitchState()==false) {
+
+            leftTipBlinking.setSelected(false);
+            if (model.getFlashState()==Flashing.DARK) {
+                g2d.setPaint(new Color(255, 255, 0));
+                g.fillPolygon(leftBackIndicator);
+                g.fillPolygon(leftSideIndicator);
+                g.fillPolygon(leftFrontIndicator);
+                model.changeFlashState();
+                int flashCycle=model.getNumberofFlashCycles()+1;
+                model.setNumberofFlashCycles(flashCycle);
+            } else {
+                g2d.setPaint(new Color(211, 211, 211));
+                g.fillPolygon(leftSideIndicator);
+                g.fillPolygon(leftBackIndicator);
+                g.fillPolygon(leftFrontIndicator);
+                model.changeFlashState();
+
+            }
+            if (model.getNumberofFlashCycles()==3) {
+                model.setNumberofFlashCycles(0);
+                model.setLengthOfTimeHeld(0);
+                model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
+                leftTipBlinking.setSelected(false);
+
+            }
+        }
+    }
+    public void changeSelectedButton(){
+        if (model.getBlinkingState("Left")==Blinking.FLASHING && model.getHazardSwitchState()==false){
+            rightTipBlinking.setSelected(false);
+            rightDirection.setSelected(false);
+            if (model.getFlashingCycles("Left")==false){
+                leftDirection.setSelected(true);
+                leftTipBlinking.setSelected(false);
+            }else{
+                leftTipBlinking.setSelected(true);
+                leftDirection.setSelected(false);
+            }
+        }
+        if (model.getBlinkingState("Right")==Blinking.FLASHING && model.getHazardSwitchState()==false){
+            leftTipBlinking.setSelected(false);
+            leftDirection.setSelected(false);
+            if (model.getFlashingCycles("Right")==false){
+                rightDirection.setSelected(true);
+                rightTipBlinking.setSelected(false);
+            }else{
+                rightDirection.setSelected(false);
+                rightTipBlinking.setSelected(true);
+            }
+        }
+    }
+    public void drawRightBlinking(Graphics g){
+        changeSelectedButton();
+        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == false  && model.getHazardSwitchState()==false) {
+            if (model.getFlashState()==Flashing.DARK) {
+
+                g2d.setPaint(new Color(255, 255, 0));
+                if (model.getDimmedLightStatus("Right")==50){
+                    g2d.setPaint(new Color(127,127,0));
+                }
+                g.fillPolygon(rightFrontIndicator);
+                g.fillPolygon(rightSideIndicator);
+                g.fillPolygon(rightBackIndicator);
+                model.changeFlashState();
+            } else {
+
+                g2d.setPaint(new Color(211, 211, 211));
+                g.fillPolygon(rightFrontIndicator);
+                g.fillPolygon(rightSideIndicator);
+                g.fillPolygon(rightBackIndicator);
+                model.changeFlashState();
+            }
+
+        } else if (model.getBlinkingState("Right") == Blinking.NONFLASHING) {
+
+            g2d.setPaint(new Color(211, 211, 211));
+            g.fillPolygon(rightFrontIndicator);
+            g.fillPolygon(rightSideIndicator);
+            g.fillPolygon(rightBackIndicator);
+
+        }
+    }
+    public void drawRightTipBlinking(Graphics g){
+        changeSelectedButton();
+        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == true  && model.getHazardSwitchState()==false) {
+            rightTipBlinking.setSelected(false);
+
+            if (model.getFlashState()==Flashing.DARK) {
+
+                g2d.setPaint(new Color(255, 255, 0));
+                g.fillPolygon(rightFrontIndicator);
+                g.fillPolygon(rightSideIndicator);
+                g.fillPolygon(rightBackIndicator);
+                model.changeFlashState();
+                int flashCycle=model.getNumberofFlashCycles()+1;
+                model.setNumberofFlashCycles(flashCycle);
+            } else {
+
+                g2d.setPaint(new Color(211, 211, 211));
+                g.fillPolygon(rightFrontIndicator);
+                g.fillPolygon(rightSideIndicator);
+                g.fillPolygon(rightBackIndicator);
+                model.changeFlashState();
+
+            }
+            if (model.getNumberofFlashCycles()==3) {
+                model.setNumberofFlashCycles(0);
+                model.setLengthOfTimeHeld(0);
+                model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
+                rightTipBlinking.setSelected(false);
+            }
+        }
+    }
+
+    public void paint(final Graphics g) {
         super.paint(g);
         g2d = (Graphics2D) g;
         leftFrontIndicator = new Polygon(new int[]{getWidth() / 3 + 70, getWidth() / 3 + 25, getWidth() / 3 + 20}, new int[]{getHeight() / 3 + 20, getHeight() / 3 + 45, getHeight() / 3 + 90}, 3);
@@ -70,194 +259,13 @@ public class CarView extends JFrame{
         g.drawPolygon(rightSideIndicator);
         g.drawPolygon(leftBackIndicator);
         g.drawPolygon(rightBackIndicator);
-        if (model.getHazardSwitchState()==true){
-            if (leftIndicatorFlashed == false && rightIndicatorFlashed==false) {
-                try{
-                System.out.println("testing1");
-                sem.acquire();
-                g2d.setPaint(new Color(255, 255, 0));
-                g.fillPolygon(leftFrontIndicator);
-                g.fillPolygon(leftSideIndicator);
-                g.fillPolygon(leftBackIndicator);
-                g.fillPolygon(rightFrontIndicator);
-                g.fillPolygon(rightSideIndicator);
-                g.fillPolygon(rightBackIndicator);
-                leftIndicatorFlashed = true;
-                rightIndicatorFlashed=true;
-                repaint();
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {}
-                    sem.release();
-                } else {
-                try {
-                    sem.acquire();
-                    g2d.setPaint(new Color(211, 211, 211));
-                    g.fillPolygon(leftFrontIndicator);
-                    g.fillPolygon(leftSideIndicator);
-                    g.fillPolygon(leftBackIndicator);
-                    g.fillPolygon(rightFrontIndicator);
-                    g.fillPolygon(rightSideIndicator);
-                    g.fillPolygon(rightBackIndicator);
-                    leftIndicatorFlashed = false;
-                    rightIndicatorFlashed = false;
-                    repaint();
-                    Thread.sleep(1000);
-                }catch(InterruptedException e){}
-                sem.release();
-            }
-        }
-
-        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getFlashingCycles("Left") == false && model.getHazardSwitchState()==false) {
-            System.out.println("testing3");
-            if (leftIndicatorFlashed == false) {
-
-                try {
-                    sem.acquire();
-                    g2d.setPaint(new Color(255, 255, 0));
-                    if (model.getDimmedLightStatus("Left") == 50) {
-                        g2d.setPaint(new Color(127, 127, 0));
-                    }
-                    g.fillPolygon(leftFrontIndicator);
-                    g.fillPolygon(leftSideIndicator);
-                    g.fillPolygon(leftBackIndicator);
-                    leftIndicatorFlashed = true;
-                    repaint();
-                    Thread.sleep(1000);
-
-                }catch(InterruptedException e){}
-                sem.release();
-            } else {
-                System.out.println("testing1");
-                try {
-                    sem.acquire();
-                    g2d.setPaint(new Color(211, 211, 211));
-                    g.fillPolygon(leftFrontIndicator);
-                    g.fillPolygon(leftSideIndicator);
-                    g.fillPolygon(leftBackIndicator);
-                    leftIndicatorFlashed = false;
-                    repaint();
-                    Thread.sleep(1000);
-                }catch(InterruptedException e){}
-                sem.release();
-            }
-        } else if (model.getBlinkingState("Left") == Blinking.NONFLASHING)  {
-
-            g2d.setPaint(new Color(211, 211, 211));
-            g.fillPolygon(leftFrontIndicator);
-            g.fillPolygon(leftSideIndicator);
-            g.fillPolygon(leftBackIndicator);
-            leftIndicatorFlashed = false;
-        }
-        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getFlashingCycles("Left") == true  && model.getHazardSwitchState()==false) {
-            rightDirection.setSelected(false);
-
-            if (leftIndicatorFlashed == false) {
-                try {
-                    sem.acquire();
-                    g2d.setPaint(new Color(255, 255, 0));
-                    g.fillPolygon(leftBackIndicator);
-                    g.fillPolygon(leftSideIndicator);
-                    g.fillPolygon(leftFrontIndicator);
-                    leftIndicatorFlashed = true;
-                    numberOfFlashCycles++;
-                    repaint();
-                    Thread.sleep(1000);
-                }catch(InterruptedException e){}
-                sem.release();
-            } else {
-                try {
-                    sem.acquire();
-                    g2d.setPaint(new Color(211, 211, 211));
-                    g.fillPolygon(leftSideIndicator);
-                    g.fillPolygon(leftBackIndicator);
-                    g.fillPolygon(leftFrontIndicator);
-                    leftIndicatorFlashed = false;
-                    repaint();
-                    Thread.sleep(1000);
-                }catch(InterruptedException e){}
-                sem.release();
-
-            }
-            if (numberOfFlashCycles==3) {
-                numberOfFlashCycles=0;
-                model.setLengthOfTimeHeld(0);
-                model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
-                leftTipBlinking.setSelected(false);
-            }
-        }
-        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == false  && model.getHazardSwitchState()==false) {
-            if (rightIndicatorFlashed == false) {
-                try {
-                    sem.acquire();
-                    g2d.setPaint(new Color(255, 255, 0));
-                    if (model.getDimmedLightStatus("Right") == 50) {
-                        g2d.setPaint(new Color(127, 127, 0));
-                    }
-                    g.fillPolygon(rightFrontIndicator);
-                    g.fillPolygon(rightSideIndicator);
-                    g.fillPolygon(rightBackIndicator);
-                    rightIndicatorFlashed = true;
-                    repaint();
-                    Thread.sleep(1000);
-                }catch(InterruptedException e){}
-                sem.release();
-            } else {
-                try {
-                    sem.acquire();
-                    g2d.setPaint(new Color(211, 211, 211));
-                    g.fillPolygon(rightFrontIndicator);
-                    g.fillPolygon(rightSideIndicator);
-                    g.fillPolygon(rightBackIndicator);
-                    rightIndicatorFlashed = false;
-                    repaint();
-                    Thread.sleep(1000);
-                }catch(InterruptedException e){}
-                sem.release();
-            }
-
-        } else if (model.getBlinkingState("Right") == Blinking.NONFLASHING) {
-            g2d.setPaint(new Color(211, 211, 211));
-            g.fillPolygon(rightFrontIndicator);
-            g.fillPolygon(rightSideIndicator);
-            g.fillPolygon(rightBackIndicator);
-            rightIndicatorFlashed = false;
-        }
-        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right") == true  && model.getHazardSwitchState()==false) {
-             rightTipBlinking.setSelected(false);
-                if (rightIndicatorFlashed == false) {
-                    try {
-                        sem.acquire();
-                        g2d.setPaint(new Color(255, 255, 0));
-                        g.fillPolygon(rightFrontIndicator);
-                        g.fillPolygon(rightSideIndicator);
-                        g.fillPolygon(rightBackIndicator);
-                        rightIndicatorFlashed = true;
-                        numberOfFlashCycles++;
-                        repaint();
-                        Thread.sleep(1000);
-                    }catch(InterruptedException e){}
-                    sem.release();
-                } else {
-                    try {
-                        sem.acquire();
-                        g2d.setPaint(new Color(211, 211, 211));
-                        g.fillPolygon(rightFrontIndicator);
-                        g.fillPolygon(rightSideIndicator);
-                        g.fillPolygon(rightBackIndicator);
-                        rightIndicatorFlashed = false;
-                        repaint();
-                        Thread.sleep(1000);
-                    }catch(InterruptedException e){}
-                    sem.release();
-                }
-            if (numberOfFlashCycles==3) {
-                numberOfFlashCycles=0;
-                model.setLengthOfTimeHeld(0);
-                model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
-
-            }
-            }
-        }
+        checkIgnition();
+        drawLeftBlinking(g);
+        drawRightBlinking(g);
+        drawLeftTipBlinking(g);
+        drawRightTipBlinking(g);
+        drawHazard(g);
+    }
     public void makeFrame() {
         Container contentPane = getContentPane();
         JPanel centralGrid = new JPanel();
@@ -271,13 +279,16 @@ public class CarView extends JFrame{
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         pack();
         setVisible(true);
-//        service.scheduleAtFixedRate(new Runnable(){
-//            @Override
-//            public void run() {
-//                repaint();
-//
-//            }
-//        },0,1,TimeUnit.SECONDS);
+        service.scheduleAtFixedRate(new Runnable() {
+
+            @Override
+            public void run() {
+
+                    repaint();
+
+
+            }
+        },0,500,TimeUnit.MILLISECONDS);
 
     }
     public JPanel makeBottomInputs() {
@@ -294,12 +305,42 @@ public class CarView extends JFrame{
         blinkingDirection.add(leftTipBlinking);
         blinkingDirection.add(rightTipBlinking);
         blinkingDirection.add(rightDirection);
+        blinkingDirection.add(hazardSwitch);
+        blinkingDirection.add(soldInUKOrCanada);
+        blinkingDirection.add(noKeyInserted);
+        blinkingDirection.add(keyInPosition);
+        blinkingDirection.add(keyInserted);
         typeOfBlinking.add(blinkingType);
-        typeOfBlinking.add(hazardSwitch);
-        typeOfBlinking.add(soldInUKOrCanada);
         bottomPanel.add(typeOfBlinking);
         bottomPanel.add(blinkingDirection);
         return bottomPanel;
+    }
+    public void checkIgnition(){
+        if (model.getIgnitionState()==IgnitionStatus.KEYINIGNITIONONPOSITION){
+            noKeyInserted.setSelected(false);
+            keyInserted.setSelected(false);
+        }else if (model.getIgnitionState()==IgnitionStatus.KEYINSERTED){
+            noKeyInserted.setSelected(false);
+            keyInPosition.setSelected(false);
+        }else{
+            keyInPosition.setSelected(false);
+            keyInserted.setSelected(false);
+        }
+        if (model.getIgnitionState()!=IgnitionStatus.KEYINIGNITIONONPOSITION){
+            leftDirection.setEnabled(false);
+            rightDirection.setEnabled(false);
+            leftTipBlinking.setEnabled(false);
+            rightTipBlinking.setEnabled(false);
+            hazardSwitch.setEnabled(false);
+            soldInUKOrCanada.setEnabled(false);
+        }else{
+            leftDirection.setEnabled(true);
+            rightDirection.setEnabled(true);
+            leftTipBlinking.setEnabled(true);
+            rightTipBlinking.setEnabled(true);
+            hazardSwitch.setEnabled(true);
+            soldInUKOrCanada.setEnabled(true);
+        }
     }
     public JRadioButton getLeftDirection(){
         return leftDirection;
@@ -319,6 +360,13 @@ public class CarView extends JFrame{
     public JRadioButton getSoldInUKOrCanada(){
         return soldInUKOrCanada;
     }
-
-
+    public JRadioButton getKeyInPosition(){
+        return keyInPosition;
+    }
+    public JRadioButton getKeyInserted(){
+        return keyInserted;
+    }
+    public JRadioButton getNoKeyInserted(){
+        return noKeyInserted;
+    }
 }

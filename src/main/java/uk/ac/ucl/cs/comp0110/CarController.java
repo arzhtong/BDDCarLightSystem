@@ -37,6 +37,24 @@ public class CarController {
                 soldInUKOrCanadaPressed();
             }
         });
+        view.getNoKeyInserted().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                noKeyInsertedPressed();
+            }
+        });
+        view.getKeyInPosition().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                keyInPosition();
+            }
+        });
+        view.getKeyInserted().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                keyInsertedPressed();
+            }
+        });
         view.getLeftTipBlinking().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -64,36 +82,44 @@ public class CarController {
 
 
     public void leftDirectionPressed() {
-        if (model.getBlinkingState("Left") == Blinking.FLASHING) {
+
+        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getFlashingCycles("Left")==false) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         } else {
+            model.setNumberofFlashCycles(0);
             model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
         }
     }
     public void rightDirectionPressed() {
 
-        if (model.getBlinkingState("Right") == Blinking.FLASHING) {
+        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right")==false) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
-        }else{
-            model.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
 
+        }else{
+            model.setNumberofFlashCycles(0);
+            model.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
         }
 
     }
     public void leftTipBlinkingPressed(){
-        if (model.getBlinkingState("Left")==Blinking.FLASHING){
+
+        if (model.getBlinkingState("Left")==Blinking.FLASHING && model.getFlashingCycles("Left")==true){
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
             model.stopTimer();
         }else{
             model.stopTimer();
+            model.setNumberofFlashCycles(0);
             model.tipPitmanArm(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
         }
     }
     public void rightTipBlinkingPressed(){
-        if (model.getBlinkingState("Right")==Blinking.FLASHING){
+
+        if (model.getBlinkingState("Right")==Blinking.FLASHING && model.getFlashingCycles("Right")==true){
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
             model.stopTimer();
+            model.setNumberofFlashCycles(0);
         }else{
+            model.setNumberofFlashCycles(0);
             model.stopTimer();
             model.tipPitmanArm(PitmanArmPosition.UPWARD5,model.getLengthOfTimeHeld());
         }
@@ -103,6 +129,7 @@ public class CarController {
             model.setHazardSwitch(true);
         }else{
             model.setHazardSwitch(false);
+
         }
     }
 
@@ -112,5 +139,15 @@ public class CarController {
         }else{
             model.setInUSAOrCanada(false);
         }
+    }
+    public void noKeyInsertedPressed(){
+        model.isIgnitionOn(IgnitionStatus.NOKEYINSERTED);
+    }
+    public void keyInsertedPressed(){
+        model.isIgnitionOn(IgnitionStatus.KEYINSERTED);
+    }
+    public void keyInPosition(){
+        model.isIgnitionOn(IgnitionStatus.KEYINIGNITIONONPOSITION);
+        model.checkPitmanArmState();
     }
 }

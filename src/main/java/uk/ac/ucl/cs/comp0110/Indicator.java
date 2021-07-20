@@ -2,10 +2,25 @@ package uk.ac.ucl.cs.comp0110;
 enum Blinking{
     FLASHING,NONFLASHING
 }
+enum Flashing{
+    BRIGHT,DARK
+}
 public class Indicator {
     private Blinking blinkingState;
     private boolean flashCycle;
     private int dimmedLight;
+    private int hazardCycleLength;
+    private int numberofFlashCycles;
+    private Flashing flashState;
+
+    public Flashing getFlashState(){
+        return flashState;
+    }
+    public void setFlashState(Flashing flashState){
+        this.flashState=flashState;
+    }
+
+
     public Indicator(){
         blinkingState=Blinking.NONFLASHING;
     }
@@ -27,4 +42,17 @@ public class Indicator {
     public int getDimmedLight(){
         return dimmedLight;
     }
+    public void setHazardCycleLength(int hazardCycleLength){
+        this.hazardCycleLength=hazardCycleLength;
+    }
+    public int getHazardCycleLength(){
+        return hazardCycleLength;
+    }
+    public void setNumberofFlashCycles(int numberofFlashCycles){
+        this.numberofFlashCycles=numberofFlashCycles;
+    }
+    public int getNumberofFlashCycles(){
+        return numberofFlashCycles;
+    }
+
 }
