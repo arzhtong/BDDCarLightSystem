@@ -387,7 +387,7 @@ public class CarView extends JFrame{
             rightDirection.setEnabled(false);
             leftTipBlinking.setEnabled(false);
             rightTipBlinking.setEnabled(false);
-            hazardSwitch.setEnabled(false);
+
             soldInUKOrCanada.setEnabled(false);
 
         }else{
@@ -395,7 +395,7 @@ public class CarView extends JFrame{
             rightDirection.setEnabled(true);
             leftTipBlinking.setEnabled(true);
             rightTipBlinking.setEnabled(true);
-            hazardSwitch.setEnabled(true);
+
             soldInUKOrCanada.setEnabled(true);
 
         }

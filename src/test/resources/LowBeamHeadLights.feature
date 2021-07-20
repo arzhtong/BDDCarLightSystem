@@ -3,17 +3,18 @@ Feature: Low Beam Headlights
   The low beam headlights are interacted through a light rotary switch. This feature is for defining the state of the headlight
   depending on the ignition of the car and the brightness setting of the outside of the vehicle.
 
+  Background:
+    Given the ignition is on
+
   Rule: Low beam headlight can be activated when the ignition is on
 
     @requirement(ELS-14)
     Scenario: Driver engages light rotary switch on
-      Given the ignition is on
       When the driver turns the light rotary switch to the on position
       Then the low beam headlight will be activated
 
     @requirement(ELS-14)
     Scenario: Driver turns light rotary switch off
-      Given the ignition is on
       When the driver turns the light rotary switch to the off position
       Then the low beam headlight will be deactivated
 
@@ -36,12 +37,12 @@ Feature: Low Beam Headlights
     @requirement(ELS-16)
     Scenario: Driver turns light rotary switch to auto with ignition off
       Given the ignition is off
-      When the driver turns the light rotary switch to auto
+      When the driver turns light rotary switch to auto
       Then the low beam headlight will be deactivated
 
     Scenario: Driver turns light rotary switch from auto to on with ignition on
       Given the ignition is off
-      And light rotary switch is auto
+      And the driver turns light rotary switch to auto
       When the driver turns the ignition on
       And the driver turns the light rotary switch on
       Then the low beam headlight will be activated
@@ -50,7 +51,6 @@ Feature: Low Beam Headlights
 
     @requirement(ELS-17)
     Scenario: Driver engages daytime running light
-    Given the ignition is on
     When the driver turns daytime running light on
     Then the low beam headlights will be activated
 
@@ -65,7 +65,6 @@ Feature: Low Beam Headlights
 
     @requirement(ELS-17,ELS-20)
     Scenario: Driver engages ambient light
-    Given the ignition is on
     When the ignition is off
     And the driver has turned ambient light on
     Then the low beam headlight will be activated
@@ -76,11 +75,10 @@ Feature: Low Beam Headlights
     And the ignition is off
     And 30 seconds have passed since the ambient light was activated
     When the driver opens the door
-    Then the low beam headlight will be deoactivated
+    Then the low beam headlight will be deactivated
 
     @requirement(ELS-17,ELS-20)
     Scenario: Driver removes ignition key with ambient light on
-    Given the Ignition is on
     And the ambient light is on
     When the driver removes the ignition key
     And 30 seconds have passed since the ambient light was activated
@@ -96,7 +94,6 @@ Feature: Low Beam Headlights
 
     @requirement(ELS-17,ELS-20)
     Scenario: Driver removes ignition key before 30 seconds pass of activation of ambient light
-    Given the Ignition is on
     And the ambient light is on
     And 30 seconds have not passed since the ambient light was activated
     When the driver removes the ignition key
@@ -104,7 +101,6 @@ Feature: Low Beam Headlights
 
     @requirement(ELS-17,ELS-20)
     Scenario: Driver removes ignition key before 30 seconds pass of activation of ambient light
-    Given the Ignition is on
     And the ambient light is on
     And 30 seconds have not passed since the ambient light was activated
     When the driver removes the ignition key
@@ -112,12 +108,28 @@ Feature: Low Beam Headlights
 
     @requirement(ELS-17,ELS-20)
     Scenario: Driver changes from daytime running light to ambient light
-    Given the ignition is on
     And daytime running light is on
     When the driver has turned ambient light on
     And the driver removes the ignition key
     And the driver immediately opens the door
     Then the low beam headlight will be activated
+
+    Rule: The low beam headlights must remain active for at least 3 seconds
+
+    @requirement(ELS-18)
+    Scenario: Driver activates lower beam headlights with exterior brightness below 200lx
+      When the driver turns light rotary switch to auto
+      And the exterior brightness is below 200lx
+      Then the low beam headlight will be activated
+      And low beam headlight will be active at least 3 seconds
+      
+    @requirement(ELS-18)
+    Scenario: Driver activates lower beam headlights with exterior brightness above 250lx
+      When the driver turns light rotary switch to auto
+      And the exterior brightness is above 250lx
+      Then the low beam headlight will be activated
+      And low beam headlight will be active at least 3 seconds
+
 
 
 
