@@ -188,7 +188,7 @@ Feature: Low Beam Headlights
       When the driver turns daytime running light on
       Then the low beam headlight will be activated
       And the low beam tail light will be activated
-      
+
 
 
 

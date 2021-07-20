@@ -32,6 +32,7 @@ public class Car {
     private int exteriorBrightness;
     private int lowBeamHeadlightDuration;
     private boolean darknessSwitch;
+    private Light tailLight;
     private LightRotarySwitchState lightRotarySwitchState;
     public Car(){
 
@@ -39,6 +40,7 @@ public class Car {
         doorPosition=DoorPosition.CLOSED;
         leftIndicator=new Indicator();
         headLight=new Light();
+        tailLight=new Light();
         rightIndicator=new Indicator();
         leftIndicator.setState(Blinking.NONFLASHING);
         rightIndicator.setState(Blinking.NONFLASHING);
@@ -295,9 +297,13 @@ public class Car {
     public IgnitionStatus getIgnitionState(){
         return ignitionState;
     }
-    public LowBeamState getLowBeamState(){
+    public LowBeamState getLowBeamState(Light carlight){
         return headLight.getLowBeamState();
     }
+    public Light getTailLight(){
+        return null;
+    }
+
     public LightRotarySwitchState getLightRotarySwitchState(){
         return lightRotarySwitchState;
     }

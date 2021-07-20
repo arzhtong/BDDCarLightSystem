@@ -119,7 +119,7 @@ public class CarView extends JFrame{
                 g2d.setPaint(new Color(211, 211, 211));
                 g.fillPolygon(leftSideIndicator);
                 g.fillPolygon(leftBackIndicator);
-                if (model.getLowBeamState()==LowBeamState.INACTIVE){
+                if (model.getLowBeamState(model.getHeadLight())==LowBeamState.INACTIVE){
                     g.fillPolygon(leftFrontIndicator);
                 }
                 model.changeFlashState();
@@ -131,7 +131,7 @@ public class CarView extends JFrame{
             g2d.setPaint(new Color(211, 211, 211));
             g.fillPolygon(leftSideIndicator);
             g.fillPolygon(leftBackIndicator);
-            if (model.getLowBeamState()==LowBeamState.INACTIVE){
+            if (model.getLowBeamState(model.getHeadLight())==LowBeamState.INACTIVE){
                 g.fillPolygon(leftFrontIndicator);
             }
 
@@ -143,7 +143,7 @@ public class CarView extends JFrame{
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
         }
-        if ((model.getLowBeamState()==LowBeamState.ACTIVE)) {
+        if ((model.getLowBeamState(model.getHeadLight())==LowBeamState.ACTIVE)) {
             g2d.setPaint(new Color(100, 150, 0));
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
@@ -176,7 +176,7 @@ public class CarView extends JFrame{
                 g2d.setPaint(new Color(211, 211, 211));
                 g.fillPolygon(leftSideIndicator);
                 g.fillPolygon(leftBackIndicator);
-                if (model.getLowBeamState()==LowBeamState.INACTIVE){
+                if (model.getLowBeamState(model.getHeadLight())==LowBeamState.INACTIVE){
                     g.fillPolygon(leftFrontIndicator);
                 }
                 model.changeFlashState();
@@ -233,7 +233,7 @@ public class CarView extends JFrame{
                 g2d.setPaint(new Color(211, 211, 211));
                 g.fillPolygon(rightSideIndicator);
                 g.fillPolygon(rightBackIndicator);
-                if (model.getLowBeamState()==LowBeamState.INACTIVE){
+                if (model.getLowBeamState(model.getHeadLight())==LowBeamState.INACTIVE){
                     g.fillPolygon(rightFrontIndicator);
                 }
                 model.changeFlashState();
@@ -245,7 +245,7 @@ public class CarView extends JFrame{
             g2d.setPaint(new Color(211, 211, 211));
             g.fillPolygon(rightSideIndicator);
             g.fillPolygon(rightBackIndicator);
-            if (model.getLowBeamState()==LowBeamState.INACTIVE){
+            if (model.getLowBeamState(model.getHeadLight())==LowBeamState.INACTIVE){
                 g.fillPolygon(rightFrontIndicator);
             }
 
@@ -272,7 +272,7 @@ public class CarView extends JFrame{
                 g.fillPolygon(rightSideIndicator);
                 g.fillPolygon(rightBackIndicator);
                 model.changeFlashState();
-                if (model.getLowBeamState()==LowBeamState.INACTIVE){
+                if (model.getLowBeamState(model.getHeadLight())==LowBeamState.INACTIVE){
                     g.fillPolygon(rightFrontIndicator);
                 }
 

@@ -20,7 +20,7 @@ public class LowBeamHeadLights_StepDefinitions {
 
     @Then("the low beam headlight will be activated")
     public void the_low_beam_headlight_will_be_activated() {
-        Assert.assertEquals(car.getLowBeamState(),LowBeamState.ACTIVE);
+        Assert.assertEquals(car.getLowBeamState(car.getHeadLight()),LowBeamState.ACTIVE);
     }
 
     @When("the driver turns the light rotary switch to the off position")
@@ -30,7 +30,7 @@ public class LowBeamHeadLights_StepDefinitions {
 
     @Then("the low beam headlight will be deactivated")
     public void the_low_beam_headlight_will_be_deactivated() {
-        Assert.assertEquals(car.getLowBeamState(),LowBeamState.INACTIVE);
+        Assert.assertEquals(car.getLowBeamState(car.getHeadLight()),LowBeamState.INACTIVE);
     }
     @Given("the ignition is off")
     public void the_ignition_is_off() {
@@ -146,5 +146,10 @@ public class LowBeamHeadLights_StepDefinitions {
     public void the_driver_engages_the_darkness_switch() {
         car.setDarknessSwitch(true);
     }
+    @Then("the low beam tail light will be activated")
+    public void the_low_beam_tail_light_will_be_activated() {
+        Assert.assertEquals(car.getLowBeamState(car.getTailLight()),LowBeamState.ACTIVE);
+    }
+
 
 }
