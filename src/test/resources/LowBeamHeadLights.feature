@@ -172,7 +172,15 @@ Feature: Low Beam Headlights
       And the driver closes the door
       Then the low beam headlight will be deactivated
 
+    Rule: Engaging darkness switch doesn't allow activation of ambient light
 
+    @requirement(ELS-21)
+    Scenario: Driver activates ambient light after darkness switch
+      Given the ignition is off
+      When the driver engages the darkness switch
+      And the driver turns on ambient light
+      Then the low beam headlight will be deactivated
+      
 
 
 

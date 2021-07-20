@@ -1,8 +1,7 @@
 package uk.ac.ucl.cs.comp0110;
-import java.time.LocalTime;
 import java.util.TimerTask;
 import java.util.Timer;
-import java.time.Clock;
+
 enum PitmanArmPosition{
     UPWARD7,DOWNWARD7,NEUTRAL,UPWARD5,DOWNWARD5
 }
