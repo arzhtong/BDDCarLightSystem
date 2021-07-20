@@ -154,10 +154,20 @@ public class Car {
     }
     public void setDoorStatus(DoorPosition doorPosition){
         this.doorPosition=doorPosition;
-        if (ambientLight==true && ambientLightDuration<30000) {
+
+        if (ambientLight==true && ambientLightDuration<30000 && exteriorBrightness>200) {
             countAmbientLightTime();
         }
-    }
+        if (doorPosition==DoorPosition.CLOSED && exteriorBrightness<200 && ambientLight==true){
+            System.out.println("testing123");
+            headLight.setLowBeamState(LowBeamState.INACTIVE);
+        }
+        if (doorPosition==DoorPosition.OPEN && ambientLight==true){
+            if (exteriorBrightness<200) {
+                headLight.setLowBeamState(LowBeamState.ACTIVE);
+            }
+            }
+        }
     public void setAmberLightDuration(int amberLightDuration){
         this.ambientLightDuration=amberLightDuration;
         if (ambientLightDuration>30000){

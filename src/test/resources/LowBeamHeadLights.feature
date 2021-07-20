@@ -40,6 +40,7 @@ Feature: Low Beam Headlights
       When the driver turns light rotary switch to auto
       Then the low beam headlight will be deactivated
 
+    @requirement(ELS-16)
     Scenario: Driver turns light rotary switch from auto to on with ignition on
       Given the ignition is off
       And the driver turns light rotary switch to auto
@@ -70,12 +71,27 @@ Feature: Low Beam Headlights
     Then the low beam headlight will be activated
 
     @requirement(ELS-17,ELS-20)
+    Scenario: Driver engages ambient light with light rotary switch in auto
+      When the ignition is off
+      And the driver has turned ambient light on
+      And the driver turns light rotary switch to auto
+      Then the low beam headlight will be deactivated
+
+    @requirement(ELS-17,ELS-20)
     Scenario: Driver opens the door with ambient light on
     Given the ambient light is on
     And the ignition is off
     And 30 seconds have passed since the ambient light was activated
+    And the exterior brightness is above 200lx
     When the driver opens the door
     Then the low beam headlight will be deactivated
+
+      @requirement(ELS-17)
+      Scenario: Driver turns on ambient light with light rotary switch in auto
+      And the ambient light is on
+      And the driver turns light rotary switch to auto
+      When the driver turns on ambient light
+      Then the low beam headlight will be activated
 
     @requirement(ELS-17,ELS-20)
     Scenario: Driver removes ignition key with ambient light on
@@ -127,26 +143,33 @@ Feature: Low Beam Headlights
     Scenario: Driver activates lower beam headlights with exterior brightness above 250lx
       When the driver turns light rotary switch to auto
       And the exterior brightness is above 250lx
-      Then the low beam headlight will be deactivated
-      And low beam headlight will be active at least 3 seconds
+      Then low beam headlight will be active at least 3 seconds
+      And the low beam headlight will be deactivated
+
+    Scenario: Driver activates ambient lights with ignition off and exterior brightness below 200lx
+    Given the ignition is off
+    And the driver turns on ambient light
+    And the exterior brightness is below 200lx
+    When the driver turns light rotary switch to auto
+    Then the low beam headlight will be deactivated
 
     Rule: Ignition must be turned off for activation of ambient light
 
     @requirement(ELS-19)
     Scenario: Driver opens the door with brightness below 200lx
       Given the ignition is off
-      And the ambient light is on
+      And the driver turns on ambient light
       When the driver opens the door
       And the exterior brightness is below 200lx
       Then the low beam headlight will be activated
 
     @requirement(ELS-19)
-    Scenario: Driver opens the door with brightness below 200lx
+    Scenario: Driver closes the door with brightness below 200lx
       Given the ignition is off
-      And the ambient light is on
+      And the driver turns on ambient light
       And the driver opens the door
-      When the driver closes the door
-      And the exterior brightness is below 200lx
+      When the exterior brightness is below 200lx
+      And the driver closes the door
       Then the low beam headlight will be deactivated
 
 

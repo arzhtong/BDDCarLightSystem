@@ -138,6 +138,10 @@ public class LowBeamHeadLights_StepDefinitions {
     public void the_exterior_brightness_is_above_250lx() {
         car.setExteriorBrightness(300);
     }
+    @Given("the exterior brightness is above 200lx")
+    public void the_exterior_brightness_is_above_200lx() {
+        car.setExteriorBrightness(300);
+    }
 
 
 }
