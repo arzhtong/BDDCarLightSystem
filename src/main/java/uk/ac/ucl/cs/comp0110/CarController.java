@@ -101,6 +101,12 @@ public class CarController {
                 dayTimeRunningLightPressed();
             }
         });
+        view.getExteriorBrightness().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exteriorBrightnessPressed();
+            }
+        });
     }
 
 
@@ -211,5 +217,8 @@ public class CarController {
             model.setAmbientLight(true);
             model.countAmbientLightTime();
         }
+    }
+    public void exteriorBrightnessPressed(){
+        model.setExteriorBrightness(Integer.parseInt(view.getExteriorBrightness().getText()));
     }
 }

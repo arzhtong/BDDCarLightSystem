@@ -33,6 +33,7 @@ public class CarView extends JFrame{
     public JRadioButton noKeyInserted;
     public JRadioButton ambientLight;
     public JRadioButton dayTimeRunningLight;
+    public JTextField exteriorBrightness;
     public JComboBox lightRotarySwitch;
     public JRadioButton doorPosition;
 
@@ -56,6 +57,7 @@ public class CarView extends JFrame{
         dayTimeRunningLight=new JRadioButton("Daytime Running Light Status");
         lightRotarySwitch= new JComboBox(new String[]{"Off", "On","Auto"});
         doorPosition=new JRadioButton("Door Open");
+        exteriorBrightness=new JTextField();
         numberOfFlashCycles=0;
         service= Executors.newSingleThreadScheduledExecutor();
         makeFrame();
@@ -349,6 +351,7 @@ public class CarView extends JFrame{
         optionalInputs.add(doorPosition);
         optionalInputs.add(ambientLight);
         optionalInputs.add(dayTimeRunningLight);
+        optionalInputs.add(exteriorBrightness);
         return optionalInputs;
     }
     public JPanel makeBlinkingInputs() {
@@ -438,5 +441,8 @@ public class CarView extends JFrame{
     }
     public JRadioButton getDayTimeRunningLight(){
         return dayTimeRunningLight;
+    }
+    public JTextField getExteriorBrightness(){
+        return exteriorBrightness;
     }
 }
