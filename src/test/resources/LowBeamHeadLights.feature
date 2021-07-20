@@ -181,6 +181,17 @@ Feature: Low Beam Headlights
       And the driver turns on ambient light
       Then the low beam headlight will be deactivated
 
+    Rule: When low or high beam headlights activate, tail lights are activated
+
+    @requirement(ELS-22)
+    Scenario: Driver engages daytime light
+      When the driver turns daytime running light on
+      Then the low beam headlight will be activated
+      And the low beam tail light will be activated
+      
+
+
+
 
 
 
