@@ -31,7 +31,7 @@ public class Car {
     private int ambientLightDuration;
     private int exteriorBrightness;
     private int lowBeamHeadlightDuration;
-
+    private boolean darknessSwitch;
     private LightRotarySwitchState lightRotarySwitchState;
     public Car(){
 
@@ -45,7 +45,7 @@ public class Car {
         lengthOfTimeHeld=0;
         numberofFlashCycles=0;
         hazardSwitchState=false;
-
+        darknessSwitch=false;
     }
     public void isIgnitionOn(IgnitionStatus ignitionState) {
         this.ignitionState = ignitionState;
@@ -118,6 +118,11 @@ public class Car {
         }
     }
     public void setDarknessSwitch(boolean darknessSwitch){
+        if (darknessSwitch==true){
+            setAmbientLight(false);
+            headLight.setLowBeamState(LowBeamState.INACTIVE);
+        }
+        this.darknessSwitch=darknessSwitch;
 
     }
     public void setInUSAOrCanada(boolean inUSAOrCanada){
@@ -148,8 +153,10 @@ public class Car {
         }
     }
     public void setAmbientLight(boolean ambientLight){
-        this.ambientLight=ambientLight;
-        if (ambientLight==true && ignitionState==IgnitionStatus.NOKEYINSERTED){
+        if (darknessSwitch==false) {
+            this.ambientLight = ambientLight;
+        }
+        if (this.ambientLight==true && ignitionState==IgnitionStatus.NOKEYINSERTED){
             headLight.setLowBeamState(LowBeamState.ACTIVE);
         }else{
             headLight.setLowBeamState(LowBeamState.INACTIVE);
@@ -449,6 +456,8 @@ public class Car {
     public boolean getAmbientLight(){
         return ambientLight;
     }
-
+    public boolean getDarknessSwitch(){
+        return darknessSwitch;
+    }
 }
 

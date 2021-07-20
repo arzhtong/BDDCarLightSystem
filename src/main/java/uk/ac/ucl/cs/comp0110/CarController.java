@@ -107,6 +107,12 @@ public class CarController {
                 exteriorBrightnessPressed();
             }
         });
+        view.getDarknessSwitch().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                darknessSwitchPressed();
+            }
+        });
     }
 
 
@@ -220,5 +226,12 @@ public class CarController {
     }
     public void exteriorBrightnessPressed(){
         model.setExteriorBrightness(Integer.parseInt(view.getExteriorBrightness().getText()));
+    }
+    public void darknessSwitchPressed(){
+        if (model.getDarknessSwitch()==true){
+            model.setDarknessSwitch(false);
+        }else{
+            model.setDarknessSwitch(true);
+        }
     }
 }

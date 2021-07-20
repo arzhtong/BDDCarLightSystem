@@ -35,6 +35,7 @@ public class CarView extends JFrame{
     public JRadioButton dayTimeRunningLight;
     public JTextField exteriorBrightness;
     public JComboBox lightRotarySwitch;
+    public JRadioButton darknessSwitch;
     public JRadioButton doorPosition;
 
     private int numberOfFlashCycles;
@@ -56,6 +57,7 @@ public class CarView extends JFrame{
         ambientLight=new JRadioButton("Ambient Light Status");
         dayTimeRunningLight=new JRadioButton("Daytime Running Light Status");
         lightRotarySwitch= new JComboBox(new String[]{"Off", "On","Auto"});
+        darknessSwitch=new JRadioButton("Darkness Switch");
         doorPosition=new JRadioButton("Door Open");
         exteriorBrightness=new JTextField();
         numberOfFlashCycles=0;
@@ -150,6 +152,9 @@ public class CarView extends JFrame{
             g2d.setPaint(new Color(100, 100, 0));
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
+        }
+        if (darknessSwitch.isSelected()){
+            ambientLight.setSelected(false);
         }
 
     }
@@ -352,6 +357,7 @@ public class CarView extends JFrame{
         optionalInputs.add(ambientLight);
         optionalInputs.add(dayTimeRunningLight);
         optionalInputs.add(exteriorBrightness);
+        optionalInputs.add(darknessSwitch);
         return optionalInputs;
     }
     public JPanel makeBlinkingInputs() {
@@ -444,5 +450,8 @@ public class CarView extends JFrame{
     }
     public JTextField getExteriorBrightness(){
         return exteriorBrightness;
+    }
+    public JRadioButton getDarknessSwitch(){
+        return darknessSwitch;
     }
 }
