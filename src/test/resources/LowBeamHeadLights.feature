@@ -180,7 +180,7 @@ Feature: Low Beam Headlights
       When the driver engages the darkness switch
       And the driver turns on ambient light
       Then the low beam headlight will be deactivated
-      
+
 
 
 

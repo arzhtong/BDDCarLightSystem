@@ -31,6 +31,7 @@ public class Car {
     private int ambientLightDuration;
     private int exteriorBrightness;
     private int lowBeamHeadlightDuration;
+
     private LightRotarySwitchState lightRotarySwitchState;
     public Car(){
 
@@ -44,6 +45,7 @@ public class Car {
         lengthOfTimeHeld=0;
         numberofFlashCycles=0;
         hazardSwitchState=false;
+
     }
     public void isIgnitionOn(IgnitionStatus ignitionState) {
         this.ignitionState = ignitionState;
@@ -115,7 +117,9 @@ public class Car {
             leftIndicator.setState(Blinking.FLASHING);
         }
     }
+    public void setDarknessSwitch(boolean darknessSwitch){
 
+    }
     public void setInUSAOrCanada(boolean inUSAOrCanada){
         this.inUSAOrCanada=inUSAOrCanada;
         if (inUSAOrCanada==true){

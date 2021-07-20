@@ -142,6 +142,9 @@ public class LowBeamHeadLights_StepDefinitions {
     public void the_exterior_brightness_is_above_200lx() {
         car.setExteriorBrightness(300);
     }
-
+    @When("the driver engages the darkness switch")
+    public void the_driver_engages_the_darkness_switch() {
+        car.setDarknessSwitch(true);
+    }
 
 }
