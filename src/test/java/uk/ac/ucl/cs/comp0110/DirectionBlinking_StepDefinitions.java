@@ -339,6 +339,10 @@ public class DirectionBlinking_StepDefinitions {
     public void all_right_indicators_are_flashing_for_flashing_cycles() {
         car.getRightIndicator().setCycle(true);
     }
+    @When("the driver closes the door")
+    public void the_driver_closes_the_door() {
+        car.setDoorStatus(DoorPosition.CLOSED);
+    }
 
 
 }
