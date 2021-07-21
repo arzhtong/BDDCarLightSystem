@@ -192,6 +192,7 @@ public class Car {
     public void setPitmanArmPosition(PitmanArmPosition position) {
         pitmanArmState=position;
         if (ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION){
+
             if (position==PitmanArmPosition.UPWARD7 || position==PitmanArmPosition.UPWARD5){
 
                 rightIndicator.setState(Blinking.FLASHING);
@@ -212,6 +213,7 @@ public class Car {
                 darkenIndicators();
             }
         }
+
     }
     public void setExteriorBrightness(int exteriorBrightness){
         this.exteriorBrightness=exteriorBrightness;
@@ -226,10 +228,20 @@ public class Car {
     public void setBeamLight(LowBeamState beamState){
         if (beamState==LowBeamState.ACTIVE){
             headLight.setLowBeamState(LowBeamState.ACTIVE);
-            tailLight.setLowBeamState(LowBeamState.ACTIVE);
+            if (inUSAOrCanada){
+                leftIndicator.setState(Blinking.FLASHING);
+                rightIndicator.setState(Blinking.FLASHING);
+            }else{
+                tailLight.setLowBeamState(LowBeamState.ACTIVE);
+            }
         }else if (beamState==LowBeamState.INACTIVE){
             headLight.setLowBeamState(LowBeamState.INACTIVE);
-            tailLight.setLowBeamState(LowBeamState.INACTIVE);
+            if (inUSAOrCanada){
+                leftIndicator.setState(Blinking.NONFLASHING);
+                rightIndicator.setState(Blinking.NONFLASHING);
+            }else{
+                tailLight.setLowBeamState(LowBeamState.INACTIVE);
+            }
         }
     }
     public void setLowBeamHeadlightDuration(int lowBeamHeadlightDuration){
@@ -425,7 +437,6 @@ public class Car {
             @Override
             public void run() {
                 ambientLightDuration++;
-                System.out.println(ambientLightDuration);
                 if (ambientLightDuration==30000){
                     setBeamLight(LowBeamState.INACTIVE);
                     stopTimer();

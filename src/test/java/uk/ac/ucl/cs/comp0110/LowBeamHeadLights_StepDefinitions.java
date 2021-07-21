@@ -158,18 +158,33 @@ public class LowBeamHeadLights_StepDefinitions {
 
     @Then("the left tail light will be blinking")
     public void the_left_tail_light_will_be_blinking() {
-        Assert.assertEquals(car.getLeftIndicator().getState(),Blinking.FLASHING);
+        Assert.assertEquals(car.getBlinkingState("Left"),Blinking.FLASHING);
     }
 
     @Then("the right tail light will be blinking")
     public void the_right_tail_light_will_be_blinking() {
-       Assert.assertEquals(car.getRightIndicator().getState(),Blinking.FLASHING);
+       Assert.assertEquals(car.getBlinkingState("Right"),Blinking.FLASHING);
     }
 
 
     @Then("the right tail light will not be blinking")
     public void the_right_tail_light_will_not_be_blinking() {
-        Assert.assertEquals(car.getRightIndicator().getState(),Blinking.NONFLASHING);
+        Assert.assertEquals(car.getBlinkingState("Right"),Blinking.NONFLASHING);
+    }
+
+    @Then("the back left direction indicator will be blinking")
+    public void the_back_left_direction_indicator_will_be_blinking() {
+        Assert.assertEquals(car.getBlinkingState("Left"),Blinking.FLASHING);
+    }
+
+    @Then("the back right direction indicator will be blinking")
+    public void the_back_right_direction_indicator_will_be_blinking() {
+        Assert.assertEquals(car.getBlinkingState("Right"),Blinking.FLASHING);
+    }
+
+    @Then("the right indicators will not blink")
+    public void the_right_indicators_will_not_blink() {
+   Assert.assertEquals(car.getRightIndicator().getState(),Blinking.NONFLASHING);
     }
 
 
