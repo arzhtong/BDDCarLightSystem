@@ -113,6 +113,18 @@ public class CarController {
                 darknessSwitchPressed();
             }
         });
+        view.getSpeedOfCar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carDuration();
+            }
+        });
+        view.getPassCorner().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                passedCorner();
+            }
+        });
     }
 
 
@@ -233,5 +245,11 @@ public class CarController {
         }else{
             model.setDarknessSwitch(true);
         }
+    }
+    public void carDuration(){
+        model.setDrivingSpeed(Integer.parseInt(view.getSpeedOfCar().getText()));
+    }
+    public void passedCorner(){
+        model.countDurationOfPassingCornerTime();
     }
 }

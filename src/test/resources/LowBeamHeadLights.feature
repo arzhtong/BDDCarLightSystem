@@ -206,18 +206,12 @@ Feature: Low Beam Headlights
       Then the right indicator will not blink
       And the vehicle flashes all left indicators synchronously
 
-    @requirement(ELS-24)
-    Scenario: Driver signals left with light rotary switch on
-      And the driver turns the light rotary switch on
-      And the driver moves pitman arm downward
-      When the vehicle drives slower than 10km/h
-      Then the vehicles activates cornering lights
 
     @requirement(ELS-24)
     Scenario: Driver signals left with light rotary switch on
       And the driver turns the light rotary switch on
       And the driver moves pitman arm downward
-      When the vehicle drives slower than 10km/h
+      When the vehicle drives slower than 10km per hour
       Then the vehicle activates cornering lights
 
     @requirement(ELS-24)

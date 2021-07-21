@@ -39,7 +39,8 @@ public class CarView extends JFrame{
     public JComboBox lightRotarySwitch;
     public JRadioButton darknessSwitch;
     public JRadioButton doorPosition;
-
+    public JTextField speedOfCar;
+    public JRadioButton passCorner;
     private int numberOfFlashCycles;
     public long numseconds=0;
     public CarView(Car model) {
@@ -61,7 +62,9 @@ public class CarView extends JFrame{
         lightRotarySwitch= new JComboBox(new String[]{"Off", "On","Auto"});
         darknessSwitch=new JRadioButton("Darkness Switch");
         doorPosition=new JRadioButton("Door Open");
+        passCorner= new JRadioButton("Passed Corner");
         exteriorBrightness=new JTextField();
+        speedOfCar=new JTextField();
         numberOfFlashCycles=0;
         service= Executors.newSingleThreadScheduledExecutor();
         makeFrame();
@@ -96,6 +99,20 @@ public class CarView extends JFrame{
 
 
             }
+        }
+    }
+    public void drawCornerLight(Graphics g){
+        if (model.getCorneringLight().getState()==Lighting.ON){
+            g2d.setPaint(new Color(255, 255, 0));
+            g.fillPolygon(leftCornerLight);
+            g.fillPolygon(rightCornerLight);
+        }else{
+            g2d.setPaint(new Color(211, 211, 211));
+            g.fillPolygon(leftCornerLight);
+            g.fillPolygon(rightCornerLight);
+            leftDirection.setSelected(false);
+            rightDirection.setSelected(false);
+            passCorner.setSelected(false);
         }
     }
 
@@ -333,6 +350,7 @@ public class CarView extends JFrame{
         drawRightBlinking(g);
         drawLeftTipBlinking(g);
         drawRightTipBlinking(g);
+        drawCornerLight(g);
         drawHazard(g);
     }
     public void makeFrame() {
@@ -377,6 +395,8 @@ public class CarView extends JFrame{
         optionalInputs.add(dayTimeRunningLight);
         optionalInputs.add(exteriorBrightness);
         optionalInputs.add(darknessSwitch);
+        optionalInputs.add(passCorner);
+        optionalInputs.add(speedOfCar);
         return optionalInputs;
     }
     public JPanel makeBlinkingInputs() {
@@ -472,5 +492,11 @@ public class CarView extends JFrame{
     }
     public JRadioButton getDarknessSwitch(){
         return darknessSwitch;
+    }
+    public JTextField getSpeedOfCar(){
+        return speedOfCar;
+    }
+    public JRadioButton getPassCorner(){
+        return passCorner;
     }
 }
