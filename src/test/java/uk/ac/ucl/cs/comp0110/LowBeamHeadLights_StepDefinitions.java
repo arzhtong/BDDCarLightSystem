@@ -151,5 +151,27 @@ public class LowBeamHeadLights_StepDefinitions {
         Assert.assertEquals(car.getLowBeamState(car.getTailLight()),LowBeamState.ACTIVE);
     }
 
+    @When("the car is from the USA")
+    public void the_car_is_from_the_usa() {
+        car.setInUSAOrCanada(true);
+    }
+
+    @Then("the left tail light will be blinking")
+    public void the_left_tail_light_will_be_blinking() {
+        Assert.assertEquals(car.getLeftIndicator().getState(),Blinking.FLASHING);
+    }
+
+    @Then("the right tail light will be blinking")
+    public void the_right_tail_light_will_be_blinking() {
+       Assert.assertEquals(car.getRightIndicator().getState(),Blinking.FLASHING);
+    }
+
+
+    @Then("the right tail light will not be blinking")
+    public void the_right_tail_light_will_not_be_blinking() {
+        Assert.assertEquals(car.getRightIndicator().getState(),Blinking.NONFLASHING);
+    }
+
+
 
 }

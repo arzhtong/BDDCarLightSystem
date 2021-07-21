@@ -225,9 +225,11 @@ public class Car {
     }
     public void setBeamLight(LowBeamState beamState){
         if (beamState==LowBeamState.ACTIVE){
-            setBeamLight(LowBeamState.ACTIVE);
+            headLight.setLowBeamState(LowBeamState.ACTIVE);
+            tailLight.setLowBeamState(LowBeamState.ACTIVE);
         }else if (beamState==LowBeamState.INACTIVE){
-            setBeamLight(LowBeamState.INACTIVE);
+            headLight.setLowBeamState(LowBeamState.INACTIVE);
+            tailLight.setLowBeamState(LowBeamState.INACTIVE);
         }
     }
     public void setLowBeamHeadlightDuration(int lowBeamHeadlightDuration){
