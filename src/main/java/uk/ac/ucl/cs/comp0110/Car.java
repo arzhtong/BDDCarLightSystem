@@ -83,7 +83,6 @@ public class Car {
     public void setHazardSwitch(boolean hazardSwitchState){
         this.hazardSwitchState=hazardSwitchState;
         if (hazardSwitchState==false){
-            System.out.println("testing");
             leftIndicator.setState(Blinking.NONFLASHING);
             rightIndicator.setState(Blinking.NONFLASHING);
             if (pitmanArmState==PitmanArmPosition.DOWNWARD7){
@@ -171,7 +170,6 @@ public class Car {
             countAmbientLightTime();
         }
         if (doorPosition==DoorPosition.CLOSED && exteriorBrightness<200 && ambientLight==true){
-            System.out.println("testing123");
             setBeamLight(LowBeamState.INACTIVE);
         }
         if (doorPosition==DoorPosition.OPEN && ambientLight==true){
@@ -213,6 +211,12 @@ public class Car {
                 darkenIndicators();
             }
         }
+
+    }
+    public void setCorneringLights(boolean corneringLight){
+
+    }
+    public void setDrivingSpeed(int drivingSpeed){
 
     }
     public void setExteriorBrightness(int exteriorBrightness){
@@ -287,6 +291,10 @@ public class Car {
 
         this.lightRotarySwitchState=lightRotarySwitchState;
     }
+    public void setDurationOfPassingCorner(int durationOfPassingCorner){
+        
+    }
+
     public void tipPitmanArm(PitmanArmPosition position,double time) {
         if (position == PitmanArmPosition.UPWARD5) {
             setPitmanArmPosition(PitmanArmPosition.UPWARD5);
@@ -324,6 +332,7 @@ public class Car {
         }
         return null;
     }
+
     public Light getTailLight(){
         return tailLight;
     }
@@ -487,6 +496,12 @@ public class Car {
     }
     public boolean getDarknessSwitch(){
         return darknessSwitch;
+    }
+    public int getDrivingSpeed(){
+        return 0;
+    }
+    public boolean getCorneringLights(){
+        return true;
     }
 }
 

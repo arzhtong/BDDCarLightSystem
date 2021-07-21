@@ -188,5 +188,34 @@ public class LowBeamHeadLights_StepDefinitions {
     }
 
 
+    @When("the vehicle drives slower than 10km\\/h")
+    public void the_vehicle_drives_slower_than_10km_h() {
+       car.setDrivingSpeed(5);
+    }
+
+    @Then("the vehicles activates cornering lights")
+    public void the_vehicles_activates_cornering_lights() {
+       Assert.assertEquals(car.getCorneringLights(),true);
+    }
+
+    @Given("the vehicle activates cornering lights")
+    public void the_vehicle_activates_cornering_lights() {
+        car.setCorneringLights(true);
+    }
+
+    @When("a duration of 5 seconds of passing the corner has occurred")
+    public void a_duration_of_seconds_of_passing_the_corner_has_occurred() {
+        car.setDurationOfPassingCorner(5);
+    }
+
+    @Then("the vehicle turns off cornering lights in a duration of 1 second")
+    public void the_vehicle_turns_off_cornering_lights_in_a_duration_of_second() {
+        Assert.assertEquals(car.getCorneringLights(),false);
+    }
+    @Given("the vehicle has activated cornering headlights")
+    public void the_vehicle_has_activated_cornering_headlights() {
+        car.setCorneringLights(true);
+    }
+
 
 }
