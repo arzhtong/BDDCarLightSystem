@@ -189,6 +189,22 @@ Feature: Low Beam Headlights
       Then the low beam headlight will be activated
       And the low beam tail light will be activated
 
+    Rule: In USA or Canada, tail lights realise direction indicator lamps
+
+    @requirement(ELS-23)
+    Scenario: Driver turns light rotary switch on with USA car model
+      When the driver turns the light rotary switch on
+      And the car is from the USA
+      Then the left tail light will be blinking
+      And the right tail light will be blinking
+
+    @requirement(ELS-23)
+    Scenario: Driver signals left while USA car model tail light is on
+      And the driver turns the light rotary switch on
+      And the car is from the USA
+      When the driver moves pitman arm downward
+      Then the left tail light will be blinking
+      And the right tail light will not be blinking
 
 
 
