@@ -25,15 +25,14 @@ public class Car {
     private Timer timer;
     private boolean hazardSwitchState;
     private boolean inUSAOrCanada;
-    private int numberofFlashCycles;
     private DoorPosition doorPosition;
     private boolean dayTimeRunningLight;
     private boolean ambientLight;
-    private int ambientLightDuration;
     private int exteriorBrightness;
     private int lowBeamHeadlightDuration;
     private boolean darknessSwitch;
     private Light tailLight;
+    private int numberofFlashCycles;
     private int durationOfPassingCorner;
     private int drivingSpeed;
     private LightRotarySwitchState lightRotarySwitchState;
@@ -72,7 +71,7 @@ public class Car {
         if (ambientLight == true && ignitionState==IgnitionStatus.NOKEYINSERTED) {
             countAmbientLightTime();
         }
-        if (ambientLight==true && ambientLightDuration<30000){
+        if (ambientLight==true && headLight.getAmbientLightDuration()<30000){
             stopTimer();
             countAmbientLightTime();
         }
@@ -84,7 +83,7 @@ public class Car {
 
     }
 
-    public void setHazardSwitch(boolean hazardSwitchState){
+    public void pressHazardSwitch(boolean hazardSwitchState){
         this.hazardSwitchState=hazardSwitchState;
         if (hazardSwitchState==false){
             leftIndicator.setState(Blinking.NONFLASHING);
@@ -116,16 +115,17 @@ public class Car {
         }
 
         if (pitmanArmState==PitmanArmPosition.UPWARD7){
+
             rightIndicator.setState(Blinking.FLASHING);
         }
         if (pitmanArmState==PitmanArmPosition.DOWNWARD7){
             leftIndicator.setState(Blinking.FLASHING);
         }
     }
-    public void setDarknessSwitch(boolean darknessSwitch){
+    public void pressDarknessSwitch(boolean darknessSwitch){
         if (darknessSwitch==true){
-            setAmbientLight(false);
-            setBeamLight(LowBeamState.INACTIVE);
+            engageAmbientLight(false);
+            setLightBeam(LowBeamState.INACTIVE);
         }
         this.darknessSwitch=darknessSwitch;
 
@@ -141,6 +141,11 @@ public class Car {
         }
     }
     public void setNumberofFlashCycles(int numberofFlashCycles){
+        if (numberofFlashCycles==3){
+            setNumberofFlashCycles(0);
+            setLengthOfTimeHeld(0);
+            setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
+        }
         if (leftIndicator.getState()==Blinking.FLASHING){
             leftIndicator.setNumberofFlashCycles(numberofFlashCycles);
         }
@@ -148,63 +153,65 @@ public class Car {
             rightIndicator.setNumberofFlashCycles(numberofFlashCycles);
         }
     }
-    public void setDayTimeRunningLight(boolean dayTimeRunningLight){
+    public void engageDayTimeRunningLight(boolean dayTimeRunningLight){
         this.dayTimeRunningLight=dayTimeRunningLight;
         if (dayTimeRunningLight==true && (ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION || ignitionState==IgnitionStatus.KEYINSERTED)){
-            setBeamLight(LowBeamState.ACTIVE);
+            setLightBeam(LowBeamState.ACTIVE);
         }else{
-            setBeamLight(LowBeamState.INACTIVE);
+            setLightBeam(LowBeamState.INACTIVE);
 
         }
     }
-    public void setAmbientLight(boolean ambientLight){
+    public void engageAmbientLight(boolean ambientLight){
         if (darknessSwitch==false) {
             this.ambientLight = ambientLight;
         }
         if (this.ambientLight==true && ignitionState==IgnitionStatus.NOKEYINSERTED){
-            setBeamLight(LowBeamState.ACTIVE);
+            setLightBeam(LowBeamState.ACTIVE);
+            countAmbientLightTime();
         }else{
-            setBeamLight(LowBeamState.INACTIVE);
+            setLightBeam(LowBeamState.INACTIVE);
         }
     }
-    public void setDoorStatus(DoorPosition doorPosition){
+    public void changeDoorPosition(DoorPosition doorPosition){
         this.doorPosition=doorPosition;
-
-        if (ambientLight==true && ambientLightDuration<30000 && exteriorBrightness>200) {
+        System.out.println("testing3");
+        if (ambientLight==true && headLight.getAmbientLightDuration()<30000 && exteriorBrightness>200) {
+            System.out.println("testing2");
             countAmbientLightTime();
         }
         if (doorPosition==DoorPosition.CLOSED && exteriorBrightness<200 && ambientLight==true){
-            setBeamLight(LowBeamState.INACTIVE);
+            System.out.println("testing1");
+            setLightBeam(LowBeamState.INACTIVE);
         }
         if (doorPosition==DoorPosition.OPEN && ambientLight==true){
             if (exteriorBrightness<200) {
-               setBeamLight(LowBeamState.ACTIVE);
+                System.out.println("testing");
+               setLightBeam(LowBeamState.ACTIVE);
             }
             }
         }
-    public void setAmberLightDuration(int amberLightDuration){
-        this.ambientLightDuration=amberLightDuration;
-        if (ambientLightDuration>30000){
-            setBeamLight(LowBeamState.INACTIVE);
-        }
-    }
-    public int getAmbientLightDuration(){
-        return ambientLightDuration;
-    }
+
     public void setPitmanArmPosition(PitmanArmPosition position) {
         pitmanArmState=position;
         if (ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION){
 
             if (position==PitmanArmPosition.UPWARD7 || position==PitmanArmPosition.UPWARD5){
 
+                setNumberofFlashCycles(0);
+
                 rightIndicator.setState(Blinking.FLASHING);
                 leftIndicator.setState(Blinking.NONFLASHING);
 
             }
             if (position==PitmanArmPosition.DOWNWARD7 || position==PitmanArmPosition.DOWNWARD5){
-
+                setNumberofFlashCycles(0);
                 leftIndicator.setState(Blinking.FLASHING);
                 rightIndicator.setState(Blinking.NONFLASHING);
+            }
+            if (position==PitmanArmPosition.DOWNWARD7 || position==PitmanArmPosition.UPWARD7){
+                leftIndicator.setCycle(false);
+                rightIndicator.setCycle(false);
             }
 
             if (position ==PitmanArmPosition.NEUTRAL){
@@ -229,14 +236,14 @@ public class Car {
     public void setExteriorBrightness(int exteriorBrightness){
         this.exteriorBrightness=exteriorBrightness;
         if (lightRotarySwitchState==LightRotarySwitchState.AUTO && exteriorBrightness<200){
-            setBeamLight(LowBeamState.ACTIVE);
+            setLightBeam(LowBeamState.ACTIVE);
             countLowBeamTime();
         }
         if (lightRotarySwitchState==LightRotarySwitchState.AUTO && exteriorBrightness>250){
-            setBeamLight(LowBeamState.INACTIVE);
+            setLightBeam(LowBeamState.INACTIVE);
         }
     }
-    public void setBeamLight(LowBeamState beamState){
+    public void setLightBeam(LowBeamState beamState){
         if (beamState==LowBeamState.ACTIVE){
             headLight.setLowBeamState(LowBeamState.ACTIVE);
             if (inUSAOrCanada){
@@ -255,10 +262,11 @@ public class Car {
             }
         }
     }
+
     public void setLowBeamHeadlightDuration(int lowBeamHeadlightDuration){
         this.lowBeamHeadlightDuration=lowBeamHeadlightDuration;
     }
-    public void setLightRotarySwitch(LightRotarySwitchState lightRotarySwitchState) {
+    public void turnLightRotarySwitch(LightRotarySwitchState lightRotarySwitchState) {
         leftIndicator.setDimmedLight(0);
         rightIndicator.setDimmedLight(0);
 
@@ -268,12 +276,12 @@ public class Car {
             rightIndicator.setDimmedLight(0);
 
             if (lightRotarySwitchState == LightRotarySwitchState.ON) {
-                setBeamLight(LowBeamState.ACTIVE);
+                setLightBeam(LowBeamState.ACTIVE);
             }
             if (lightRotarySwitchState == LightRotarySwitchState.OFF) {
                 leftIndicator.setDimmedLight(0);
                 rightIndicator.setDimmedLight(0);
-                setBeamLight(LowBeamState.INACTIVE);
+                setLightBeam(LowBeamState.INACTIVE);
             }
 
 
@@ -284,15 +292,15 @@ public class Car {
                 if (lightRotarySwitchState == LightRotarySwitchState.ON) {
                     leftIndicator.setDimmedLight(50);
                     rightIndicator.setDimmedLight(50);
-                    setBeamLight(LowBeamState.ACTIVE);
+                    setLightBeam(LowBeamState.ACTIVE);
                 }
             }
             this.lightRotarySwitchState=lightRotarySwitchState;
             if (lightRotarySwitchState==LightRotarySwitchState.AUTO){
-                setBeamLight(LowBeamState.INACTIVE);
+                setLightBeam(LowBeamState.INACTIVE);
             }
             if (lightRotarySwitchState==LightRotarySwitchState.OFF){
-                setBeamLight(LowBeamState.INACTIVE);
+                setLightBeam(LowBeamState.INACTIVE);
             }
         }
 
@@ -306,6 +314,7 @@ public class Car {
     }
 
     public void tipPitmanArm(PitmanArmPosition position,double time) {
+        setNumberofFlashCycles(0);
         if (position == PitmanArmPosition.UPWARD5) {
             setPitmanArmPosition(PitmanArmPosition.UPWARD5);
             if (time < 500) {
@@ -466,21 +475,30 @@ public class Car {
 //
 //        Clock newClock=currentTime.setTime(10);
 //        System.out.println(LocalTime.now(currentTime.getConstantClock()));
-        ambientLightDuration=0;
+        headLight.setAmberLightDuration(0);
+        checkAmberLightDuration();
         timer=new Timer();
-        setBeamLight(LowBeamState.ACTIVE);
+        setLightBeam(LowBeamState.ACTIVE);
         timer.schedule(new TimerTask() {
+            int x=headLight.getAmbientLightDuration();
             @Override
             public void run() {
-                ambientLightDuration++;
-                if (ambientLightDuration==30000){
-                    setBeamLight(LowBeamState.INACTIVE);
+                x++;
+                headLight.setAmberLightDuration(x);
+                checkAmberLightDuration();
+                if (headLight.getAmbientLightDuration()==30000){
+                    setLightBeam(LowBeamState.INACTIVE);
                     stopTimer();
                 }
             }
         }, 1,1);
 
 
+    }
+    public void checkAmberLightDuration(){
+        if (headLight.getAmbientLightDuration()>30000){
+            setLightBeam(LowBeamState.INACTIVE);
+        }
     }
     public void countLowBeamTime(){
 
@@ -491,7 +509,7 @@ public class Car {
             public void run() {
                 lowBeamHeadlightDuration++;
                 if (lowBeamHeadlightDuration>3000 && exteriorBrightness>250){
-                    setBeamLight(LowBeamState.INACTIVE);
+                    setLightBeam(LowBeamState.INACTIVE);
                     stopTimer();
                 }
             }

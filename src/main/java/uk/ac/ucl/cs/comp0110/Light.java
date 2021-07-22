@@ -6,6 +6,7 @@ enum Lighting{
 public class Light {
     private LowBeamState lowBeamState;
     private Lighting currentState;
+    private int ambientLightDuration;
     public void setLowBeamState(LowBeamState lowBeamState){
         this.lowBeamState=lowBeamState;
     }
@@ -17,5 +18,11 @@ public class Light {
     }
     public Lighting getState(){
         return currentState;
+    }
+    public int getAmbientLightDuration(){
+        return ambientLightDuration;
+    }
+    public void setAmberLightDuration(int ambientLightDuration){
+        this.ambientLightDuration=ambientLightDuration;
     }
 }

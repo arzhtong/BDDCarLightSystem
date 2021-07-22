@@ -109,7 +109,7 @@ Feature: Low Beam Headlights
     Then the low beam headlight will be activated
 
     @requirement(ELS-17,ELS-20)
-    Scenario: Driver removes ignition key before 30 seconds pass of activation of ambient light
+    Scenario: Driver removes ignition key before 30 seconds after activating ambient light
     And the ambient light is on
     And 30 seconds have not passed since the ambient light was activated
     When the driver removes the ignition key
@@ -208,7 +208,7 @@ Feature: Low Beam Headlights
 
 
     @requirement(ELS-24)
-    Scenario: Driver signals left with light rotary switch on
+    Scenario: Driver signals left with light rotary switch on 
       And the driver turns the light rotary switch on
       And the driver moves pitman arm downward
       When the vehicle drives slower than 10km per hour

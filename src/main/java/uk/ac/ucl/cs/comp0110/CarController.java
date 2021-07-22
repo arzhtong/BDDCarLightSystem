@@ -130,25 +130,19 @@ public class CarController {
 
     public void leftDirectionPressed() {
 
-        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getFlashingCycles("Left")==false) {
+        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getHazardSwitchState()==false) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         } else {
-            model.setNumberofFlashCycles(0);
             model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
-            model.getLeftIndicator().setCycle(false);
-            model.getRightIndicator().setCycle(false);
         }
     }
     public void rightDirectionPressed() {
 
-        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right")==false) {
+        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getHazardSwitchState()==false) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
 
         }else{
-            model.setNumberofFlashCycles(0);
             model.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
-            model.getLeftIndicator().setCycle(false);
-            model.getRightIndicator().setCycle(false);
         }
 
     }
@@ -159,7 +153,6 @@ public class CarController {
             model.stopTimer();
         }else{
             model.stopTimer();
-            model.setNumberofFlashCycles(0);
             model.tipPitmanArm(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
         }
     }
@@ -168,18 +161,16 @@ public class CarController {
         if (model.getBlinkingState("Right")==Blinking.FLASHING && model.getFlashingCycles("Right")==true){
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
             model.stopTimer();
-            model.setNumberofFlashCycles(0);
         }else{
-            model.setNumberofFlashCycles(0);
             model.stopTimer();
             model.tipPitmanArm(PitmanArmPosition.UPWARD5,model.getLengthOfTimeHeld());
         }
     }
     public void hazardSwitchPressed(){
         if (model.getHazardSwitchState()==false){
-            model.setHazardSwitch(true);
+            model.pressHazardSwitch(true);
         }else{
-            model.setHazardSwitch(false);
+            model.pressHazardSwitch(false);
 
         }
     }
@@ -203,37 +194,34 @@ public class CarController {
     }
     public void lightRotarySwitchPressed(){
         if (view.getLightRotarySwitch().getSelectedItem().equals("On")){
-            model.setLightRotarySwitch(LightRotarySwitchState.ON);
+            model.turnLightRotarySwitch(LightRotarySwitchState.ON);
         }
         if (view.getLightRotarySwitch().getSelectedItem().equals("Off")){
-            model.setLightRotarySwitch(LightRotarySwitchState.OFF);
+            model.turnLightRotarySwitch(LightRotarySwitchState.OFF);
         }
         if (view.getLightRotarySwitch().getSelectedItem().equals("Auto")){
-            model.setLightRotarySwitch(LightRotarySwitchState.AUTO);
+            model.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
         }
     }
     public void dayTimeRunningLightPressed(){
         if (model.getDayTimeRunningLight()==false){
-            model.setDayTimeRunningLight(true);
+            model.engageDayTimeRunningLight(true);
         }else{
-            model.setDayTimeRunningLight(false);
+            model.engageDayTimeRunningLight(false);
         }
     }
     public void doorPressed(){
         if (model.getDoorPosition()==DoorPosition.CLOSED){
-            model.setDoorStatus(DoorPosition.OPEN);
-
+            model.changeDoorPosition(DoorPosition.OPEN);
         }else{
-            model.setDoorStatus(DoorPosition.CLOSED);
+            model.changeDoorPosition(DoorPosition.CLOSED);
         }
     }
     public void ambientLightPressed(){
         if (model.getAmbientLight()==true){
-            model.setAmbientLight(false);
-
+            model.engageAmbientLight(false);
         }else{
-            model.setAmbientLight(true);
-            model.countAmbientLightTime();
+            model.engageAmbientLight(true);
         }
     }
     public void exteriorBrightnessPressed(){
@@ -241,9 +229,9 @@ public class CarController {
     }
     public void darknessSwitchPressed(){
         if (model.getDarknessSwitch()==true){
-            model.setDarknessSwitch(false);
+            model.pressDarknessSwitch(false);
         }else{
-            model.setDarknessSwitch(true);
+            model.pressDarknessSwitch(true);
         }
     }
     public void carDuration(){

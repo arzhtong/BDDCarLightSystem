@@ -104,7 +104,7 @@ public class DirectionBlinking_StepDefinitions {
     public void the_hazard_warning_switch_is_engaged_during_the_flashing_cycles_of_tip_blinking() {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
         car.getRightIndicator().setCycle(true);
-        car.setHazardSwitch(true);
+        car.pressHazardSwitch(true);
     }
 
     @Then("the tip-blinking will stop")
@@ -283,7 +283,7 @@ public class DirectionBlinking_StepDefinitions {
 
     @When("the driver engages the hazard warning switch")
     public void the_driver_engages_the_hazard_warning_switch() {
-        car.setHazardSwitch(true);
+        car.pressHazardSwitch(true);
     }
 
     @Then("the right indicator will not tip-blink")
@@ -314,7 +314,7 @@ public class DirectionBlinking_StepDefinitions {
 
     @Then("the daytime running light will not be dimmed")
     public void the_daytime_running_light_will_not_be_dimmed() {
-        car.setDayTimeRunningLight(false);
+        car.engageDayTimeRunningLight(false);
     }
 
 
@@ -341,7 +341,7 @@ public class DirectionBlinking_StepDefinitions {
     }
     @When("the driver closes the door")
     public void the_driver_closes_the_door() {
-        car.setDoorStatus(DoorPosition.CLOSED);
+        car.changeDoorPosition(DoorPosition.CLOSED);
     }
 
 

@@ -1,5 +1,4 @@
 package uk.ac.ucl.cs.comp0110;
-import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -15,7 +14,7 @@ public class LowBeamHeadLights_StepDefinitions {
 
     @When("the driver turns the light rotary switch to the on position")
     public void the_driver_turns_the_light_rotary_switch_to_the_on_position() {
-        car.setLightRotarySwitch(LightRotarySwitchState.ON);
+        car.turnLightRotarySwitch(LightRotarySwitchState.ON);
     }
 
     @Then("the low beam headlight will be activated")
@@ -25,7 +24,7 @@ public class LowBeamHeadLights_StepDefinitions {
 
     @When("the driver turns the light rotary switch to the off position")
     public void the_driver_turns_the_light_rotary_switch_to_the_off_position() {
-        car.setLightRotarySwitch(LightRotarySwitchState.OFF);
+        car.turnLightRotarySwitch(LightRotarySwitchState.OFF);
     }
 
     @Then("the low beam headlight will be deactivated")
@@ -39,7 +38,7 @@ public class LowBeamHeadLights_StepDefinitions {
 
     @When("the driver turns the light rotary switch on")
     public void the_driver_turns_the_light_rotary_switch_on() {
-        car.setLightRotarySwitch(LightRotarySwitchState.ON);
+        car.turnLightRotarySwitch(LightRotarySwitchState.ON);
     }
 
     @Then("the low beam headlight is activated with 50% brightness")
@@ -48,12 +47,12 @@ public class LowBeamHeadLights_StepDefinitions {
     }
     @When("the driver turns the light rotary switch to auto")
     public void the_driver_turns_the_light_rotary_switch_to_auto() {
-        car.setLightRotarySwitch(LightRotarySwitchState.AUTO);
+        car.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
     }
 
     @Given("light rotary switch is auto")
     public void light_rotary_switch_is_auto() {
-        car.setLightRotarySwitch(LightRotarySwitchState.AUTO);
+        car.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
     }
 
     @When("the driver turns the ignition on")
@@ -62,7 +61,7 @@ public class LowBeamHeadLights_StepDefinitions {
     }
     @When("the driver turns daytime running light on")
     public void the_driver_turns_daytime_running_light_on() {
-        car.setDayTimeRunningLight(true);
+        car.engageDayTimeRunningLight(true);
     }
 
     @Then("the low beam headlights will be activated")
@@ -77,21 +76,21 @@ public class LowBeamHeadLights_StepDefinitions {
 
     @When("the driver has turned ambient light on")
     public void the_driver_has_turned_ambient_light_on() {
-       car.setAmbientLight(true);
+       car.engageAmbientLight(true);
     }
     @Given("the ambient light is on")
     public void the_ambient_light_is_on() {
-        car.setAmbientLight(true);
+        car.engageAmbientLight(true);
     }
 
     @Given("30 seconds have passed since the ambient light was activated")
     public void seconds_have_passed_since_the_ambient_light_was_activated() {
-        car.setAmberLightDuration(35000);
+        car.getHeadLight().setAmberLightDuration(35000);
     }
 
     @When("the driver opens the door")
     public void the_driver_opens_the_door() {
-        car.setDoorStatus(DoorPosition.OPEN);
+        car.changeDoorPosition(DoorPosition.OPEN);
     }
 
     @When("the driver removes the ignition key")
@@ -101,27 +100,27 @@ public class LowBeamHeadLights_StepDefinitions {
 
     @Given("30 seconds have not passed since the ambient light was activated")
     public void seconds_have_not_passed_since_the_ambient_light_was_activated() {
-        car.setAmberLightDuration(25000);
+        car.getHeadLight().setAmberLightDuration(25000);
     }
 
     @Given("daytime running light is on")
     public void daytime_running_light_is_on() {
-        car.setDayTimeRunningLight(true);
+        car.engageDayTimeRunningLight(true);
     }
 
     @When("the driver turns on ambient light")
     public void the_driver_turns_on_ambient_light() {
-        car.setAmbientLight(true);
+        car.engageAmbientLight(true);
     }
 
     @When("the driver immediately opens the door")
     public void the_driver_immediately_opens_the_door() {
-        car.setDoorStatus(DoorPosition.OPEN);
+        car.changeDoorPosition(DoorPosition.OPEN);
     }
 
     @Given("the driver turns light rotary switch to auto")
     public void the_driver_turns_light_rotary_switch_to_auto() {
-        car.setLightRotarySwitch(LightRotarySwitchState.AUTO);
+        car.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
     }
 
     @When("the exterior brightness is below 200lx")
@@ -144,7 +143,7 @@ public class LowBeamHeadLights_StepDefinitions {
     }
     @When("the driver engages the darkness switch")
     public void the_driver_engages_the_darkness_switch() {
-        car.setDarknessSwitch(true);
+        car.pressDarknessSwitch(true);
     }
     @Then("the low beam tail light will be activated")
     public void the_low_beam_tail_light_will_be_activated() {

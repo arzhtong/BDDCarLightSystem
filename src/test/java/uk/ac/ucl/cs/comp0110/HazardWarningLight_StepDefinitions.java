@@ -1,5 +1,4 @@
 package uk.ac.ucl.cs.comp0110;
-import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -14,7 +13,7 @@ public class HazardWarningLight_StepDefinitions {
 
     @Given("the hazard warning light switch is engaged")
     public void the_hazard_warning_light_switch_is_engaged() {
-        car.setHazardSwitch(true);
+        car.pressHazardSwitch(true);
     }
 
     @When("the flashing cycle of indicators are released")
@@ -23,7 +22,7 @@ public class HazardWarningLight_StepDefinitions {
         car.getRightIndicator().setState(Blinking.FLASHING);
     }
 
-    @Then("the duration of the cycle should be 1 second")
+    @Then("the duration of the cycle should be 1 seco   nd")
     public void the_duration_of_the_cycle_should_be_second() {
         Assert.assertEquals(car.getLengthOfHazardCycle(),1);
     }
@@ -35,7 +34,7 @@ public class HazardWarningLight_StepDefinitions {
 
     @When("the hazard warning light switch is deactivated")
     public void the_hazard_warning_light_switch_is_deactivated() {
-        car.setHazardSwitch(false);
+        car.pressHazardSwitch(false);
     }
 
     @Then("the direction blinking cycle for the left indicator should start")
@@ -93,7 +92,7 @@ public class HazardWarningLight_StepDefinitions {
 
     @When("the hazard warning light switch is pressed")
     public void the_hazard_warning_light_switch_is_pressed() {
-       car.setHazardSwitch(true);
+       car.pressHazardSwitch(true);
     }
 
     @Then("the right indicator ongoing tip-blinking will stop")
@@ -103,7 +102,7 @@ public class HazardWarningLight_StepDefinitions {
 
     @And("the driver has turned ambient light off")
     public void theDriverHasTurnedAmbientLightOff() {
-        car.setAmbientLight(false);
+        car.engageAmbientLight(false);
     }
     @Given("the left indicator is bright")
     public void the_left_indicator_is_bright() {
@@ -114,7 +113,7 @@ public class HazardWarningLight_StepDefinitions {
 
     @When("the driver deactivates hazard warning switch")
     public void the_driver_deactivates_hazard_warning_switch() {
-        car.setHazardSwitch(false);
+        car.pressHazardSwitch(false);
     }
 
     @Then("the left indicator will not blink")

@@ -86,6 +86,7 @@ Feature: Direction Blinking Indicator
 
     @requirement(ELS-3,ELS-5)
     Scenario: Driver changes tip-blinking from right to direction blinking left
+      Given the ignition is on
       And the driver moves pitman arm upward in tip-blinking position
       And the pitman arm is held less than 0.5 seconds
       When the driver moves pitman arm downward
