@@ -208,7 +208,7 @@ Feature: Low Beam Headlights
 
 
     @requirement(ELS-24)
-    Scenario: Driver signals left with light rotary switch on 
+    Scenario: Driver signals left with light rotary switch on
       And the driver turns the light rotary switch on
       And the driver moves pitman arm downward
       When the vehicle drives slower than 10km per hour
@@ -218,7 +218,14 @@ Feature: Low Beam Headlights
     Scenario: Vehicle passes corner with cornering light
       And the vehicle has activated cornering headlights
       When a duration of 5 seconds of passing the corner has occurred
-      Then the vehicle turns off cornering lights in a duration of 1 second
+      Then the vehicle turns off cornering lights withn 1 second
+
+    Rule: When darkness switch is engaged, cornering light is deactivated
+    @requirement(ELS-25)
+    Scenario: Driver activates darkness switch with cornering light off
+      When the driver engages the darkness switch
+      Then the vehicle has cornering lights deactivated
+
 
 
 
