@@ -218,11 +218,12 @@ Feature: Low Beam Headlights
     Scenario: Vehicle passes corner with cornering light
       And the vehicle has activated cornering headlights
       When a duration of 5 seconds of passing the corner has occurred
-      Then the vehicle turns off cornering lights withn 1 second
+      Then the vehicle turns off cornering lights within 1 second
 
     Rule: When darkness switch is engaged, cornering light is deactivated
     @requirement(ELS-25)
-    Scenario: Driver activates darkness switch with cornering light off
+    Scenario: Driver activates darkness switch with cornering light on
+      And the vehicle has activated cornering headlights
       When the driver engages the darkness switch
       Then the vehicle has cornering lights deactivated
 

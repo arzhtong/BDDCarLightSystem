@@ -207,13 +207,19 @@ public class LowBeamHeadLights_StepDefinitions {
         car.setDurationOfPassingCorner(5);
     }
 
-    @Then("the vehicle turns off cornering lights in a duration of 1 second")
-    public void the_vehicle_turns_off_cornering_lights_in_a_duration_of_second() {
-        Assert.assertEquals(car.getCorneringLight().getState(),Lighting.OFF);
-    }
     @Given("the vehicle has activated cornering headlights")
     public void the_vehicle_has_activated_cornering_headlights() {
         car.getCorneringLight().setState(Lighting.ON);
     }
 
+
+    @Then("the vehicle has cornering lights deactivated")
+    public void the_vehicle_has_cornering_lights_deactivated() {
+        Assert.assertEquals(car.getCorneringLight().getState(),Lighting.OFF);
+    }
+
+    @Then("the vehicle turns off cornering lights within 1 second")
+    public void theVehicleTurnsOffCorneringLightsWithinSecond() {
+        Assert.assertEquals(car.getCorneringLight().getState(),Lighting.OFF);
+    }
 }
