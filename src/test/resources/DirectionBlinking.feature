@@ -20,21 +20,22 @@ Feature: Direction Blinking Indicator
    @requirement(ELS-1,ELS-5)
    Scenario: Driver turns on ignition when the pitman arm is up
      Given ignition is off
-     And the driver moves pitman arm upward
+     And the driver moved pitman arm upward
      When the driver turns on ignition
      Then the vehicle flashes all right indicators synchronously
 
+  @requirement(ELS-1,ELS-5)
    Scenario: Driver changes signalling from turning left to right
      Given ignition is on
-     And the driver moves pitman arm downward
-     And the vehicle flashes all left indicators synchronously
+     And the driver moved pitman arm downward
+     And the vehicle flashed all left indicators synchronously
      When the driver moves pitman arm upward
      Then the vehicle flashes all right indicators synchronously
 
    @requirement(ELS-1,ELS-5)
    Scenario: Driver inserts key without turning on ignition with pitman arm up
      Given ignition is off
-     And the driver moves pitman arm upward
+     And the driver moved pitman arm upward
      When the driver inserts the key without turning on ignition
      Then the right indicator will not blink
     Rule: Tip-Blinking is only available when ignition is on
@@ -53,7 +54,7 @@ Feature: Direction Blinking Indicator
 
     @requirement(ELS-1,ELS-2,ELS-5)
       Scenario: Driver changes tip-blinking on right side to turning left
-      And the driver moves pitman arm upward in tip-blinking position
+      Given the driver moved pitman arm upward in tip-blinking position
       And the pitman arm is held less than 0.5 seconds
       When the driver moves the pitman arm in the downward position
       Then the vehicle flashes all left indicators synchronously
@@ -77,7 +78,7 @@ Feature: Direction Blinking Indicator
 
     @requirement(ELS-3,ELS-5)
     Scenario: Driver changes tip-blinking from right to left
-      And the driver moves pitman arm upward in tip-blinking position
+      Given the driver moved pitman arm upward in tip-blinking position
       And the pitman arm is held less than 0.5 seconds
       When the driver moves pitman arm downward in tip-blinking position
       And the pitman arm is held for less than 0.5 seconds
@@ -87,7 +88,7 @@ Feature: Direction Blinking Indicator
     @requirement(ELS-3,ELS-5)
     Scenario: Driver changes tip-blinking from right to direction blinking left
       Given the ignition is on
-      And the driver moves pitman arm upward in tip-blinking position
+      And the driver moved pitman arm upward in tip-blinking position
       And the pitman arm is held less than 0.5 seconds
       When the driver moves pitman arm downward
       Then the right indicator tip-blinking will stop
@@ -96,7 +97,7 @@ Feature: Direction Blinking Indicator
     @requirement(ELS-3,ELS-5)
     Scenario: Driver engages hazard warning switch while tip-blinking right
       Given the ignition is on
-      And the driver moves pitman arm upward in tip-blinking position
+      And the driver moved pitman arm upward in tip-blinking position
       And the pitman arm is held upward for less than 0.5 seconds
       When the driver engages the hazard warning switch
       Then the right indicator will not tip-blink
@@ -106,7 +107,7 @@ Feature: Direction Blinking Indicator
     @requirement(ELS-3,ELS-5)
     Scenario: Driver turns off ignition and signals right
     Given the ignition is on
-    And the driver moves pitman arm upward
+    And the driver moved pitman arm upward
     When the driver turns the ignition off
     And the driver moves pitman arm downward
     Then the left indicator tip-blinking will stop
@@ -125,7 +126,7 @@ Feature: Direction Blinking Indicator
     @requirement(ELS-4,ELS-5)
     Scenario: Driver tip-blinks left from signalling right with tip-blinking position
       Given the ignition is on
-      And the driver moves pitman arm upward in tip-blinking position
+      And the driver moved pitman arm upward in tip-blinking position
       And the pitman arm is held for more than 0.5 seconds
       When the driver moves the pitman arm in the downward position
       And the pitman arm is held for less than 0.5 seconds
@@ -150,7 +151,7 @@ Feature: Direction Blinking Indicator
     @requirement(ELS-7)
     Scenario: Engage the pitman arm in an upward direction blinking position during the 3 flashing cycles where the pitman arm was already put in an upward position
       Given ignition is on
-      And the driver moves pitman arm upward in tip-blinking position
+      And the driver moved pitman arm upward in tip-blinking position
       And the pitman arm is held upward for less than 0.5 seconds
       When the driver moves pitman arm upward in tip-blinking position
       And the pitman arm is held upward for less than 0.5 seconds
@@ -159,7 +160,7 @@ Feature: Direction Blinking Indicator
     @requirement(ELS-7)
     Scenario: Engage the pitman arm in a downward tip-blinking position during the 3 flashing cycles where the pitman arm was already put in a downward position
       Given ignition is on
-      And the driver moves pitman arm downward in tip-blinking position
+      And the driver moved pitman arm downward in tip-blinking position
       And the pitman arm is held downward for less than 0.5 seconds
       When the driver moves pitman arm downward in tip-blinking position
       And the pitman arm is held for less than 0.5 seconds downward position

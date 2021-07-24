@@ -5,13 +5,10 @@ enum Blinking{
 enum Flashing{
     BRIGHT,DARK
 }
-enum LowBeamState{
-    ACTIVE,INACTIVE
-}
+
 public class Indicator {
     private Blinking blinkingState;
-    private boolean flashCycle;
-    private int dimmedLight;
+    private boolean flashing;
     private int hazardCycleLength;
     private int numberofFlashCycles;
     private Flashing flashState;
@@ -24,7 +21,6 @@ public class Indicator {
         this.flashState=flashState;
     }
 
-
     public Indicator(){
         blinkingState=Blinking.NONFLASHING;
     }
@@ -34,17 +30,11 @@ public class Indicator {
     public Blinking getState(){
         return blinkingState;
     }
-    public void setCycle(boolean flashCycle){
-        this.flashCycle=flashCycle;
+    public void setCycle(boolean flashing){
+        this.flashing=flashing;
     }
     public boolean getCycle(){
-        return flashCycle;
-    }
-    public void setDimmedLight(int dimmedLight){
-        this.dimmedLight=dimmedLight;
-    }
-    public int getDimmedLight(){
-        return dimmedLight;
+        return flashing;
     }
     public void setHazardCycleLength(int hazardCycleLength){
         this.hazardCycleLength=hazardCycleLength;

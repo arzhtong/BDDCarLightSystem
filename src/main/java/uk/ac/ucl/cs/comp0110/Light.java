@@ -3,15 +3,19 @@ package uk.ac.ucl.cs.comp0110;
 enum Lighting{
     ON,OFF
 }
+enum LowBeam {
+    ACTIVE,INACTIVE
+}
 public class Light {
-    private LowBeamState lowBeamState;
+    private LowBeam lowBeam;
     private Lighting currentState;
     private int ambientLightDuration;
-    public void setLowBeamState(LowBeamState lowBeamState){
-        this.lowBeamState=lowBeamState;
+    private int dimmedLightPercentage;
+    public void setLowBeamState(LowBeam lowBeam){
+        this.lowBeam = lowBeam;
     }
-    public LowBeamState getLowBeamState(){
-        return lowBeamState;
+    public LowBeam getLowBeamState(){
+        return lowBeam;
     }
     public void setState(Lighting currentState){
         this.currentState=currentState;
@@ -24,5 +28,11 @@ public class Light {
     }
     public void setAmberLightDuration(int ambientLightDuration){
         this.ambientLightDuration=ambientLightDuration;
+    }
+    public void setLightDimmingPercentage(int dimmedLightPercentage){
+        this.dimmedLightPercentage=dimmedLightPercentage;
+    }
+    public int getLightDimmingPercentage(){
+        return dimmedLightPercentage;
     }
 }

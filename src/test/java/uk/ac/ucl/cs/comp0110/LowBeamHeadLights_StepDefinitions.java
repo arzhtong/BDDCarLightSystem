@@ -19,33 +19,33 @@ public class LowBeamHeadLights_StepDefinitions {
 
     @Then("the low beam headlight will be activated")
     public void the_low_beam_headlight_will_be_activated() {
-        Assert.assertEquals(car.getLowBeamState(car.getHeadLight()),LowBeamState.ACTIVE);
+        Assert.assertEquals(car.getLowBeamState(car.getHeadLight()), LowBeam.ACTIVE);
     }
 
-    @When("the driver turns the light rotary switch to the off position")
+    @When("the driver (turns||turned) the light rotary switch to the off position")
     public void the_driver_turns_the_light_rotary_switch_to_the_off_position() {
         car.turnLightRotarySwitch(LightRotarySwitchState.OFF);
     }
 
     @Then("the low beam headlight will be deactivated")
     public void the_low_beam_headlight_will_be_deactivated() {
-        Assert.assertEquals(car.getLowBeamState(car.getHeadLight()),LowBeamState.INACTIVE);
+        Assert.assertEquals(car.getLowBeamState(car.getHeadLight()), LowBeam.INACTIVE);
     }
     @Given("the ignition is off")
     public void the_ignition_is_off() {
         car.isIgnitionOn(IgnitionStatus.NOKEYINSERTED);
     }
 
-    @When("the driver turns the light rotary switch on")
+    @When("the driver (turns||turned) the light rotary switch on")
     public void the_driver_turns_the_light_rotary_switch_on() {
         car.turnLightRotarySwitch(LightRotarySwitchState.ON);
     }
 
     @Then("the low beam headlight is activated with 50% brightness")
     public void the_low_beam_headlight_is_activated_with_brightness() {
-        Assert.assertEquals(car.getRightIndicator().getDimmedLight(),50);
+        Assert.assertEquals(car.getHeadLight().getLightDimmingPercentage(),50);
     }
-    @When("the driver turns the light rotary switch to auto")
+    @When("the driver (turns||turned) the light rotary switch to auto")
     public void the_driver_turns_the_light_rotary_switch_to_auto() {
         car.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
     }
@@ -66,12 +66,12 @@ public class LowBeamHeadLights_StepDefinitions {
 
     @Then("the low beam headlights will be activated")
     public void the_low_beam_headlights_will_be_activated() {
-        Assert.assertEquals(car.getHeadLight().getLowBeamState(),LowBeamState.ACTIVE);
+        Assert.assertEquals(car.getHeadLight().getLowBeamState(), LowBeam.ACTIVE);
     }
 
     @Then("the low beam headlights will not be activated")
     public void the_low_beam_headlights_will_not_be_activated() {
-        Assert.assertEquals(car.getHeadLight().getLowBeamState(),LowBeamState.INACTIVE);
+        Assert.assertEquals(car.getHeadLight().getLowBeamState(), LowBeam.INACTIVE);
     }
 
     @When("the driver has turned ambient light on")
@@ -83,14 +83,14 @@ public class LowBeamHeadLights_StepDefinitions {
         car.engageAmbientLight(true);
     }
 
-    @Given("30 seconds have passed since the ambient light was activated")
+    @Given("30 seconds (have||has) passed since the ambient light was activated")
     public void seconds_have_passed_since_the_ambient_light_was_activated() {
         car.getHeadLight().setAmberLightDuration(35000);
     }
 
-    @When("the driver opens the door")
+    @When("the driver (opens||opened) the door")
     public void the_driver_opens_the_door() {
-        car.changeDoorPosition(DoorPosition.OPEN);
+        car.isAllDoorsClosed(false);
     }
 
     @When("the driver removes the ignition key")
@@ -108,17 +108,17 @@ public class LowBeamHeadLights_StepDefinitions {
         car.engageDayTimeRunningLight(true);
     }
 
-    @When("the driver turns on ambient light")
+    @When("the driver (turns||turned) on ambient light")
     public void the_driver_turns_on_ambient_light() {
         car.engageAmbientLight(true);
     }
 
     @When("the driver immediately opens the door")
     public void the_driver_immediately_opens_the_door() {
-        car.changeDoorPosition(DoorPosition.OPEN);
+        car.isAllDoorsClosed(false);
     }
 
-    @Given("the driver turns light rotary switch to auto")
+    @Given("the driver (turns||turned) light rotary switch to auto")
     public void the_driver_turns_light_rotary_switch_to_auto() {
         car.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
     }
@@ -147,7 +147,7 @@ public class LowBeamHeadLights_StepDefinitions {
     }
     @Then("the low beam tail light will be activated")
     public void the_low_beam_tail_light_will_be_activated() {
-        Assert.assertEquals(car.getLowBeamState(car.getTailLight()),LowBeamState.ACTIVE);
+        Assert.assertEquals(car.getLowBeamState(car.getTailLight()), LowBeam.ACTIVE);
     }
 
     @When("the car is from the USA")
@@ -221,5 +221,9 @@ public class LowBeamHeadLights_StepDefinitions {
     @Then("the vehicle turns off cornering lights within 1 second")
     public void theVehicleTurnsOffCorneringLightsWithinSecond() {
         Assert.assertEquals(car.getCorneringLight().getState(),Lighting.OFF);
+    }
+    @When("30 seconds have passed since the ambient light was on")
+    public void seconds_have_passed_since_the_ambient_light_was_on() {
+        car.getHeadLight().setAmberLightDuration(35000);
     }
 }

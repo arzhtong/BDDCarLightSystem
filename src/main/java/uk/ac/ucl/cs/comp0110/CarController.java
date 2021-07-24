@@ -211,10 +211,10 @@ public class CarController {
         }
     }
     public void doorPressed(){
-        if (model.getDoorPosition()==DoorPosition.CLOSED){
-            model.changeDoorPosition(DoorPosition.OPEN);
+        if (model.getAllDoorsClosed()==true){
+            model.isAllDoorsClosed(false);
         }else{
-            model.changeDoorPosition(DoorPosition.CLOSED);
+            model.isAllDoorsClosed(true);
         }
     }
     public void ambientLightPressed(){

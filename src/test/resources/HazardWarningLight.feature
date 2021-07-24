@@ -18,7 +18,7 @@ This feature defines the different pulse ratios and states for indicators when e
     @requirement(ELS-11)
     Scenario: Driver engages tip-blinking on right while left indicator is bright
     Given the ignition is on
-    And the driver moves pitman arm downward
+    And the driver moved pitman arm downward
     And the left indicator is bright
     When the driver moves pitman arm upward in tip-blinking position
     And the pitman arm is held for less than 0.5 seconds
@@ -31,7 +31,7 @@ This feature defines the different pulse ratios and states for indicators when e
     @requirement(ELS-12)
     Scenario: Driver disengages hazard warning switch with pitman arm downward
       Given the ignition is on
-      And the driver engages the hazard warning switch
+      And the driver engaged the hazard warning switch
       When the driver moves pitman arm downward
       And the driver deactivates hazard warning switch
       Then the vehicle flashes all left indicators synchronously
@@ -39,18 +39,18 @@ This feature defines the different pulse ratios and states for indicators when e
     @requirement(ELS-12)
     Scenario: Driver disengages hazard warning switch with pitman arm upward
       Given the ignition is on
-      And the driver engages the hazard warning switch
+      And the driver engaged the hazard warning switch
       When the driver moves pitman arm upward
       And the driver deactivates hazard warning switch
       Then the vehicle flashes all right indicators synchronously
 
     @requirement(ELS-12)
     Scenario: Driver disengages hazard warning switch with ignition off
-    And the ignition is on
+    Given the ignition is on
     When the ignition is off
     And the driver deactivates hazard warning switch
     Then the right indicator will not blink
-    And the left indicator will not blink
+    But the left indicator will not blink
 
     @requirement(ELS-12)
   Scenario: Driver engages hazard warning switch with ignition off
@@ -65,7 +65,7 @@ This feature defines the different pulse ratios and states for indicators when e
    @requirement(ELS-13)
    Scenario: Driver engages hazard warning switch while tip-blinking right
      Given the ignition is on
-     And the driver moves pitman arm upward
+     And the driver moved pitman arm upward
      And the pitman arm is held for less than 0.5 seconds
      When the driver engages the hazard warning switch
      Then the right indicator tip-blinking will stop

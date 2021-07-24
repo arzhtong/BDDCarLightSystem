@@ -22,7 +22,7 @@ public class HazardWarningLight_StepDefinitions {
         car.getRightIndicator().setState(Blinking.FLASHING);
     }
 
-    @Then("the duration of the cycle should be 1 seco   nd")
+    @Then("the duration of the cycle should be 1 second")
     public void the_duration_of_the_cycle_should_be_second() {
         Assert.assertEquals(car.getLengthOfHazardCycle(),1);
     }
