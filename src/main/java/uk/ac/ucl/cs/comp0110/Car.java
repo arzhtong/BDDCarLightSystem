@@ -36,6 +36,7 @@ public class Car {
     private int numberofFlashCycles;
     private int durationOfPassingCorner;
     private int drivingSpeed;
+
     private LightRotarySwitchState lightRotarySwitchState;
     public Car(){
         allDoorsClosed=true;
@@ -107,6 +108,10 @@ public class Car {
                 rightIndicator.setHazardCycleLength(1);
 
         }
+
+    }
+    public void setDegreesSteeringWheelTurned(int numberOfDegreesSteeringWheelTurned){
+
 
     }
     public void checkPitmanArmState(){

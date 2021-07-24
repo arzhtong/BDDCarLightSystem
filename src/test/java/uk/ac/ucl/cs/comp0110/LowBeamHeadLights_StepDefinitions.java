@@ -226,4 +226,28 @@ public class LowBeamHeadLights_StepDefinitions {
     public void seconds_have_passed_since_the_ambient_light_was_on() {
         car.getHeadLight().setAmberLightDuration(35000);
     }
+    @Given("the left indicator is not blinking")
+    public void the_left_indicator_is_not_blinking() {
+        Assert.assertEquals(car.getLeftIndicator().getState(),Blinking.NONFLASHING);
+    }
+
+    @Given("the right indicator is not blinking")
+    public void the_right_indicator_is_not_blinking() {
+        Assert.assertEquals(car.getRightIndicator().getState(),Blinking.NONFLASHING);
+    }
+
+    @Given("the low beam headlight is on")
+    public void the_low_beam_headlight_is_on() {
+        car.getHeadLight().setState(Lighting.ON);
+    }
+
+    @When("the driver turns the wheel by more than 10 degrees")
+    public void the_driver_turns_the_wheel_by_more_than_degrees() {
+        car.setDegreesSteeringWheelTurned(10);
+    }
+
+    @Then("the cornering lights will be on")
+    public void the_cornering_lights_will_be_on() {
+        Assert.assertEquals(car.getCorneringLight().getState(),Lighting.ON);
+    }
 }
