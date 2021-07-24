@@ -228,6 +228,15 @@ Feature: Low Beam Headlights
       When the driver engages the darkness switch
       Then the vehicle has cornering lights deactivated
 
+    @requirement(ELS-26)
+    Scenario: Driver engages cornering light by turning wheel by 10 degrees
+      Given the left indicator is not blinking
+      And the right indicator is not blinking
+      And the low beam headlight is on
+      And the vehicle drives slower than 10km per hour
+      When the driver turns the wheel by more than 10 degrees
+      Then the cornering lights will be on
+
 
 
 
