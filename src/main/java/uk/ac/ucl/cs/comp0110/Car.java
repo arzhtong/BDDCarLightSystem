@@ -36,10 +36,11 @@ public class Car {
     private int numberofFlashCycles;
     private int durationOfPassingCorner;
     private int drivingSpeed;
-
+    private int numberOfDegreesSteeringWheelTurned;
     private LightRotarySwitchState lightRotarySwitchState;
     public Car(){
         allDoorsClosed=true;
+        numberOfDegreesSteeringWheelTurned=0;
         lightRotarySwitchState=LightRotarySwitchState.OFF;
         doorPosition=DoorPosition.CLOSED;
         leftIndicator=new Indicator();
@@ -111,7 +112,8 @@ public class Car {
 
     }
     public void setDegreesSteeringWheelTurned(int numberOfDegreesSteeringWheelTurned){
-
+        this.numberOfDegreesSteeringWheelTurned=numberOfDegreesSteeringWheelTurned;
+        checkCorneringLight();
 
     }
     public void checkPitmanArmState(){
@@ -241,7 +243,12 @@ public class Car {
         }
     }
     public void checkCorneringLight(){
+        corneringLight.setState(Lighting.OFF);
         if (leftIndicator.getState()==Blinking.FLASHING || rightIndicator.getState()==Blinking.FLASHING && drivingSpeed<10){
+            corneringLight.setState(Lighting.ON);
+        }
+        if (numberOfDegreesSteeringWheelTurned>=10 && leftIndicator.getState()==Blinking.NONFLASHING && rightIndicator.getState()==Blinking.NONFLASHING
+        && drivingSpeed<10){
             corneringLight.setState(Lighting.ON);
         }
     }

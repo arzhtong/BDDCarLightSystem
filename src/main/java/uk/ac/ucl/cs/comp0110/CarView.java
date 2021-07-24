@@ -41,6 +41,7 @@ public class CarView extends JFrame{
     public JRadioButton doorPosition;
     public JTextField speedOfCar;
     public JRadioButton passCorner;
+    private JTextField numberOfDegreesSteeringWheelTurned;
     private int numberOfFlashCycles;
     public CarView(Car model) {
         this.model=model;
@@ -64,6 +65,7 @@ public class CarView extends JFrame{
         passCorner= new JRadioButton("Passed Corner");
         exteriorBrightness=new JTextField("Brightness");
         speedOfCar=new JTextField("Speed of car");
+        numberOfDegreesSteeringWheelTurned=new JTextField("Degrees Turned by Steering Wheel");
         numberOfFlashCycles=0;
         service= Executors.newSingleThreadScheduledExecutor();
         makeFrame();
@@ -384,6 +386,8 @@ public class CarView extends JFrame{
         optionalInputs.add(darknessSwitch);
         optionalInputs.add(passCorner);
         optionalInputs.add(speedOfCar);
+        optionalInputs.add(numberOfDegreesSteeringWheelTurned);
+
         return optionalInputs;
     }
     public JPanel makeBlinkingInputs() {
@@ -485,5 +489,8 @@ public class CarView extends JFrame{
     }
     public JRadioButton getPassCorner(){
         return passCorner;
+    }
+    public JTextField getNumberOfDegreesSteeringWheelTurned(){
+        return numberOfDegreesSteeringWheelTurned;
     }
 }

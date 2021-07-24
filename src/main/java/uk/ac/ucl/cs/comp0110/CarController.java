@@ -125,6 +125,12 @@ public class CarController {
                 passedCorner();
             }
         });
+        view.getNumberOfDegreesSteeringWheelTurned().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                numberOfDegreesSteeringWheelTurned();
+            }
+        });
     }
 
 
@@ -239,5 +245,8 @@ public class CarController {
     }
     public void passedCorner(){
         model.countDurationOfPassingCornerTime();
+    }
+    public void numberOfDegreesSteeringWheelTurned(){
+        model.setDegreesSteeringWheelTurned(Integer.parseInt(view.getNumberOfDegreesSteeringWheelTurned().getText()));
     }
 }
