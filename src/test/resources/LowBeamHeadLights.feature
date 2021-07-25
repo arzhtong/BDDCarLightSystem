@@ -251,6 +251,16 @@ Feature: Low Beam Headlights
       When the driver turns the wheel to right within 10 degrees
       Then the right cornering light will turn on
 
+    Rule: When reverse gear is activated, both cornering lights turn on
+
+    @requirement(ELS-27)
+    Scenario: Driver engages reverse gear
+    Given the left cornering light is off
+    And the right cornering light is off
+    When the driver activates the reverse gear
+    Then the left cornering light will turn on
+    And the right cornering light will turn on
+
 
 
 
