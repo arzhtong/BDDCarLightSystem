@@ -11,6 +11,7 @@ public class Light {
     private Lighting currentState;
     private int ambientLightDuration;
     private int dimmedLightPercentage;
+
     public void setLowBeamState(LowBeam lowBeam){
         this.lowBeam = lowBeam;
     }
@@ -35,4 +36,5 @@ public class Light {
     public int getLightDimmingPercentage(){
         return dimmedLightPercentage;
     }
+
 }

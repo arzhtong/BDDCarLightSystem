@@ -29,7 +29,7 @@ public class DirectionBlinking_StepDefinitions {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
     }
 
-    @Then("the vehicle (flashes||flashed) all right indicators synchronously")
+    @Then("the vehicle flashes/flashed all right indicators synchronously")
     public void the_vehicle_flashes_all_right_indicators_synchronously() {
 
         Assert.assertEquals(car.getBlinkingState("Right"), Blinking.FLASHING);
@@ -39,7 +39,7 @@ public class DirectionBlinking_StepDefinitions {
     public void the_pitman_arm_is_moved_in_the_downward_position() {
         car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
     }
-    @Then("the vehicle (flashes||flashed) all left indicators synchronously")
+    @Then("the vehicle flashes/flashed all left indicators synchronously")
     public void the_vehicle_flashes_all_left_indicators_synchronously() {
         Assert.assertEquals(car.getBlinkingState("Left"), Blinking.FLASHING);
     }
@@ -199,7 +199,7 @@ public class DirectionBlinking_StepDefinitions {
 
 
 
-    @When("the driver (moves||moved) pitman arm downward")
+    @When("the driver moves/moved pitman arm downward")
     public void the_driver_moves_pitman_arm_downward() {
         car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
     }
@@ -209,7 +209,7 @@ public class DirectionBlinking_StepDefinitions {
         car.isIgnitionOn(IgnitionStatus.NOKEYINSERTED);
     }
 
-    @Given("the driver (moves||moved) pitman arm upward")
+    @Given("the driver moves/moved pitman arm upward")
     public void the_driver_moves_pitman_arm_upward() {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
     }
@@ -234,7 +234,7 @@ public class DirectionBlinking_StepDefinitions {
         Assert.assertEquals(car.getFlashingCycles("Right"),true);
     }
 
-    @When("the driver (moves||moved) pitman arm downward in tip-blinking position")
+    @When("the driver moves/moved pitman arm downward in tip-blinking position")
     public void the_driver_moves_pitman_arm_downward_in_tip_blinking_position() {
         car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
     }
@@ -244,12 +244,12 @@ public class DirectionBlinking_StepDefinitions {
         Assert.assertEquals(car.getFlashingCycles("Left"),true);
     }
 
-    @Given("the driver (moves||moved) pitman arm upward in tip-blinking position")
+    @Given("the driver moves/moved pitman arm upward in tip-blinking position")
     public void the_driver_moves_pitman_arm_upward_in_tip_blinking_position() {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
     }
 
-    @Given("the pitman arm (is||was) held less than 0.5 seconds")
+    @Given("the pitman arm is/was held less than 0.5 seconds")
     public void the_pitman_arm_is_held_less_than_seconds() {
         car.tipPitmanArm(PitmanArmPosition.DOWNWARD5,300);
     }
@@ -281,7 +281,7 @@ public class DirectionBlinking_StepDefinitions {
         car.tipPitmanArm(PitmanArmPosition.DOWNWARD5,300);
     }
 
-    @When("the driver (engages||engaged) the hazard warning switch")
+    @When("the driver engages/engaged the hazard warning switch")
     public void the_driver_engages_the_hazard_warning_switch() {
         car.pressHazardSwitch(true);
     }

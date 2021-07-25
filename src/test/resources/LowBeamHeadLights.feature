@@ -211,31 +211,45 @@ Feature: Low Beam Headlights
     @requirement(ELS-24)
     Scenario: Driver signals left with light rotary switch on
       Given the driver turned the light rotary switch on
-      And the driver moved pitman arm downward
+      And the left indicator is blinking
       When the vehicle drives slower than 10km per hour
-      Then the vehicle activates cornering lights
+      Then the left cornering light will turn on
 
     @requirement(ELS-24)
-    Scenario: Vehicle passes corner with cornering light
-      Given the vehicle has activated cornering headlights
-      When a duration of 5 seconds of passing the corner has occurred
-      Then the vehicle turns off cornering lights within 1 second
+    Scenario: Driver signals right with light rotary switch on
+      Given the driver turned the light rotary switch on
+      And the right indicator is blinking
+      When the vehicle drives slower than 10km per hour
+      Then the right cornering light will turn on
 
-    Rule: When darkness switch is engaged, cornering light is deactivated
+    @requirement(ELS-24)
+    Scenario: Vehicle passes left corner with cornering light
+      Given the left cornering light is on
+      When a duration of 5 seconds of passing the corner has occurred
+      Then the left cornering light will turn off within 1 second
+
+    @requirement(ELS-24)
+    Scenario: Vehicle passes right corner with cornering light
+      Given the right cornering light is on
+      When a duration of 5 seconds of passing the corner has occurred
+      Then the right cornering light will turn off within 1 second
+
+
+  Rule: When darkness switch is engaged, cornering light is deactivated
     @requirement(ELS-25)
-    Scenario: Driver activates darkness switch with cornering light on
-      Given the vehicle has activated cornering headlights
+    Scenario: Driver activates darkness switch with left cornering light on
+      Given the left cornering light is on
       When the driver engages the darkness switch
-      Then the vehicle has cornering lights deactivated
+      Then the left cornering light will turn off
 
     @requirement(ELS-26)
-    Scenario: Driver engages cornering light by turning wheel by 10 degrees
+    Scenario: Driver engages cornering light by turning wheel to right by 10 degrees
       Given the left indicator is not blinking
       And the right indicator is not blinking
       And the low beam headlight is on
       And the vehicle drives slower than 10km per hour
-      When the driver turns the wheel by more than 10 degrees
-      Then the cornering lights will be on
+      When the driver turns the wheel to right within 10 degrees
+      Then the right cornering light will turn on
 
 
 

@@ -12,7 +12,7 @@ public class Indicator {
     private int hazardCycleLength;
     private int numberofFlashCycles;
     private Flashing flashState;
-
+    private boolean isCorneringLightOn;
 
     public Flashing getFlashState(){
         return flashState;
@@ -48,5 +48,10 @@ public class Indicator {
     public int getNumberofFlashCycles(){
         return numberofFlashCycles;
     }
-
+    public void isCorneringLightOn(boolean isCorneringLightOn){
+        this.isCorneringLightOn=isCorneringLightOn;
+    }
+    public boolean getCorneringLightState(){
+        return isCorneringLightOn;
+    }
 }

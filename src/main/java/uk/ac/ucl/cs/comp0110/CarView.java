@@ -103,13 +103,21 @@ public class CarView extends JFrame{
         }
     }
     public void drawCornerLight(Graphics g){
-        if (model.getCorneringLight().getState()==Lighting.ON){
+        if (model.getLeftIndicator().getCorneringLightState()==true){
             g2d.setPaint(new Color(255, 255, 0));
             g.fillPolygon(leftCornerLight);
-            g.fillPolygon(rightCornerLight);
         }else{
             g2d.setPaint(new Color(211, 211, 211));
             g.fillPolygon(leftCornerLight);
+            leftDirection.setSelected(false);
+            rightDirection.setSelected(false);
+            passCorner.setSelected(false);
+        }
+        if (model.getRightIndicator().getCorneringLightState()==true){
+            g2d.setPaint(new Color(255, 255, 0));
+            g.fillPolygon(rightCornerLight);
+        }else{
+            g2d.setPaint(new Color(211, 211, 211));
             g.fillPolygon(rightCornerLight);
             leftDirection.setSelected(false);
             rightDirection.setSelected(false);

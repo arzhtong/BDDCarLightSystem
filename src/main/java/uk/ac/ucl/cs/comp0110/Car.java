@@ -20,7 +20,6 @@ public class Car {
     private Indicator leftIndicator;
     private Indicator rightIndicator;
     private Light headLight;
-    private Light corneringLight;
     private int lengthOfTimeHeld;
     private Timer timer;
     private boolean hazardSwitchState;
@@ -46,7 +45,6 @@ public class Car {
         leftIndicator=new Indicator();
         headLight=new Light();
         tailLight=new Light();
-        corneringLight=new Light();
         rightIndicator=new Indicator();
         leftIndicator.setState(Blinking.NONFLASHING);
         rightIndicator.setState(Blinking.NONFLASHING);
@@ -133,7 +131,8 @@ public class Car {
     public void pressDarknessSwitch(boolean darknessSwitch){
         if (darknessSwitch==true){
             engageAmbientLight(false);
-            corneringLight.setState(Lighting.OFF);
+            leftIndicator.isCorneringLightOn(false);
+            rightIndicator.isCorneringLightOn(false);
         }else{
             checkCorneringLight();
         }
@@ -226,7 +225,7 @@ public class Car {
             }
 
             if (position ==PitmanArmPosition.NEUTRAL){
-                corneringLight.setState(Lighting.OFF);
+                checkCorneringLight();
                 leftIndicator.setState(Blinking.NONFLASHING);
                 rightIndicator.setState(Blinking.NONFLASHING);
                 leftIndicator.setCycle(false);
@@ -243,13 +242,21 @@ public class Car {
         }
     }
     public void checkCorneringLight(){
-        corneringLight.setState(Lighting.OFF);
-        if (leftIndicator.getState()==Blinking.FLASHING || rightIndicator.getState()==Blinking.FLASHING && drivingSpeed<10){
-            corneringLight.setState(Lighting.ON);
+        leftIndicator.isCorneringLightOn(false);
+        rightIndicator.isCorneringLightOn(false);
+        if (leftIndicator.getState()==Blinking.FLASHING && drivingSpeed<10){
+            leftIndicator.isCorneringLightOn(true);
+        }
+        if (rightIndicator.getState()==Blinking.FLASHING && drivingSpeed<10){
+            rightIndicator.isCorneringLightOn(true);
         }
         if (numberOfDegreesSteeringWheelTurned>=10 && leftIndicator.getState()==Blinking.NONFLASHING && rightIndicator.getState()==Blinking.NONFLASHING
-        && drivingSpeed<10){
-            corneringLight.setState(Lighting.ON);
+        && drivingSpeed>0 && drivingSpeed <10){
+            rightIndicator.isCorneringLightOn(true);
+        }
+        if (numberOfDegreesSteeringWheelTurned>=10 && leftIndicator.getState()==Blinking.NONFLASHING && rightIndicator.getState()==Blinking.NONFLASHING
+                && drivingSpeed<0 && drivingSpeed >-10){
+            leftIndicator.isCorneringLightOn(true);
         }
     }
     public void setExteriorBrightness(int exteriorBrightness){
@@ -329,7 +336,8 @@ public class Car {
     public void setDurationOfPassingCorner(int durationOfPassingCorner){
         this.durationOfPassingCorner=durationOfPassingCorner;
         if (durationOfPassingCorner==5){
-            corneringLight.setState(Lighting.OFF);
+            leftIndicator.isCorneringLightOn(false);
+            rightIndicator.isCorneringLightOn(false);
         }
     }
 
@@ -481,7 +489,8 @@ public class Car {
             public void run() {
                 durationOfPassingCorner++;
                 if (durationOfPassingCorner==5000){
-                    corneringLight.setState(Lighting.OFF);
+                    leftIndicator.isCorneringLightOn(false);
+                    rightIndicator.isCorneringLightOn(false);
                     leftIndicator.setState(Blinking.NONFLASHING);
                     rightIndicator.setState(Blinking.NONFLASHING);
                     stopTimer();
@@ -565,9 +574,7 @@ public class Car {
     public int getDrivingSpeed(){
         return drivingSpeed;
     }
-    public Light getCorneringLight(){
-        return corneringLight;
-    }
+
 
 }
 

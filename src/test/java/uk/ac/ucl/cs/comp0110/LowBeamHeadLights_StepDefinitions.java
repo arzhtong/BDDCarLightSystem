@@ -45,7 +45,7 @@ public class LowBeamHeadLights_StepDefinitions {
     public void the_low_beam_headlight_is_activated_with_brightness() {
         Assert.assertEquals(car.getHeadLight().getLightDimmingPercentage(),50);
     }
-    @When("the driver (turns||turned) the light rotary switch to auto")
+    @When("the driver turns/turned the light rotary switch to auto")
     public void the_driver_turns_the_light_rotary_switch_to_auto() {
         car.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
     }
@@ -88,7 +88,7 @@ public class LowBeamHeadLights_StepDefinitions {
         car.getHeadLight().setAmberLightDuration(35000);
     }
 
-    @When("the driver (opens||opened) the door")
+    @When("the driver opens/opened the door")
     public void the_driver_opens_the_door() {
         car.isAllDoorsClosed(false);
     }
@@ -108,7 +108,7 @@ public class LowBeamHeadLights_StepDefinitions {
         car.engageDayTimeRunningLight(true);
     }
 
-    @When("the driver (turns||turned) on ambient light")
+    @When("the driver turns/turned on ambient light")
     public void the_driver_turns_on_ambient_light() {
         car.engageAmbientLight(true);
     }
@@ -118,7 +118,7 @@ public class LowBeamHeadLights_StepDefinitions {
         car.isAllDoorsClosed(false);
     }
 
-    @Given("the driver (turns||turned) light rotary switch to auto")
+    @Given("the driver turns/turned light rotary switch to auto")
     public void the_driver_turns_light_rotary_switch_to_auto() {
         car.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
     }
@@ -192,36 +192,36 @@ public class LowBeamHeadLights_StepDefinitions {
         car.setDrivingSpeed(5);
     }
 
-    @Then("the vehicles activates cornering lights")
-    public void the_vehicles_activates_cornering_lights() {
-       Assert.assertEquals(car.getCorneringLight().getState(),Lighting.ON);
-    }
-
-    @Given("the vehicle activates cornering lights")
-    public void the_vehicle_activates_cornering_lights() {
-        car.getCorneringLight().setState(Lighting.ON);
-    }
+//    @Then("the vehicles activates cornering lights")
+//    public void the_vehicles_activates_cornering_lights() {
+//       Assert.assertEquals(car.getCorneringLight().getState(),Lighting.ON);
+//    }
+//
+//    @Given("the vehicle activates cornering lights")
+//    public void the_vehicle_activates_cornering_lights() {
+//        car.getCorneringLight().setState(Lighting.ON);
+//    }
 
     @When("a duration of 5 seconds of passing the corner has occurred")
     public void a_duration_of_seconds_of_passing_the_corner_has_occurred() {
         car.setDurationOfPassingCorner(5);
     }
 
-    @Given("the vehicle has activated cornering headlights")
-    public void the_vehicle_has_activated_cornering_headlights() {
-        car.getCorneringLight().setState(Lighting.ON);
-    }
+//    @Given("the vehicle has activated cornering headlights")
+//    public void the_vehicle_has_activated_cornering_headlights() {
+//        car.getCorneringLight().setState(Lighting.ON);
+//    }
+//
 
+//    @Then("the vehicle has cornering lights deactivated")
+//    public void the_vehicle_has_cornering_lights_deactivated() {
+//        Assert.assertEquals(car.getCorneringLight().getState(),Lighting.OFF);
+//    }
 
-    @Then("the vehicle has cornering lights deactivated")
-    public void the_vehicle_has_cornering_lights_deactivated() {
-        Assert.assertEquals(car.getCorneringLight().getState(),Lighting.OFF);
-    }
-
-    @Then("the vehicle turns off cornering lights within 1 second")
-    public void theVehicleTurnsOffCorneringLightsWithinSecond() {
-        Assert.assertEquals(car.getCorneringLight().getState(),Lighting.OFF);
-    }
+//    @Then("the vehicle turns off cornering lights within 1 second")
+//    public void theVehicleTurnsOffCorneringLightsWithinSecond() {
+//        Assert.assertEquals(car.getCorneringLight().getState(),Lighting.OFF);
+//    }
     @When("30 seconds have passed since the ambient light was on")
     public void seconds_have_passed_since_the_ambient_light_was_on() {
         car.getHeadLight().setAmberLightDuration(35000);
@@ -246,8 +246,59 @@ public class LowBeamHeadLights_StepDefinitions {
         car.setDegreesSteeringWheelTurned(10);
     }
 
-    @Then("the cornering lights will be on")
-    public void the_cornering_lights_will_be_on() {
-        Assert.assertEquals(car.getCorneringLight().getState(),Lighting.ON);
+//    @Then("the cornering lights will be on")
+//    public void the_cornering_lights_will_be_on() {
+//        Assert.assertEquals(car.getCorneringLight().getState(),Lighting.ON);
+//    }
+
+    @Then("the left cornering light will turn on")
+    public void the_left_cornering_light_will_turn_on() {
+        Assert.assertEquals(car.getLeftIndicator().getCorneringLightState(),true);
     }
+
+    @Then("the right cornering light will turn on")
+    public void the_right_cornering_light_will_turn_on() {
+        Assert.assertEquals(car.getRightIndicator().getCorneringLightState(),true);
+    }
+
+    @Given("the left cornering light is on")
+    public void the_left_cornering_light_is_on() {
+        car.getLeftIndicator().isCorneringLightOn(true);
+    }
+
+    @Then("the left cornering light will turn off within 1 second")
+    public void the_left_cornering_light_will_turn_off_within_second() {
+        car.getLeftIndicator().isCorneringLightOn(false);
+    }
+
+    @Given("the right cornering light is on")
+    public void the_right_cornering_light_is_on() {
+        car.getRightIndicator().isCorneringLightOn(true);
+    }
+
+    @Then("the right cornering light will turn off within 1 second")
+    public void the_right_cornering_light_will_turn_off_within_second() {
+        car.getRightIndicator().isCorneringLightOn(false);
+    }
+
+    @Then("the left cornering light will turn off")
+    public void the_left_cornering_light_will_turn_off() {
+        Assert.assertEquals(car.getLeftIndicator().getCorneringLightState(),false);
+    }
+
+    @When("the driver turns the wheel to right within 10 degrees")
+    public void the_driver_turns_the_wheel_to_right_within_degrees() {
+        car.setDegreesSteeringWheelTurned(10);
+    }
+
+    @Given("the left indicator is blinking")
+    public void the_left_indicator_is_blinking() {
+        car.getLeftIndicator().setState(Blinking.FLASHING);
+    }
+
+    @Given("the right indicator is blinking")
+    public void the_right_indicator_is_blinking() {
+        car.getRightIndicator().setState(Blinking.FLASHING);
+    }
+
 }
