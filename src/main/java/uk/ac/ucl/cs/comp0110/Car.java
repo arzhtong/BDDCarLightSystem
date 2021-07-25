@@ -37,8 +37,10 @@ public class Car {
     private int drivingSpeed;
     private int numberOfDegreesSteeringWheelTurned;
     private LightRotarySwitchState lightRotarySwitchState;
+    private boolean reverseGearEngaged;
     public Car(){
         allDoorsClosed=true;
+        reverseGearEngaged=false;
         numberOfDegreesSteeringWheelTurned=0;
         lightRotarySwitchState=LightRotarySwitchState.OFF;
         doorPosition=DoorPosition.CLOSED;
@@ -360,7 +362,15 @@ public class Car {
             }
         }
     }
-    public void isReverseGearEngaged(boolean gearEngaged){
+    public void isReverseGearEngaged(boolean reverseGearEngaged){
+        this.reverseGearEngaged=reverseGearEngaged;
+        if (reverseGearEngaged==true){
+            leftIndicator.isCorneringLightOn(true);
+            rightIndicator.isCorneringLightOn(true);
+        }else{
+            checkCorneringLight();
+        }
+
 
     }
     public void darkenIndicators(){
@@ -577,7 +587,9 @@ public class Car {
     public int getDrivingSpeed(){
         return drivingSpeed;
     }
-
+    public boolean getReverseGearEngaged(){
+        return reverseGearEngaged;
+    }
 
 }
 

@@ -131,6 +131,12 @@ public class CarController {
                 numberOfDegreesSteeringWheelTurned();
             }
         });
+        view.getReverseGear().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                reverseGearEngaged();
+            }
+        });
     }
 
 
@@ -248,5 +254,12 @@ public class CarController {
     }
     public void numberOfDegreesSteeringWheelTurned(){
         model.setDegreesSteeringWheelTurned(Integer.parseInt(view.getNumberOfDegreesSteeringWheelTurned().getText()));
+    }
+    public void reverseGearEngaged(){
+        if (model.getReverseGearEngaged()==false){
+            model.isReverseGearEngaged(true);
+        }else{
+            model.isReverseGearEngaged(false);
+        }
     }
 }
