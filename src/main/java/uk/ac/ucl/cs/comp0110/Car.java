@@ -360,6 +360,9 @@ public class Car {
             }
         }
     }
+    public void isReverseGearEngaged(boolean gearEngaged){
+
+    }
     public void darkenIndicators(){
         if (leftIndicator.getState()==Blinking.FLASHING) {
             rightIndicator.setFlashState(Flashing.DARK);

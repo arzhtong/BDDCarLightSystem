@@ -300,5 +300,20 @@ public class LowBeamHeadLights_StepDefinitions {
     public void the_right_indicator_is_blinking() {
         car.getRightIndicator().setState(Blinking.FLASHING);
     }
+    @Given("the left cornering light is off")
+    public void the_left_cornering_light_is_off() {
+        car.getLeftIndicator().isCorneringLightOn(false);
+    }
+
+    @Given("the right cornering light is off")
+    public void the_right_cornering_light_is_off() {
+        car.getRightIndicator().isCorneringLightOn(false);
+    }
+
+    @When("the driver activates the reverse gear")
+    public void the_driver_activates_the_reverse_gear() {
+        car.isReverseGearEngaged(false);
+    }
+
 
 }
