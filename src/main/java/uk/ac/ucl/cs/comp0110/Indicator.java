@@ -13,7 +13,8 @@ public class Indicator {
     private int numberofFlashCycles;
     private Flashing flashState;
     private boolean isCorneringLightOn;
-
+    private boolean isParkingLightOn;
+    private int dimmedLightPercentage;
     public Flashing getFlashState(){
         return flashState;
     }
@@ -54,4 +55,17 @@ public class Indicator {
     public boolean getCorneringLightState(){
         return isCorneringLightOn;
     }
+    public void isParkingLightOn(boolean isParkingLightOn){
+        this.isParkingLightOn=isParkingLightOn;
+    }
+    public boolean getParkingLightState(){
+        return isParkingLightOn;
+    }
+    public void setLightDimmingPercentage(int dimmedLightPercentage){
+        this.dimmedLightPercentage=dimmedLightPercentage;
+    }
+    public int getLightDimmingPercentage(){
+        return dimmedLightPercentage;
+    }
+
 }

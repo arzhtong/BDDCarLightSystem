@@ -11,9 +11,7 @@ enum IgnitionStatus{
 enum LightRotarySwitchState{
     ON,OFF,AUTO
 }
-enum DoorPosition{
-    OPEN,CLOSED
-}
+
 public class Car {
     private IgnitionStatus ignitionState;
     private PitmanArmPosition pitmanArmState;
@@ -25,7 +23,6 @@ public class Car {
     private boolean hazardSwitchState;
     private boolean inUSAOrCanada;
     private boolean allDoorsClosed;
-    private DoorPosition doorPosition;
     private boolean dayTimeRunningLight;
     private boolean ambientLight;
     private int exteriorBrightness;
@@ -43,7 +40,6 @@ public class Car {
         reverseGearEngaged=false;
         numberOfDegreesSteeringWheelTurned=0;
         lightRotarySwitchState=LightRotarySwitchState.OFF;
-        doorPosition=DoorPosition.CLOSED;
         leftIndicator=new Indicator();
         headLight=new Light();
         tailLight=new Light();
@@ -584,12 +580,10 @@ public class Car {
     public boolean getDarknessSwitch(){
         return darknessSwitch;
     }
-    public int getDrivingSpeed(){
-        return drivingSpeed;
-    }
     public boolean getReverseGearEngaged(){
         return reverseGearEngaged;
     }
+
 
 }
 

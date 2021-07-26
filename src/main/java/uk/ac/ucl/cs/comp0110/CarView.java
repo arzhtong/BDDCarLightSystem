@@ -132,7 +132,7 @@ public class CarView extends JFrame{
         changeSelectedButton();
 
         if (model.getBlinkingState("Left")==Blinking.FLASHING) {
-            
+
             if (model.getFlashState()==Flashing.DARK) {
                 g2d.setPaint(new Color(255, 255, 0));
                 if (model.getDimmedLightStatus("Left")==50){
@@ -140,7 +140,7 @@ public class CarView extends JFrame{
                 }
                 g.fillPolygon(leftFrontIndicator);
                 g.fillPolygon(leftSideIndicator);
-               g.fillPolygon(leftBackIndicator);
+                g.fillPolygon(leftBackIndicator);
                 model.changeFlashState();
             } else {
                 g2d.setPaint(new Color(211, 211, 211));
@@ -375,7 +375,7 @@ public class CarView extends JFrame{
             @Override
             public void run() {
 
-                    repaint();
+                repaint();
 
             }
         },0,500,TimeUnit.MILLISECONDS);

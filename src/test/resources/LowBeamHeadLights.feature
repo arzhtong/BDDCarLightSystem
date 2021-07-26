@@ -66,8 +66,8 @@ Feature: Low Beam Headlights
 
     @requirement(ELS-17,ELS-20)
     Scenario: Driver engages ambient light
-    When the ignition is off
-    And the driver has turned ambient light on
+    Given the ignition is off
+    When the driver turns on ambient light
     Then the low beam headlight will be activated
 
     @requirement(ELS-17,ELS-20)
@@ -260,6 +260,50 @@ Feature: Low Beam Headlights
     When the driver activates the reverse gear
     Then the left cornering light will turn on
     And the right cornering light will turn on
+
+    Rule: When key is not inserted, the light rotary switch is on and the pitman arm is engaged then parking light is engaged
+
+    @requirement(ELS-28)
+    Scenario: Driver engages left parking light
+    Given the ignition is off
+    And the driver turned the light rotary switch on
+    When the driver moves pitman arm upward
+    Then the low beam headlight is on
+    And the left tail light will be on
+
+    @requirement(ELS-28)
+    Scenario: Driver engages right parking light
+      Given the ignition is off
+      And the driver turned the light rotary switch on
+      When the driver moves pitman arm upward
+      Then the left low beam headlight is on
+      And the left tail light will be on
+      And the brightness of the lights will be 10% of the normal brightness
+
+    @requirement(ELS-28)
+    Scenario: Driver engages left parking light with ambient light on
+      Given the ignition is off
+      And the ambient light is on
+      And the driver turns the light rotary switch on
+      And the exterior brightness is below 200lx
+      And 30 seconds have passed since the ambient light was activated
+      When the driver moves pitman arm downward
+      Then the left tail light will be on
+      And the left low beam headlight is on
+
+    @requirement(ELS-28)
+    Scenario: Driver engages right parking light with ambient light on
+      Given the ignition is off
+      And the ambient light is on
+      And the driver turns the light rotary switch on
+      And the exterior brightness is below 200lx
+      And 30 seconds have passed since the ambient light was activated
+      When the driver moves pitman arm upward
+      Then the right tail light will be on
+      And the right low beam headlight is on
+
+
+
 
 
 
