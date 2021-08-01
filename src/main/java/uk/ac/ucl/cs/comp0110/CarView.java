@@ -146,7 +146,7 @@ public class CarView extends JFrame{
                 g2d.setPaint(new Color(211, 211, 211));
                 g.fillPolygon(leftSideIndicator);
 
-                if (model.getHeadLightBeamState()==LowBeam.ACTIVE){
+                if (model.getHeadLightBeamState()== Headlight.LOWBEAM){
                     g.fillPolygon(leftFrontIndicator);
                     g.fillPolygon(rightBackIndicator);
                 }
@@ -159,7 +159,7 @@ public class CarView extends JFrame{
             g2d.setPaint(new Color(211, 211, 211));
             g.fillPolygon(leftSideIndicator);
 
-            if (model.getHeadLightBeamState()==LowBeam.INACTIVE){
+            if (model.getHeadLightBeamState()== Headlight.INACTIVE){
                 g.fillPolygon(leftFrontIndicator);
                 g.fillPolygon(leftBackIndicator);
 
@@ -188,14 +188,14 @@ public class CarView extends JFrame{
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
         }
-        if ((model.getHeadLightBeamState()== LowBeam.ACTIVE)) {
+        if ((model.getHeadLightBeamState()== Headlight.LOWBEAM)) {
             g2d.setPaint(new Color(100, 150, 0));
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
             g.fillPolygon(leftBackIndicator);
             g.fillPolygon(rightBackIndicator);
         }
-        if ((model.getLeftIndicator().getLowBeamState()== LowBeam.ACTIVE && model.getHeadLight().getLightDimmingPercentage()==50)) {
+        if ((model.getLeftIndicator().getLowBeamState()== Headlight.LOWBEAM && model.getHeadLight().getLightDimmingPercentage()==50)) {
             g2d.setPaint(new Color(100, 100, 0));
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
@@ -225,7 +225,7 @@ public class CarView extends JFrame{
                 g2d.setPaint(new Color(211, 211, 211));
                 g.fillPolygon(leftSideIndicator);
 
-                if (model.getHeadLightBeamState()== LowBeam.INACTIVE){
+                if (model.getHeadLightBeamState()== Headlight.INACTIVE){
                     g.fillPolygon(leftFrontIndicator);
                     g.fillPolygon(leftBackIndicator);
                 }
@@ -279,7 +279,7 @@ public class CarView extends JFrame{
                 g2d.setPaint(new Color(211, 211, 211));
                 g.fillPolygon(rightSideIndicator);
                 g.fillPolygon(rightBackIndicator);
-                if (model.getHeadLightBeamState()== LowBeam.INACTIVE){
+                if (model.getHeadLightBeamState()== Headlight.INACTIVE){
                     g.fillPolygon(rightFrontIndicator);
                     g.fillPolygon(rightBackIndicator);
                 }
@@ -292,7 +292,7 @@ public class CarView extends JFrame{
             g2d.setPaint(new Color(211, 211, 211));
             g.fillPolygon(rightSideIndicator);
 
-            if (model.getHeadLightBeamState()== LowBeam.INACTIVE){
+            if (model.getHeadLightBeamState()== Headlight.INACTIVE){
                 g.fillPolygon(rightFrontIndicator);
                 g.fillPolygon(rightBackIndicator);
             }
@@ -320,7 +320,7 @@ public class CarView extends JFrame{
                 g.fillPolygon(rightSideIndicator);
 
                 model.changeFlashState();
-                if (model.getHeadLightBeamState()== LowBeam.INACTIVE){
+                if (model.getHeadLightBeamState()== Headlight.INACTIVE){
                     g.fillPolygon(rightFrontIndicator);
                     g.fillPolygon(rightBackIndicator);
                 }

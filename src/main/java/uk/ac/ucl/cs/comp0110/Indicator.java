@@ -1,6 +1,5 @@
 package uk.ac.ucl.cs.comp0110;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 
 enum Blinking{
@@ -9,8 +8,8 @@ enum Blinking{
 enum Flashing{
     BRIGHT,DARK
 }
-enum LowBeam {
-    ACTIVE,INACTIVE
+enum Headlight {
+    LOWBEAM,HIGHBEAM,INACTIVE
 }
 public class Indicator {
     private Blinking blinkingState;
@@ -22,7 +21,7 @@ public class Indicator {
     private boolean isTailLightOn;
     private int dimmedLightPercentage;
     private int ambientLightDuration;
-    private LowBeam lowBeam;
+    private Headlight headlight;
     private SystemClock clock;
 
     public Indicator(){
@@ -90,11 +89,11 @@ public class Indicator {
 
     }
 
-    public void setLowBeamState(LowBeam lowBeam){
-        this.lowBeam = lowBeam;
+    public void setLowBeamState(Headlight headlight){
+        this.headlight = headlight;
     }
-    public LowBeam getLowBeamState(){
-        return lowBeam;
+    public Headlight getLowBeamState(){
+        return headlight;
     }
     public SystemClock getClock(){
         return clock;

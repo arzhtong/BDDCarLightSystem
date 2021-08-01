@@ -1,6 +1,5 @@
 package uk.ac.ucl.cs.comp0110;
 import io.cucumber.java.Before;
-import io.cucumber.java.bs.A;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -10,11 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.mockito.Mock;
 
-import java.time.Clock;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class LowBeamHeadLights_StepDefinitions{
@@ -38,7 +34,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @Then("the low beam headlight will be activated")
     public void the_low_beam_headlight_will_be_activated() {
-        Assert.assertEquals(base.car.getHeadLightBeamState(), LowBeam.ACTIVE);
+        Assert.assertEquals(base.car.getHeadLightBeamState(), Headlight.LOWBEAM);
     }
 
     @When("the driver (turns||turned) the light rotary switch to the off position")
@@ -48,7 +44,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @Then("the low beam headlight will be deactivated")
     public void the_low_beam_headlight_will_be_deactivated() {
-        Assert.assertEquals(base.car.getHeadLightBeamState(), LowBeam.INACTIVE);
+        Assert.assertEquals(base.car.getHeadLightBeamState(), Headlight.INACTIVE);
     }
     @Given("the ignition is off")
     public void the_ignition_is_off() {
@@ -86,12 +82,12 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @Then("the low beam headlights will be activated")
     public void the_low_beam_headlights_will_be_activated() {
-        Assert.assertEquals(base.car.getHeadLightBeamState(), LowBeam.ACTIVE);
+        Assert.assertEquals(base.car.getHeadLightBeamState(), Headlight.LOWBEAM);
     }
 
     @Then("the low beam headlights will not be activated")
     public void the_low_beam_headlights_will_not_be_activated() {
-        Assert.assertEquals(base.car.getHeadLightBeamState(), LowBeam.INACTIVE);
+        Assert.assertEquals(base.car.getHeadLightBeamState(), Headlight.INACTIVE);
     }
 
     @When("the driver has turned ambient light on")
@@ -169,7 +165,7 @@ public class LowBeamHeadLights_StepDefinitions{
     }
     @Then("the low beam tail light will be activated")
     public void the_low_beam_tail_light_will_be_activated() {
-        Assert.assertEquals(base.car.getHeadLightBeamState(), LowBeam.ACTIVE);
+        Assert.assertEquals(base.car.getHeadLightBeamState(), Headlight.LOWBEAM);
     }
 
     @When("the car is from the USA")
@@ -263,7 +259,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @Given("the low beam headlight is on")
     public void the_low_beam_headlight_is_on() {
-        base.car.setHeadLightBeamState(LowBeam.ACTIVE);
+        base.car.setHeadLightBeamState(Headlight.LOWBEAM);
     }
 
     @When("the driver turns the wheel by more than 10 degrees")
@@ -347,7 +343,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @And("the right low beam headlight is on")
     public void theRightLowBeamHeadlightIsOn() {
-        Assert.assertEquals(base.car.getRightIndicator().getLowBeamState(),LowBeam.ACTIVE);
+        Assert.assertEquals(base.car.getRightIndicator().getLowBeamState(), Headlight.LOWBEAM);
     }
 
     @Then("the left tail light will be on")
@@ -357,7 +353,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @And("the left low beam headlight is on")
     public void theLeftLowBeamHeadlightIsOn() {
-        Assert.assertEquals(base.car.getLeftIndicator().getLowBeamState(),LowBeam.ACTIVE);
+        Assert.assertEquals(base.car.getLeftIndicator().getLowBeamState(), Headlight.LOWBEAM);
     }
 
     @And("the brightness of the lights will be 10% of the normal brightness")
