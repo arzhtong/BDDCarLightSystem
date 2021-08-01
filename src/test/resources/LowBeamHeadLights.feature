@@ -303,7 +303,13 @@ Feature: Low Beam Headlights
       Then the right tail light will be on
       And the right low beam headlight is on
 
+    Rule: The normal brightness for all lights and indicators are 100%
 
+    @requirement(ELS-29)
+    Scenario: Driver engages light rotary switch on
+      Given the Ignition is on
+      When the driver turned the light rotary switch on
+      Then the low beam headlight is activated with 100% brightness
 
 
 
