@@ -81,7 +81,7 @@ Feature: Low Beam Headlights
     Scenario: Driver opens the door with ambient light on
     Given the ambient light is on
     And the ignition is off
-    And 30 seconds have passed since the ambient light was activated
+    And 30 seconds have passed since the ambient light was on
     And the exterior brightness is above 200lx
     When the driver opens the door
     Then the low beam headlight will be deactivated
@@ -169,8 +169,8 @@ Feature: Low Beam Headlights
       Given the ignition is off
       And the driver turned on ambient light
       And the driver opened the door
-      When the exterior brightness is below 200lx
-      And the driver closes the door
+      And the exterior brightness is below 200lx
+      When the driver closes the door
       Then the low beam headlight will be deactivated
 
     Rule: Engaging darkness switch doesn't allow activation of ambient light
@@ -194,15 +194,15 @@ Feature: Low Beam Headlights
 
     @requirement(ELS-23)
     Scenario: Driver turns light rotary switch on with USA car model
-      When the car is from the USA
-      And the driver turned the light rotary switch on
+      Given the car is from the USA
+      When the driver turns the light rotary switch on
       Then the back left direction indicator will be blinking
       And the back right direction indicator will be blinking
 
     @requirement(ELS-23)
     Scenario: Driver signals left while USA car model tail light is on
       Given the car is from the USA
-      And the driver turned the light rotary switch on
+      And the low beam headlight is on
       When the driver moves pitman arm downward
       Then the right indicator will not blink
       And the vehicle flashes all left indicators synchronously
@@ -270,6 +270,7 @@ Feature: Low Beam Headlights
     When the driver moves pitman arm upward
     Then the low beam headlight is on
     And the left tail light will be on
+    And the brightness of the lights will be 10% of the normal brightness
 
     @requirement(ELS-28)
     Scenario: Driver engages right parking light
@@ -286,7 +287,7 @@ Feature: Low Beam Headlights
       And the ambient light is on
       And the driver turns the light rotary switch on
       And the exterior brightness is below 200lx
-      And 30 seconds have passed since the ambient light was activated
+      And 30 seconds have passed since the ambient light was on
       When the driver moves pitman arm downward
       Then the left tail light will be on
       And the left low beam headlight is on
@@ -297,7 +298,7 @@ Feature: Low Beam Headlights
       And the ambient light is on
       And the driver turns the light rotary switch on
       And the exterior brightness is below 200lx
-      And 30 seconds have passed since the ambient light was activated
+      And 30 seconds have passed since the ambient light was on
       When the driver moves pitman arm upward
       Then the right tail light will be on
       And the right low beam headlight is on

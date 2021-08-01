@@ -1,21 +1,28 @@
 package uk.ac.ucl.cs.comp0110;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.*;
 
-public class SystemClock{
-    public Clock constantClock;
-    public SystemClock(){
-        constantClock=Clock.systemUTC();
+import java.time.*;
+import java.time.Instant.*;
+public class SystemClock {
+
+    private Clock clock = Clock.systemDefaultZone();
+    private ZoneId zoneId = ZoneId.systemDefault();
+    private Clock constantClock = Clock.fixed(Instant.ofEpochMilli(0), ZoneId.systemDefault());
+
+    public void useFixedClockAt(LocalDateTime date){
+        clock = Clock.fixed(date.atZone(zoneId).toInstant(), zoneId);
     }
-    public Clock setTime(int numseconds){
-        Clock clock= Clock.offset(constantClock, Duration.ofSeconds(10));
-        return clock;
+
+    public void useSystemDefaultZoneClock(){
+        clock = Clock.systemDefaultZone();
     }
-    public Clock getConstantClock(){
+
+    public Clock getTime() {
+        return clock ;
+    }
+    public void setTime(int numSeconds){
+        clock.offset(constantClock, Duration.ofSeconds(10));
+    }
+    public Clock getClock(){
         return constantClock;
     }
-
 }
