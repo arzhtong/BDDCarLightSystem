@@ -364,4 +364,9 @@ public class LowBeamHeadLights_StepDefinitions{
     public void theBrightnessOfTheLightsWillBeOfTheNormalBrightness() {
         base.car.getRightIndicator().setLightDimmingPercentage(10);
     }
+
+    @Then("the low beam headlight is activated with 100% brightness")
+    public void theLowBeamHeadlightIsActivatedWithBrightness() {
+        Assert.assertEquals(base.car.getHeadLight().getLightDimmingPercentage(),0);
+    }
 }
