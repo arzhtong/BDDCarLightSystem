@@ -29,6 +29,7 @@ public class Indicator {
         blinkingState=Blinking.NONFLASHING;
         clock=new SystemClock();
         clock.useFixedClockAt(LocalDateTime.now());
+        dimmedLightPercentage=0;
     }
     public Flashing getFlashState(){
         return flashState;
