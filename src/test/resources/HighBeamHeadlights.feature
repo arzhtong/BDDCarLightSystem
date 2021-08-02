@@ -1,7 +1,7 @@
 Feature:
 
   The high beam headlights is interacted through the pitman arm. This feature defines the state of the headlight
-  depending on the speed of the vehicle and the brake pedal.
+  depending on the speed of the car and the brake pedal.
 
   Background:
     Given the ignition is on
@@ -12,3 +12,13 @@ Feature:
     Scenario: Driver engages high beam headlight
       When the driver moves pitman arm towards the driver
       Then the high beam headlight will turn on
+
+    Rule: If the light rotary switch is on, pushing the pitman arm to the left will activate high beam headlights will a fixed illmination area
+
+    @requirement(ELS-31)
+    Scenario: Driver engages high beam headlight with fixed illumination area
+      Given the driver turned the light rotary switch on
+      When the driver moves pitman arm left
+      Then the high beam headlight will turn on
+      And the headlight will have a fixed area of 220m
+      And the headlight will have 100% luminous strength
