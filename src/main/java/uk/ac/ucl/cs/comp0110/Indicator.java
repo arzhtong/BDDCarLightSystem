@@ -98,4 +98,5 @@ public class Indicator {
     public SystemClock getClock(){
         return clock;
     }
+
 }

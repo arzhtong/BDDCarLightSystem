@@ -5,7 +5,7 @@ import java.util.TimerTask;
 import java.util.Timer;
 
 enum PitmanArmPosition{
-    UPWARD7,DOWNWARD7,NEUTRAL,UPWARD5,DOWNWARD5,RIGHT
+    UPWARD7,DOWNWARD7,NEUTRAL,UPWARD5,DOWNWARD5,RIGHT,LEFT
 }
 enum IgnitionStatus{
     NOKEYINSERTED,KEYINSERTED,KEYINIGNITIONONPOSITION
@@ -662,6 +662,12 @@ public class Car {
     }
     public void printTheTime(){
         System.out.println(Instant.now(clock));
+    }
+    public void setHeadLightIlluminationArea(int illuminationArea){
+
+    }
+    public void setHeadLightLuminousStrength(int LuminousStrengthPercentage){
+
     }
 }
 

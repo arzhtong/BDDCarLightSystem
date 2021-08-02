@@ -29,4 +29,19 @@ public class HighBeamHeadLights_StepDefinitions {
         Assert.assertEquals(base.car.getHeadLightBeamState(),Headlight.HIGHBEAM);
     }
 
+    @When("the driver moves pitman arm left")
+    public void theDriverMovesPitmanArmLeft() {
+        base.car.setPitmanArmPosition(PitmanArmPosition.LEFT);
+    }
+
+    @And("the headlight will have a fixed area of 220m")
+    public void theHeadlightWillHaveAFixedAreaOfM() {
+        base.car.setHeadLightIlluminationArea(220);
+
+    }
+
+    @And("the headlight will have 100% luminous strength")
+    public void theHeadlightWillHaveLuminousStrength() {
+        base.car.setHeadLightLuminousStrength(100);
+    }
 }
