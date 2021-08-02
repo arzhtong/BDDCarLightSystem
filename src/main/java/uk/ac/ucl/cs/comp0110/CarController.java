@@ -137,6 +137,12 @@ public class CarController {
                 reverseGearEngaged();
             }
         });
+        view.getHighBeamEngage().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                highBeamPressed();
+            }
+        });
     }
 
 
@@ -260,6 +266,13 @@ public class CarController {
             model.isReverseGearEngaged(true);
         }else{
             model.isReverseGearEngaged(false);
+        }
+    }
+    public void highBeamPressed(){
+        if (model.getPitmanArmState()!=PitmanArmPosition.RIGHT){
+            model.setPitmanArmPosition(PitmanArmPosition.RIGHT);
+        }else{
+            model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         }
     }
 }

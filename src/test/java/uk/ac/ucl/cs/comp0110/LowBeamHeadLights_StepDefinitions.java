@@ -23,9 +23,9 @@ public class LowBeamHeadLights_StepDefinitions{
     }
     @Before
     public void setup(){
-        currentTime=Instant.EPOCH;
-        when(base.clock.instant()).thenAnswer((invocation)->currentTime);
-        myClock=new SystemClock();
+//        currentTime=Instant.EPOCH;
+//        when(base.clock.instant()).thenAnswer((invocation)->currentTime);
+//        myClock=new SystemClock();
     }
     @When("the driver turns the light rotary switch to the on position")
     public void the_driver_turns_the_light_rotary_switch_to_the_on_position() {
@@ -242,10 +242,10 @@ public class LowBeamHeadLights_StepDefinitions{
 //    }
     @When("30 seconds have passed since the ambient light was on")
     public void seconds_have_passed_since_the_ambient_light_was_on() {
-//        base.car.getLeftIndicator().setAmberLightDuration(35000);
-        base.car.printTheTime();
-        currentTime=currentTime.plus(20, ChronoUnit.SECONDS);
-        base.car.printTheTime();
+        base.car.getLeftIndicator().setAmberLightDuration(35000);
+//        base.car.printTheTime();
+//        currentTime=currentTime.plus(20, ChronoUnit.SECONDS);
+//        base.car.printTheTime();
     }
     @Given("the left indicator is not blinking")
     public void the_left_indicator_is_not_blinking() {

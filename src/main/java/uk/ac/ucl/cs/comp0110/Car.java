@@ -246,6 +246,9 @@ public class Car {
                 leftIndicator.setCycle(false);
                 rightIndicator.setCycle(false);
             }
+            if (position==PitmanArmPosition.RIGHT){
+                setLightBeam(Headlight.HIGHBEAM);
+            }
 
             if (position ==PitmanArmPosition.NEUTRAL){
                 checkCorneringLight();
@@ -314,6 +317,8 @@ public class Car {
             }else{
                // tailLight.setLowBeamState(LowBeam.INACTIVE);
             }
+        }else if (beamState==Headlight.HIGHBEAM){
+            setHeadLightBeamState(Headlight.HIGHBEAM);
         }
     }
 
@@ -397,9 +402,11 @@ public class Car {
                 leftIndicator.isTailLightOn(true);
                 leftIndicator.setLowBeamState(Headlight.LOWBEAM);
                 rightIndicator.setLightDimmingPercentage(10);
-            }else if (pitmanArmState==PitmanArmPosition.UPWARD5 || pitmanArmState==PitmanArmPosition.UPWARD7){
-                rightIndicator.setLightDimmingPercentage(10);
 
+            }else if (pitmanArmState==PitmanArmPosition.UPWARD5 || pitmanArmState==PitmanArmPosition.UPWARD7){
+                parkingLightEngaged=true;
+                rightIndicator.setLightDimmingPercentage(10);
+                leftIndicator.setLightDimmingPercentage(10);
                 rightIndicator.setLowBeamState(Headlight.LOWBEAM);
                 rightIndicator.isTailLightOn(true);
 
@@ -458,8 +465,10 @@ public class Car {
 
     }
     public Headlight getHeadLightBeamState(){
-        if (leftIndicator.getLowBeamState()== Headlight.LOWBEAM && rightIndicator.getLowBeamState()== Headlight.LOWBEAM){
+        if (leftIndicator.getLowBeamState()== Headlight.LOWBEAM && rightIndicator.getLowBeamState()== Headlight.LOWBEAM) {
             return Headlight.LOWBEAM;
+        }else if (pitmanArmState==PitmanArmPosition.RIGHT){
+            return Headlight.HIGHBEAM;
         }else{
             return Headlight.INACTIVE;
         }

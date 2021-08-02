@@ -251,15 +251,23 @@ Feature: Low Beam Headlights
       When the driver turns the wheel to right within 10 degrees
       Then the right cornering light will turn on
 
-    Rule: When reverse gear is activated, both cornering lights turn on
+    Rule: When reverse gear is activated, opposite cornering light of blinking indicator turns on
 
     @requirement(ELS-27)
-    Scenario: Driver engages reverse gear
+    Scenario: Driver engages reverse gear while signalling left
     Given the left cornering light is off
     And the right cornering light is off
+    And the driver moved pitman arm downward
     When the driver activates the reverse gear
-    Then the left cornering light will turn on
-    And the right cornering light will turn on
+    Then the right cornering light will turn on
+
+    @requirement(ELS-27)
+    Scenario: Driver engages reverse gear while signalling right
+      Given the left cornering light is off
+      And the right cornering light is off
+      And the driver moved pitman arm upward
+      When the driver activates the reverse gear
+      Then the left cornering light will turn on
 
     Rule: When key is not inserted, the light rotary switch is on and the pitman arm is engaged then parking light is engaged
 
@@ -267,7 +275,7 @@ Feature: Low Beam Headlights
     Scenario: Driver engages left parking light
     Given the ignition is off
     And the driver turned the light rotary switch on
-    When the driver moves pitman arm upward
+    When the driver moves pitman arm downward
     Then the low beam headlight is on
     And the left tail light will be on
     And the brightness of the lights will be 10% of the normal brightness
@@ -278,7 +286,7 @@ Feature: Low Beam Headlights
       And the driver turned the light rotary switch on
       When the driver moves pitman arm upward
       Then the left low beam headlight is on
-      And the left tail light will be on
+      And the right tail light will be on
       And the brightness of the lights will be 10% of the normal brightness
 
     @requirement(ELS-28)

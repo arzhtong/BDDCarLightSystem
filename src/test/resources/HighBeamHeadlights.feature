@@ -4,7 +4,6 @@ Feature:
   depending on the speed of the vehicle and the brake pedal.
 
   Background:
-
     Given the ignition is on
 
     Rule: As long as the pitman arm is pulled towards the driver, the high beam headlight is active

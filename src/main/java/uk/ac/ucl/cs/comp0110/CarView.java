@@ -42,6 +42,7 @@ public class CarView extends JFrame{
     public JTextField speedOfCar;
     public JRadioButton passCorner;
     public JRadioButton reverseGear;
+    public JRadioButton highBeamEngage;
     private JTextField numberOfDegreesSteeringWheelTurned;
     private int numberOfFlashCycles;
     public CarView(Car model) {
@@ -68,6 +69,7 @@ public class CarView extends JFrame{
         speedOfCar=new JTextField("Speed of car");
         numberOfDegreesSteeringWheelTurned=new JTextField("Degrees Turned by Steering Wheel");
         reverseGear=new JRadioButton("Reverse Gear");
+        highBeamEngage=new JRadioButton("Set High Beam");
         numberOfFlashCycles=0;
         service= Executors.newSingleThreadScheduledExecutor();
         makeFrame();
@@ -168,18 +170,14 @@ public class CarView extends JFrame{
         }
     }
     public void drawParkingLight(Graphics g){
-        if (model.getParkingLightEngaged()==true){
+        if (model.getParkingLightEngaged()==true && model.getPitmanArmState()==PitmanArmPosition.DOWNWARD5 || model.getPitmanArmState()==PitmanArmPosition.DOWNWARD7) {
             g2d.setPaint(new Color(200, 150, 0));
             g.fillPolygon(leftFrontIndicator);
-            g.fillPolygon(rightFrontIndicator);
             g.fillPolygon(leftBackIndicator);
+
+        }else if (model.getParkingLightEngaged()==true && model.getPitmanArmState()==PitmanArmPosition.UPWARD5 || model.getPitmanArmState()==PitmanArmPosition.UPWARD7){
             g.fillPolygon(rightBackIndicator);
-        }else{
-            g2d.setPaint(new Color(100, 150, 0));
-            g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
-            g.fillPolygon(leftBackIndicator);
-            g.fillPolygon(rightBackIndicator);
         }
     }
     public void drawLowBeamHeadLight(Graphics g) {
@@ -330,6 +328,13 @@ public class CarView extends JFrame{
             }
         }
     }
+    public void drawHighBeam(Graphics g){
+        if (model.getPitmanArmState()==PitmanArmPosition.RIGHT){
+            g2d.setPaint(new Color(120, 255, 0));
+            g.fillPolygon(rightFrontIndicator);
+            g.fillPolygon(leftFrontIndicator);
+        }
+    }
 
     public void paint(Graphics g) {
         super.paint(g);
@@ -366,6 +371,7 @@ public class CarView extends JFrame{
         drawRightBlinking(g);
         drawLeftTipBlinking(g);
         drawRightTipBlinking(g);
+        drawHighBeam(g);
         drawCornerLight(g);
         drawHazard(g);
     }
@@ -431,6 +437,7 @@ public class CarView extends JFrame{
         blinkingDirection.add(rightTipBlinking);
         blinkingDirection.add(rightDirection);
         blinkingDirection.add(hazardSwitch);
+        blinkingDirection.add(highBeamEngage);
         typeOfBlinking.add(blinkingType);
         bottomPanel.add(typeOfBlinking);
         bottomPanel.add(blinkingDirection);
@@ -511,5 +518,8 @@ public class CarView extends JFrame{
     }
     public JRadioButton getReverseGear(){
         return reverseGear;
+    }
+    public JRadioButton getHighBeamEngage(){
+        return highBeamEngage;
     }
 }
