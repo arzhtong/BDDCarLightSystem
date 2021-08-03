@@ -254,8 +254,11 @@ public class Car {
                     setLightBeam(Headlight.HIGHBEAM);
                     setHeadLightIlluminationArea(220);
                     setHeadLightLuminousStrength(100);
-
                 }
+                if (lightRotarySwitchState==LightRotarySwitchState.AUTO){
+                    setLightBeam(Headlight.HIGHBEAM);
+                }
+
             }
 
             if (position ==PitmanArmPosition.NEUTRAL){
