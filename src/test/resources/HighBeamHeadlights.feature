@@ -36,7 +36,7 @@ Feature:
 
     @requirement(ELS-33)
     Scenario: Driver engages high beam headlights while driving faster than 30km/h
-    Given the vehicle drives faster than 30km/h
+    Given the vehicle drives faster than 30km per hour
     And no light of incoming vehicle is detected by camera
     When the driver moves pitman arm towards the driver
     Then the high beam headlight will turn on
@@ -44,7 +44,7 @@ Feature:
 
     @requirement(ELS-33)
     Scenario: Driver engages high beam headlights while driving slower than 30km/h
-      Given the vehicle drives slower than 30km/h
+      Given the vehicle drives slower than 30km per hour
       And no light of incoming vehicle is detected by camera
       When the driver moves pitman arm towards the driver
       Then the high beam headlight will turn on

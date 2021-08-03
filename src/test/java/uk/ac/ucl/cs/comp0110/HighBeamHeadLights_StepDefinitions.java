@@ -44,4 +44,25 @@ public class HighBeamHeadLights_StepDefinitions {
     public void theHeadlightWillHaveLuminousStrength() {
         base.car.setHeadLightLuminousStrength(100);
     }
+
+    @And("no light of incoming vehicle is detected by camera")
+    public void noLightOfIncomingVehicleIsDetectedByCamera() {
+        base.car.isIncomingVehicleDetectedByCamera(false);
+    }
+
+    @And("the street should be illuminated in a manner based on vehicle speed within 2 seconds")
+    public void theStreetShouldBeIlluminatedInAMannerBasedOnVehicleSpeedWithinSeconds() {
+        Assert.assertTrue(base.car.getTimeForHeadlightToIlluminate()<2);
+    }
+
+
+    @Given("the vehicle drives faster than 30km per hour")
+    public void theVehicleDrivesFasterThanKmPerHour() {
+        base.car.setDrivingSpeed(35);
+    }
+
+    @Given("the vehicle drives slower than 30km per hour")
+    public void theVehicleDrivesSlowerThanKmPerHour() {
+        base.car.setDrivingSpeed(25);
+    }
 }

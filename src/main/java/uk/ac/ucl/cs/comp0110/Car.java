@@ -446,7 +446,9 @@ public class Car {
         }
 
     }
+    public void isIncomingVehicleDetectedByCamera(boolean incomingVehicleDetectedByCamera){
 
+    }
     public void darkenIndicators(){
         if (leftIndicator.getState()==Blinking.FLASHING) {
             rightIndicator.setFlashState(Flashing.DARK);
@@ -458,7 +460,9 @@ public class Car {
     public IgnitionStatus getIgnitionState(){
         return ignitionState;
     }
-
+    public int getTimeForHeadlightToIlluminate(){
+        return 0;
+    }
     public Light getTailLight(){
         return tailLight;
     }
