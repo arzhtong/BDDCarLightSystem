@@ -260,7 +260,7 @@ public class Car {
 
             if (position ==PitmanArmPosition.NEUTRAL){
                 checkCorneringLight();
-                
+
                 leftIndicator.setState(Blinking.NONFLASHING);
                 rightIndicator.setState(Blinking.NONFLASHING);
                 leftIndicator.setCycle(false);

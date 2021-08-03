@@ -22,3 +22,11 @@ Feature:
       Then the high beam headlight will turn on
       And the headlight will have a fixed area of 220m
       And the headlight will have 100% luminous strength
+
+    Rule: When the light rotary switch is in auto, the high beam headlights are activated by moving the pitman arm to the back
+
+    @requirement(ELS-32)
+    Scenario: Driver engages high beam headlights with light rotary switch in auto
+    Given the driver turned light rotary switch to auto
+    When the driver moves pitman arm left
+    Then the high beam headlight will turn on
