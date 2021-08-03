@@ -42,9 +42,11 @@ public class CarView extends JFrame{
     public JTextField speedOfCar;
     public JRadioButton passCorner;
     public JRadioButton reverseGear;
-    public JRadioButton highBeamEngage;
+    public JRadioButton pitmanArmRight;
+    public JRadioButton pitmanArmLeft;
     private JTextField numberOfDegreesSteeringWheelTurned;
     private int numberOfFlashCycles;
+
     public CarView(Car model) {
         this.model=model;
 
@@ -69,7 +71,8 @@ public class CarView extends JFrame{
         speedOfCar=new JTextField("Speed of car");
         numberOfDegreesSteeringWheelTurned=new JTextField("Degrees Turned by Steering Wheel");
         reverseGear=new JRadioButton("Reverse Gear");
-        highBeamEngage=new JRadioButton("Set High Beam");
+        pitmanArmRight =new JRadioButton("Set High Beam");
+        pitmanArmLeft=new JRadioButton("Set Pitman Arm Left");
         numberOfFlashCycles=0;
         service= Executors.newSingleThreadScheduledExecutor();
         makeFrame();
@@ -329,10 +332,18 @@ public class CarView extends JFrame{
         }
     }
     public void drawHighBeam(Graphics g){
-        if (model.getPitmanArmState()==PitmanArmPosition.RIGHT){
+        if (model.getHeadLightBeamState()==Headlight.HIGHBEAM){
             g2d.setPaint(new Color(120, 255, 0));
             g.fillPolygon(rightFrontIndicator);
             g.fillPolygon(leftFrontIndicator);
+            g.fillPolygon(leftBackIndicator);
+            g.fillPolygon(rightBackIndicator);
+        }else{
+            g2d.setPaint(new Color(211, 211, 211));
+            g.fillPolygon(rightFrontIndicator);
+            g.fillPolygon(leftFrontIndicator);
+            g.fillPolygon(leftBackIndicator);
+            g.fillPolygon(rightBackIndicator);
         }
     }
 
@@ -365,13 +376,14 @@ public class CarView extends JFrame{
         g.drawPolygon(leftCornerLight);
         g.drawPolygon(rightCornerLight);
         checkIgnition();
+        drawHighBeam(g);
         drawLowBeamHeadLight(g);
         drawParkingLight(g);
         drawLeftBlinking(g);
         drawRightBlinking(g);
         drawLeftTipBlinking(g);
         drawRightTipBlinking(g);
-        drawHighBeam(g);
+
         drawCornerLight(g);
         drawHazard(g);
     }
@@ -437,7 +449,8 @@ public class CarView extends JFrame{
         blinkingDirection.add(rightTipBlinking);
         blinkingDirection.add(rightDirection);
         blinkingDirection.add(hazardSwitch);
-        blinkingDirection.add(highBeamEngage);
+        blinkingDirection.add(pitmanArmRight);
+        blinkingDirection.add(pitmanArmLeft);
         typeOfBlinking.add(blinkingType);
         bottomPanel.add(typeOfBlinking);
         bottomPanel.add(blinkingDirection);
@@ -519,7 +532,10 @@ public class CarView extends JFrame{
     public JRadioButton getReverseGear(){
         return reverseGear;
     }
-    public JRadioButton getHighBeamEngage(){
-        return highBeamEngage;
+    public JRadioButton getPitmanArmRight(){
+        return pitmanArmRight;
+    }
+    public JRadioButton getPitmanArmLeft(){
+        return pitmanArmLeft;
     }
 }

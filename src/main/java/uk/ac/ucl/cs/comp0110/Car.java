@@ -249,9 +249,18 @@ public class Car {
             if (position==PitmanArmPosition.RIGHT){
                 setLightBeam(Headlight.HIGHBEAM);
             }
+            if (position==PitmanArmPosition.LEFT){
+                if (lightRotarySwitchState==LightRotarySwitchState.ON){
+                    setLightBeam(Headlight.HIGHBEAM);
+                    setHeadLightIlluminationArea(220);
+                    setHeadLightLuminousStrength(100);
+
+                }
+            }
 
             if (position ==PitmanArmPosition.NEUTRAL){
                 checkCorneringLight();
+                
                 leftIndicator.setState(Blinking.NONFLASHING);
                 rightIndicator.setState(Blinking.NONFLASHING);
                 leftIndicator.setCycle(false);
@@ -465,13 +474,10 @@ public class Car {
 
     }
     public Headlight getHeadLightBeamState(){
-        if (leftIndicator.getLowBeamState()== Headlight.LOWBEAM && rightIndicator.getLowBeamState()== Headlight.LOWBEAM) {
-            return Headlight.LOWBEAM;
-        }else if (pitmanArmState==PitmanArmPosition.RIGHT){
-            return Headlight.HIGHBEAM;
-        }else{
-            return Headlight.INACTIVE;
+        if (leftIndicator.getLowBeamState()==rightIndicator.getLowBeamState()){
+            return leftIndicator.getLowBeamState();
         }
+        return null;
     }
     public int getExteriorBrightness(){
         return exteriorBrightness;
@@ -664,10 +670,12 @@ public class Car {
         System.out.println(Instant.now(clock));
     }
     public void setHeadLightIlluminationArea(int illuminationArea){
-
+        leftIndicator.setIlluminationArea(illuminationArea);
+        rightIndicator.setIlluminationArea(illuminationArea);
     }
-    public void setHeadLightLuminousStrength(int LuminousStrengthPercentage){
-
+    public void setHeadLightLuminousStrength(int luminousStrengthPercentage){
+        leftIndicator.setIlluminationStrengthPercentage(luminousStrengthPercentage);
+        rightIndicator.setIlluminationStrengthPercentage(luminousStrengthPercentage);
     }
 }
 

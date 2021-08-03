@@ -23,7 +23,8 @@ public class Indicator {
     private int ambientLightDuration;
     private Headlight headlight;
     private SystemClock clock;
-
+    private int illuminationArea;
+    private int illuminationStrengthPercentage;
     public Indicator(){
         blinkingState=Blinking.NONFLASHING;
         clock=new SystemClock();
@@ -98,5 +99,16 @@ public class Indicator {
     public SystemClock getClock(){
         return clock;
     }
-
+    public void setIlluminationArea(int illuminationArea){
+        this.illuminationArea=illuminationArea;
+    }
+    public int getIlluminationArea(){
+        return illuminationArea;
+    }
+    public void setIlluminationStrengthPercentage(int illuminationStrengthPercentage){
+        this.illuminationStrengthPercentage=illuminationStrengthPercentage;
+    }
+    public int getIlluminationStrengthPercentage(){
+        return illuminationStrengthPercentage;
+    }
 }
