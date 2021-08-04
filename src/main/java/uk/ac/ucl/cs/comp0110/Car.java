@@ -39,9 +39,11 @@ public class Car {
     private boolean reverseGearEngaged;
     private boolean parkingLightEngaged;
     private Clock clock;
+    private boolean incomingVehicleDetectedByCamera;
+    private int timeForHeadLightToIlluminate;
     public Car(){
         parkingLightEngaged=false;
-
+        incomingVehicleDetectedByCamera=false;
         allDoorsClosed=true;
         reverseGearEngaged=false;
         numberOfDegreesSteeringWheelTurned=0;
@@ -248,6 +250,7 @@ public class Car {
             }
             if (position==PitmanArmPosition.RIGHT){
                 setLightBeam(Headlight.HIGHBEAM);
+                checkIncomingVehicleDetectedByCamera();
             }
             if (position==PitmanArmPosition.LEFT){
                 if (lightRotarySwitchState==LightRotarySwitchState.ON){
@@ -447,7 +450,15 @@ public class Car {
 
     }
     public void isIncomingVehicleDetectedByCamera(boolean incomingVehicleDetectedByCamera){
+        this.incomingVehicleDetectedByCamera=incomingVehicleDetectedByCamera;
 
+    }
+    public void checkIncomingVehicleDetectedByCamera(){
+        if (incomingVehicleDetectedByCamera==true && drivingSpeed>30){
+            calculateIlluminationArea();
+            calculateLuminousStrength();
+            countTimeToSetHighBeam();
+        }
     }
     public void darkenIndicators(){
         if (leftIndicator.getState()==Blinking.FLASHING) {
@@ -461,7 +472,7 @@ public class Car {
         return ignitionState;
     }
     public int getTimeForHeadlightToIlluminate(){
-        return 0;
+        return timeForHeadLightToIlluminate;
     }
     public Light getTailLight(){
         return tailLight;
@@ -486,6 +497,7 @@ public class Car {
         }
         return null;
     }
+
     public int getExteriorBrightness(){
         return exteriorBrightness;
     }
@@ -507,6 +519,9 @@ public class Car {
                 leftIndicator.setFlashState(Flashing.BRIGHT);
             }
         }
+    }
+    public boolean getIncomingVehicleDetectedByCamera(){
+        return incomingVehicleDetectedByCamera;
     }
     public boolean getHazardSwitchState(){
         return hazardSwitchState;
@@ -589,6 +604,20 @@ public class Car {
         }, 1,1);
 
     }
+    public void countTimeToSetHighBeam(){
+
+        timer=new Timer();
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                setLightBeam(Headlight.HIGHBEAM);
+                timeForHeadLightToIlluminate++;
+                stopTimer();
+            }
+        }, 1,1);
+
+    }
 
     public void countAmbientLightTime(){
 //        SystemClock currentTime=new SystemClock();
@@ -641,6 +670,20 @@ public class Car {
         }, 1,1);
 
 
+    }
+    public void calculateIlluminationArea(){
+        if (drivingSpeed>=165){
+            setHeadLightIlluminationArea(300);
+        }else{
+            setHeadLightIlluminationArea(drivingSpeed+100);
+        }
+    }
+    public void calculateLuminousStrength(){
+        if (drivingSpeed>=120){
+            setHeadLightLuminousStrength(100);
+        }else{
+            setHeadLightLuminousStrength(drivingSpeed-10);
+        }
     }
     public void stopTimer(){
 

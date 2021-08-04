@@ -44,6 +44,7 @@ public class CarView extends JFrame{
     public JRadioButton reverseGear;
     public JRadioButton pitmanArmRight;
     public JRadioButton pitmanArmLeft;
+    public JRadioButton incomingVehicleDetectedByCamera;
     private JTextField numberOfDegreesSteeringWheelTurned;
     private int numberOfFlashCycles;
 
@@ -73,6 +74,7 @@ public class CarView extends JFrame{
         reverseGear=new JRadioButton("Reverse Gear");
         pitmanArmRight =new JRadioButton("Set High Beam");
         pitmanArmLeft=new JRadioButton("Set Pitman Arm Left");
+        incomingVehicleDetectedByCamera=new JRadioButton("Incoming Vehicle Detected");
         numberOfFlashCycles=0;
         service= Executors.newSingleThreadScheduledExecutor();
         makeFrame();
@@ -376,7 +378,7 @@ public class CarView extends JFrame{
         g.drawPolygon(leftCornerLight);
         g.drawPolygon(rightCornerLight);
         checkIgnition();
-        drawHighBeam(g);
+
         drawLowBeamHeadLight(g);
         drawParkingLight(g);
         drawLeftBlinking(g);
@@ -386,6 +388,7 @@ public class CarView extends JFrame{
 
         drawCornerLight(g);
         drawHazard(g);
+        drawHighBeam(g);
     }
     public void makeFrame() {
         Container contentPane = getContentPane();
@@ -432,6 +435,7 @@ public class CarView extends JFrame{
         optionalInputs.add(speedOfCar);
         optionalInputs.add(numberOfDegreesSteeringWheelTurned);
         optionalInputs.add(reverseGear);
+        optionalInputs.add(incomingVehicleDetectedByCamera);
         return optionalInputs;
     }
     public JPanel makeBlinkingInputs() {
@@ -537,5 +541,8 @@ public class CarView extends JFrame{
     }
     public JRadioButton getPitmanArmLeft(){
         return pitmanArmLeft;
+    }
+    public JRadioButton getIncomingVehicleDetectedByCamera(){
+        return incomingVehicleDetectedByCamera;
     }
 }

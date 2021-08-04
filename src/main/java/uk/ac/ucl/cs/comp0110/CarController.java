@@ -150,6 +150,12 @@ public class CarController {
 
             }
         });
+        view.getIncomingVehicleDetectedByCamera().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                incomingVehicleDetected();
+            }
+        });
     }
 
 
@@ -287,6 +293,13 @@ public class CarController {
             model.setPitmanArmPosition(PitmanArmPosition.LEFT);
         }else{
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
+        }
+    }
+    public void incomingVehicleDetected(){
+        if (model.getIncomingVehicleDetectedByCamera()==false){
+            model.isIncomingVehicleDetectedByCamera(true);
+        }else{
+            model.isIncomingVehicleDetectedByCamera(false);
         }
     }
 }
