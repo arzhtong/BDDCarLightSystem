@@ -65,4 +65,24 @@ public class HighBeamHeadLights_StepDefinitions {
     public void theVehicleDrivesSlowerThanKmPerHour() {
         base.car.setDrivingSpeed(25);
     }
+
+    @When("the camera recognizes lights of advancing vehicle")
+    public void theCameraRecognizesLightsOfAdvancingVehicle() {
+        base.car.isIncomingVehicleDetectedByCamera(true);
+    }
+
+    @Then("the high beam headlight changes to low beam headlight within 0.5 seconds")
+    public void theHighBeamHeadlightChangesToLowBeamHeadlightWithinSeconds() {
+        Assert.assertTrue(base.car.getTimeForHeadlightToIlluminate()<0.5);
+    }
+
+    @And("the headlight will have an area of 65 metres")
+    public void theHeadlightWillHaveAnAreaOfMetres() {
+        Assert.assertEquals(base.car.getIlluminationArea(),65);
+    }
+
+    @And("the headlight will have reduced luminous strength")
+    public void theHeadlightWillHaveReducedLuminousStrength() {
+        Assert.assertTrue(base.car.getLuminiousStrength()<100);
+    }
 }

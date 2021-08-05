@@ -457,7 +457,7 @@ public class Car {
         if (incomingVehicleDetectedByCamera==true && drivingSpeed>30){
             calculateIlluminationArea();
             calculateLuminousStrength();
-            countTimeToSetHighBeam();
+            countTimeToSetBeam();
         }
     }
     public void darkenIndicators(){
@@ -604,7 +604,7 @@ public class Car {
         }, 1,1);
 
     }
-    public void countTimeToSetHighBeam(){
+    public void countTimeToSetBeam(){
 
         timer=new Timer();
 
@@ -678,6 +678,7 @@ public class Car {
             setHeadLightIlluminationArea(drivingSpeed+100);
         }
     }
+
     public void calculateLuminousStrength(){
         if (drivingSpeed>=120){
             setHeadLightLuminousStrength(100);
@@ -726,6 +727,12 @@ public class Car {
     public void setHeadLightLuminousStrength(int luminousStrengthPercentage){
         leftIndicator.setIlluminationStrengthPercentage(luminousStrengthPercentage);
         rightIndicator.setIlluminationStrengthPercentage(luminousStrengthPercentage);
+    }
+    public int getIlluminationArea(){
+        return leftIndicator.getIlluminationArea();
+    }
+    public int getLuminiousStrength(){
+        return leftIndicator.getIlluminationStrengthPercentage();
     }
 }
 
