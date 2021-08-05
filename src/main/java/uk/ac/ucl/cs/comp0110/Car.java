@@ -451,13 +451,16 @@ public class Car {
     }
     public void isIncomingVehicleDetectedByCamera(boolean incomingVehicleDetectedByCamera){
         this.incomingVehicleDetectedByCamera=incomingVehicleDetectedByCamera;
+        checkIncomingVehicleDetectedByCamera();
 
     }
     public void checkIncomingVehicleDetectedByCamera(){
-        if (incomingVehicleDetectedByCamera==true && drivingSpeed>30){
+        if (incomingVehicleDetectedByCamera==false && drivingSpeed>30){
             calculateIlluminationArea();
             calculateLuminousStrength();
-            countTimeToSetBeam();
+            countTimeToSetHighBeam();
+        }else if (incomingVehicleDetectedByCamera==true && getHeadLightBeamState()==Headlight.HIGHBEAM){
+            countTimeToSetLowBeam();
         }
     }
     public void darkenIndicators(){
@@ -604,20 +607,39 @@ public class Car {
         }, 1,1);
 
     }
-    public void countTimeToSetBeam(){
+    public void countTimeToSetHighBeam(){
 
         timer=new Timer();
-
+        timeForHeadLightToIlluminate=0;
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 setLightBeam(Headlight.HIGHBEAM);
+
                 timeForHeadLightToIlluminate++;
                 stopTimer();
             }
         }, 1,1);
 
     }
+    public void countTimeToSetLowBeam(){
+
+        timer=new Timer();
+        timeForHeadLightToIlluminate=0;
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                setLightBeam(Headlight.LOWBEAM);
+                setHeadLightIlluminationArea(65);
+                System.out.println("working");
+                calculateLuminousStrength();
+                timeForHeadLightToIlluminate++;
+                stopTimer();
+            }
+        }, 1,1);
+
+    }
+
 
     public void countAmbientLightTime(){
 //        SystemClock currentTime=new SystemClock();

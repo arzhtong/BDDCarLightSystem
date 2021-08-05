@@ -85,4 +85,9 @@ public class HighBeamHeadLights_StepDefinitions {
     public void theHeadlightWillHaveReducedLuminousStrength() {
         Assert.assertTrue(base.car.getLuminiousStrength()<100);
     }
+
+    @Given("the high beam headlight is on")
+    public void theHighBeamHeadlightIsOn() {
+        base.car.setLightBeam(Headlight.HIGHBEAM);
+    }
 }

@@ -54,6 +54,7 @@ Feature:
 
     @requirement(ELS-34)
     Scenario: Camera recognizes lights of advancing vehicle
+    Given the high beam headlight is on
     When the camera recognizes lights of advancing vehicle
     Then the high beam headlight changes to low beam headlight within 0.5 seconds
     And the headlight will have an area of 65 metres

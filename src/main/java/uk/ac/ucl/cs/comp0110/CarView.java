@@ -193,6 +193,7 @@ public class CarView extends JFrame{
         }
         if ((model.getHeadLightBeamState()== Headlight.LOWBEAM)) {
             g2d.setPaint(new Color(100, 150, 0));
+            System.out.println("testing12312");
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
             g.fillPolygon(leftBackIndicator);
@@ -379,7 +380,7 @@ public class CarView extends JFrame{
         g.drawPolygon(rightCornerLight);
         checkIgnition();
 
-        drawLowBeamHeadLight(g);
+
         drawParkingLight(g);
         drawLeftBlinking(g);
         drawRightBlinking(g);
@@ -388,7 +389,9 @@ public class CarView extends JFrame{
 
         drawCornerLight(g);
         drawHazard(g);
+
         drawHighBeam(g);
+        drawLowBeamHeadLight(g);
     }
     public void makeFrame() {
         Container contentPane = getContentPane();
