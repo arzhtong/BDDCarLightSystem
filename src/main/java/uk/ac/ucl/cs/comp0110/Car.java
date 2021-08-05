@@ -615,7 +615,6 @@ public class Car {
             @Override
             public void run() {
                 setLightBeam(Headlight.HIGHBEAM);
-
                 timeForHeadLightToIlluminate++;
                 stopTimer();
             }

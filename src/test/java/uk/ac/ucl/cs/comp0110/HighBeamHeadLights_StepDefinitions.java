@@ -90,4 +90,14 @@ public class HighBeamHeadLights_StepDefinitions {
     public void theHighBeamHeadlightIsOn() {
         base.car.setLightBeam(Headlight.HIGHBEAM);
     }
+
+    @When("the camera stops recognising lights of anymore advancing vehicles")
+    public void theCameraStopsRecognisingLightsOfAnymoreAdvancingVehicles() {
+        base.car.isIncomingVehicleDetectedByCamera(false);
+    }
+
+    @Then("the high beam headlight will turn on after 2 seconds")
+    public void theHighBeamHeadlightWillTurnOnAfterSeconds() {
+        Assert.assertTrue(base.car.getTimeForHeadlightToIlluminate()>2);
+    }
 }
