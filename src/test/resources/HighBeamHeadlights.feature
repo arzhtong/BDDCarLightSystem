@@ -60,4 +60,13 @@ Feature:
     And the headlight will have an area of 65 metres
     And the headlight will have reduced luminous strength
 
+  Rule: If no advancing vehicle is recognized any more, the high beam illumination is restored after 2 seconds
+
+  @requirement(ELS-35)
+  Scenario: No advancing vehicles are recognised anymore with low beam headlight on
+  Given the low beam headlight is on
+  And the camera recognizes lights of advancing vehicle
+  When the camera stops recognising lights of anymore advancing vehicles
+  Then the high beam headlight will turn on after 2 seconds
+
 
