@@ -49,4 +49,14 @@ Feature:
       When the driver moves pitman arm towards the driver
       Then the high beam headlight will turn on
 
+    Rule: If the camera recognizes the lights of an advancing vehicle, an activated high beam headlight is reduced to low beam headlight within
+    0.5 seconds
+
+    @requirement(ELS-34)
+    Scenario: Camera recognizes lights of advancing vehicle
+    When the camera recognizes lights of advancing vehicle
+    Then the high beam headlight changes to low beam headlight within 0.5 seconds
+    And the headlight will have an area of 65 metres
+    And the headlight will have reduced luminous strength
+
 
