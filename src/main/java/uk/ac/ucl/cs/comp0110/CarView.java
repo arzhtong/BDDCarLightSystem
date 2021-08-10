@@ -138,12 +138,13 @@ public class CarView extends JFrame{
     public void drawLeftBlinking(Graphics g){
         changeSelectedButton();
 
-        if (model.getBlinkingState("Left")==Blinking.FLASHING) {
+        if (model.getBlinkingState("Left")==Blinking.FLASHING && model.getFlashingCycles("Left")==false) {
 
             if (model.getFlashState()==Flashing.DARK) {
                 g2d.setPaint(new Color(255, 255, 0));
                 if (model.getDimmedLightStatus("Left")==50){
-                    g2d.setPaint(new Color(127,127,0));
+                    g2d.setPaint(new Color(255,200,0));
+
                 }
                 g.fillPolygon(leftFrontIndicator);
                 g.fillPolygon(leftSideIndicator);
@@ -186,21 +187,20 @@ public class CarView extends JFrame{
         }
     }
     public void drawLowBeamHeadLight(Graphics g) {
-        if (model.getLightRotarySwitchState() == LightRotarySwitchState.OFF) {
+        if (model.getLightRotarySwitchState() == LightRotarySwitchState.OFF && model.getLeftIndicator().getState()==Blinking.NONFLASHING) {
             g2d.setPaint(new Color(211, 211, 211));
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
         }
         if ((model.getHeadLightBeamState()== Headlight.LOWBEAM)) {
-            g2d.setPaint(new Color(100, 150, 0));
-            System.out.println("testing12312");
+            g2d.setPaint(new Color(255, 255, 0));
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
             g.fillPolygon(leftBackIndicator);
             g.fillPolygon(rightBackIndicator);
         }
         if ((model.getLeftIndicator().getLowBeamState()== Headlight.LOWBEAM && model.getHeadLight().getLightDimmingPercentage()==50)) {
-            g2d.setPaint(new Color(100, 100, 0));
+            g2d.setPaint(new Color(255, 200, 0));
             g.fillPolygon(leftFrontIndicator);
             g.fillPolygon(rightFrontIndicator);
             g.fillPolygon(leftBackIndicator);
@@ -242,37 +242,19 @@ public class CarView extends JFrame{
         }
     }
     public void changeSelectedButton(){
-        if (model.getBlinkingState("Left")==Blinking.FLASHING){
-            rightTipBlinking.setSelected(false);
-            rightDirection.setSelected(false);
-            if (model.getFlashingCycles("Left")==false){
-                leftDirection.setSelected(true);
-                leftTipBlinking.setSelected(false);
-            }else{
-                leftTipBlinking.setSelected(true);
-                leftDirection.setSelected(false);
-            }
-        }
-        if (model.getBlinkingState("Right")==Blinking.FLASHING){
-            leftTipBlinking.setSelected(false);
-            leftDirection.setSelected(false);
-            if (model.getFlashingCycles("Right")==false){
-                rightDirection.setSelected(true);
-                rightTipBlinking.setSelected(false);
-            }else{
-                rightDirection.setSelected(false);
-                rightTipBlinking.setSelected(true);
-            }
-        }
+        rightDirection.setSelected(false);
+        leftDirection.setSelected(false);
+        leftTipBlinking.setSelected(false);
+        rightTipBlinking.setSelected(false);
     }
     public void drawRightBlinking(Graphics g){
         changeSelectedButton();
-        if (model.getBlinkingState("Right") == Blinking.FLASHING) {
+        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right")==false) {
             if (model.getFlashState()==Flashing.DARK) {
 
                 g2d.setPaint(new Color(255, 255, 0));
                 if (model.getDimmedLightStatus("Right")==50){
-                    g2d.setPaint(new Color(127,127,0));
+                    g2d.setPaint(new Color(255,200,0));
                 }
                 g.fillPolygon(rightFrontIndicator);
                 g.fillPolygon(rightSideIndicator);
@@ -381,7 +363,7 @@ public class CarView extends JFrame{
         checkIgnition();
 
 
-        drawParkingLight(g);
+//        drawParkingLight(g);
         drawLeftBlinking(g);
         drawRightBlinking(g);
         drawLeftTipBlinking(g);
@@ -390,7 +372,7 @@ public class CarView extends JFrame{
         drawCornerLight(g);
         drawHazard(g);
 
-        drawHighBeam(g);
+//        drawHighBeam(g);
         drawLowBeamHeadLight(g);
     }
     public void makeFrame() {

@@ -100,6 +100,7 @@ public class Car {
             rightIndicator.setState(Blinking.FLASHING);
         }
         if (ignitionState == IgnitionStatus.KEYINSERTED || ignitionState == IgnitionStatus.NOKEYINSERTED) {
+            engageDayTimeRunningLight(false);
             leftIndicator.setState(Blinking.NONFLASHING);
             rightIndicator.setState(Blinking.NONFLASHING);
             leftIndicator.setCycle(false);
@@ -186,7 +187,10 @@ public class Car {
      */
     public void pressDarknessSwitch(boolean darknessSwitch){
         if (darknessSwitch==true){
-            engageAmbientLight(false);
+            if (ambientLight==true){
+                engageAmbientLight(false);
+            }
+
             leftIndicator.isCorneringLightOn(false);
             rightIndicator.isCorneringLightOn(false);
         }else{
@@ -314,6 +318,7 @@ public class Car {
                 checkIncomingVehicleDetectedByCamera();
             }
             if (position==PitmanArmPosition.LEFT){
+
                 if (lightRotarySwitchState==LightRotarySwitchState.ON){
                     setLightBeam(Headlight.HIGHBEAM);
                     setHeadLightIlluminationArea(220);
@@ -356,10 +361,10 @@ public class Car {
     public void checkCorneringLight(){
         leftIndicator.isCorneringLightOn(false);
         rightIndicator.isCorneringLightOn(false);
-        if (leftIndicator.getState()==Blinking.FLASHING && drivingSpeed<10){
+        if (leftIndicator.getState()==Blinking.FLASHING && drivingSpeed<10 && leftIndicator.getLowBeamState()==Headlight.LOWBEAM){
             leftIndicator.isCorneringLightOn(true);
         }
-        if (rightIndicator.getState()==Blinking.FLASHING && drivingSpeed<10){
+        if (rightIndicator.getState()==Blinking.FLASHING && drivingSpeed<10 && rightIndicator.getLowBeamState()==Headlight.LOWBEAM){
             rightIndicator.isCorneringLightOn(true);
         }
         if (numberOfDegreesSteeringWheelTurned>=10 && leftIndicator.getState()==Blinking.NONFLASHING && rightIndicator.getState()==Blinking.NONFLASHING
@@ -446,6 +451,8 @@ public class Car {
             headLight.setLightDimmingPercentage(0);
 
             if (lightRotarySwitchState == LightRotarySwitchState.ON) {
+                leftIndicator.setState(Blinking.NONFLASHING);
+                rightIndicator.setState(Blinking.NONFLASHING);
                 checkCorneringLight();
                 setLightBeam(Headlight.LOWBEAM);
             }
@@ -825,6 +832,8 @@ public class Car {
     public void countDurationOfPassingCornerTime(){
         durationOfPassingCorner=0;
         timer=new Timer();
+        leftIndicator.setState(Blinking.NONFLASHING);
+        rightIndicator.setState(Blinking.NONFLASHING);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
