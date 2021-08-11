@@ -1,5 +1,4 @@
 package uk.ac.ucl.cs.comp0110;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -8,10 +7,6 @@ import org.junit.Assert;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
 
 public class HighBeamHeadLights_StepDefinitions {
@@ -21,7 +16,7 @@ public class HighBeamHeadLights_StepDefinitions {
     }
     @When("the driver moves pitman arm towards the driver")
     public void the_driver_moves_pitman_arm_towards_the_driver() {
-        base.car.setPitmanArmPosition(PitmanArmPosition.RIGHT);
+        base.car.setPitmanArmPosition(PitmanArmPosition.FORWARD);
     }
 
     @Then("the high beam headlight will turn on")
@@ -31,7 +26,7 @@ public class HighBeamHeadLights_StepDefinitions {
 
     @When("the driver moves pitman arm left")
     public void theDriverMovesPitmanArmLeft() {
-        base.car.setPitmanArmPosition(PitmanArmPosition.LEFT);
+        base.car.setPitmanArmPosition(PitmanArmPosition.BACKWARD);
     }
 
     @And("the headlight will have a fixed area of 220m")
@@ -88,7 +83,7 @@ public class HighBeamHeadLights_StepDefinitions {
 
     @Given("the high beam headlight is on")
     public void theHighBeamHeadlightIsOn() {
-        base.car.setLightBeam(Headlight.HIGHBEAM);
+        base.car.setHeadLightBeam(Headlight.HIGHBEAM);
     }
 
     @When("the camera stops recognising lights of anymore advancing vehicles")

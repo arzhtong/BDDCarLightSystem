@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 enum Blinking{
     FLASHING,NONFLASHING
 }
-enum Flashing{
+enum IndicatorBulb {
     BRIGHT,DARK
 }
 enum Headlight {
@@ -13,15 +13,15 @@ enum Headlight {
 }
 public class Indicator {
     private Blinking blinkingState;
-    private boolean flashing;
-    private int hazardCycleLength;
+    private boolean tipBlinkingOn;
+    private int durationOfHazardCycle;
     private int numberofFlashCycles;
-    private Flashing flashState;
-    private boolean isCorneringLightOn;
-    private boolean isTailLightOn;
+    private IndicatorBulb indicatorBulbState;
+    private boolean corneringLightOn;
+    private boolean tailLightOn;
     private int dimmedLightPercentage;
     private int ambientLightDuration;
-    private Headlight headlight;
+    private Headlight headlightBeam;
     private SystemClock clock;
     private int illuminationArea;
     private int illuminationStrengthPercentage;
@@ -31,30 +31,30 @@ public class Indicator {
         clock.useFixedClockAt(LocalDateTime.now());
         dimmedLightPercentage=0;
     }
-    public Flashing getFlashState(){
-        return flashState;
+    public IndicatorBulb getIndicatorBulbState(){
+        return indicatorBulbState;
     }
-    public void setFlashState(Flashing flashState){
-        this.flashState=flashState;
+    public void setIndicatorBulbState(IndicatorBulb indicatorBulbState){
+        this.indicatorBulbState = this.indicatorBulbState;
     }
 
-    public void setState(Blinking blinkingState){
+    public void setBlinkingState(Blinking blinkingState){
         this.blinkingState=blinkingState;
     }
-    public Blinking getState(){
+    public Blinking getBlinkingState(){
         return blinkingState;
     }
-    public void setCycle(boolean flashing){
-        this.flashing=flashing;
+    public void isTipBlinkingOn(boolean tipBlinkingOn){
+        this.tipBlinkingOn =tipBlinkingOn;
     }
-    public boolean getCycle(){
-        return flashing;
+    public boolean getTipBlinkingOccurring(){
+        return tipBlinkingOn;
     }
-    public void setHazardCycleLength(int hazardCycleLength){
-        this.hazardCycleLength=hazardCycleLength;
+    public void setDurationOfHazardCycle(int durationOfHazardCycle){
+        this.durationOfHazardCycle = durationOfHazardCycle;
     }
-    public int getHazardCycleLength(){
-        return hazardCycleLength;
+    public int getDurationOfHazardCycle(){
+        return durationOfHazardCycle;
     }
     public void setNumberofFlashCycles(int numberofFlashCycles){
         this.numberofFlashCycles=numberofFlashCycles;
@@ -63,16 +63,16 @@ public class Indicator {
         return numberofFlashCycles;
     }
     public void isCorneringLightOn(boolean isCorneringLightOn){
-        this.isCorneringLightOn=isCorneringLightOn;
+        this.corneringLightOn =isCorneringLightOn;
     }
     public boolean getCorneringLightState(){
-        return isCorneringLightOn;
+        return corneringLightOn;
     }
     public void isTailLightOn(boolean isTailLightOn){
-        this.isTailLightOn=isTailLightOn;
+        this.tailLightOn =isTailLightOn;
     }
     public boolean getTailLightState(){
-        return isTailLightOn;
+        return tailLightOn;
     }
     public void setLightDimmingPercentage(int dimmedLightPercentage){
         this.dimmedLightPercentage=dimmedLightPercentage;
@@ -83,18 +83,15 @@ public class Indicator {
     public int getAmbientLightDuration(){
         return ambientLightDuration;
     }
-    public void setAmberLightDuration(int ambientLightDuration){
-
-    }
-    public void setAmbientLightDuration(){
-
+    public void setAmbientLightDuration(int ambientLightDuration){
+        this.ambientLightDuration=ambientLightDuration;
     }
 
-    public void setLowBeamState(Headlight headlight){
-        this.headlight = headlight;
+    public void setBeamState(Headlight headlightBeam){
+        this.headlightBeam = headlightBeam;
     }
-    public Headlight getLowBeamState(){
-        return headlight;
+    public Headlight getBeamState(){
+        return headlightBeam;
     }
     public SystemClock getClock(){
         return clock;

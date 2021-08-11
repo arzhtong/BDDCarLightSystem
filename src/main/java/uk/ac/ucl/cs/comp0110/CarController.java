@@ -161,7 +161,7 @@ public class CarController {
 
     public void leftDirectionPressed() {
 
-        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getHazardSwitchState()==false) {
+        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getHazardWarningSwitchOn()==false) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         } else {
             model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
@@ -169,7 +169,7 @@ public class CarController {
     }
     public void rightDirectionPressed() {
 
-        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getHazardSwitchState()==false) {
+        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getHazardWarningSwitchOn()==false) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
 
         }else{
@@ -184,7 +184,7 @@ public class CarController {
             model.stopTimer();
         }else{
             model.stopTimer();
-            model.tipPitmanArm(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
+            model.tipPitmanArm(PitmanArmPosition.DOWNWARD5,model.getTimeInTipBlinkingPosition());
         }
     }
     public void rightTipBlinkingPressed(){
@@ -194,11 +194,11 @@ public class CarController {
             model.stopTimer();
         }else{
             model.stopTimer();
-            model.tipPitmanArm(PitmanArmPosition.UPWARD5,model.getLengthOfTimeHeld());
+            model.tipPitmanArm(PitmanArmPosition.UPWARD5,model.getTimeInTipBlinkingPosition());
         }
     }
     public void hazardSwitchPressed(){
-        if (model.getHazardSwitchState()==false){
+        if (model.getHazardWarningSwitchOn()==false){
             model.pressHazardSwitch(true);
         }else{
             model.pressHazardSwitch(false);
@@ -235,7 +235,7 @@ public class CarController {
         }
     }
     public void dayTimeRunningLightPressed(){
-        if (model.getDayTimeRunningLight()==false){
+        if (model.getDayTimeRunningLightEngaged()==false){
             model.engageDayTimeRunningLight(true);
         }else{
             model.engageDayTimeRunningLight(false);
@@ -249,17 +249,17 @@ public class CarController {
         }
     }
     public void ambientLightPressed(){
-        if (model.getAmbientLight()==true){
+        if (model.getAmbientLightingEngaged()==true){
             model.engageAmbientLight(false);
         }else{
             model.engageAmbientLight(true);
         }
     }
     public void exteriorBrightnessPressed(){
-        model.setExteriorBrightness(Integer.parseInt(view.getExteriorBrightness().getText()));
+        model.setExteriorBrightnessLuminosity(Integer.parseInt(view.getExteriorBrightness().getText()));
     }
     public void darknessSwitchPressed(){
-        if (model.getDarknessSwitch()==true){
+        if (model.getDarknessModeSwitchOn()==true){
             model.pressDarknessSwitch(false);
         }else{
             model.pressDarknessSwitch(true);
@@ -282,15 +282,15 @@ public class CarController {
         }
     }
     public void highBeamPressed(){
-        if (model.getPitmanArmState()!=PitmanArmPosition.RIGHT){
-            model.setPitmanArmPosition(PitmanArmPosition.RIGHT);
+        if (model.getPitmanArmState()!=PitmanArmPosition.FORWARD){
+            model.setPitmanArmPosition(PitmanArmPosition.FORWARD);
         }else{
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         }
     }
     public void pitmanArmMovedLeft(){
-        if (model.getPitmanArmState()!=PitmanArmPosition.LEFT){
-            model.setPitmanArmPosition(PitmanArmPosition.LEFT);
+        if (model.getPitmanArmState()!=PitmanArmPosition.BACKWARD){
+            model.setPitmanArmPosition(PitmanArmPosition.BACKWARD);
         }else{
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         }

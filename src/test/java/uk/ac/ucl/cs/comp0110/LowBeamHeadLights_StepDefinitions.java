@@ -8,7 +8,6 @@ import org.junit.Assert;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -118,7 +117,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @Given("30 seconds have not passed since the ambient light was activated")
     public void seconds_have_not_passed_since_the_ambient_light_was_activated() {
-        base.car.getLeftIndicator().setAmberLightDuration(25000);
+        base.car.getLeftIndicator().setAmbientLightDuration(25000);
     }
 
     @Given("daytime running light is on")
@@ -143,7 +142,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @When("the exterior brightness is below 200lx")
     public void the_exterior_brightness_is_below_200lx() {
-        base.car.setExteriorBrightness(150);
+        base.car.setExteriorBrightnessLuminosity(150);
     }
 
     @Then("low beam headlight will be active at least 3 seconds")
@@ -153,11 +152,11 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @When("the exterior brightness is above 250lx")
     public void the_exterior_brightness_is_above_250lx() {
-        base.car.setExteriorBrightness(300);
+        base.car.setExteriorBrightnessLuminosity(300);
     }
     @Given("the exterior brightness is above 200lx")
     public void the_exterior_brightness_is_above_200lx() {
-        base.car.setExteriorBrightness(300);
+        base.car.setExteriorBrightnessLuminosity(300);
     }
     @When("the driver engages the darkness switch")
     public void the_driver_engages_the_darkness_switch() {
@@ -201,7 +200,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @Then("the right indicators will not blink")
     public void the_right_indicators_will_not_blink() {
-   Assert.assertEquals(base.car.getRightIndicator().getState(),Blinking.NONFLASHING);
+   Assert.assertEquals(base.car.getRightIndicator().getBlinkingState(),Blinking.NONFLASHING);
     }
 
 
@@ -222,7 +221,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @When("a duration of 5 seconds of passing the corner has occurred")
     public void a_duration_of_seconds_of_passing_the_corner_has_occurred() {
-        base.car.setDurationOfPassingCorner(5);
+        base.car.setDurationBeforePassingCorner(5);
     }
 
 //    @Given("the vehicle has activated cornering headlights")
@@ -242,19 +241,19 @@ public class LowBeamHeadLights_StepDefinitions{
 //    }
     @When("30 seconds have passed since the ambient light was on")
     public void seconds_have_passed_since_the_ambient_light_was_on() {
-        base.car.getLeftIndicator().setAmberLightDuration(35000);
+        base.car.getLeftIndicator().setAmbientLightDuration(35000);
 //        base.car.printTheTime();
 //        currentTime=currentTime.plus(20, ChronoUnit.SECONDS);
 //        base.car.printTheTime();
     }
     @Given("the left indicator is not blinking")
     public void the_left_indicator_is_not_blinking() {
-        Assert.assertEquals(base.car.getLeftIndicator().getState(),Blinking.NONFLASHING);
+        Assert.assertEquals(base.car.getLeftIndicator().getBlinkingState(),Blinking.NONFLASHING);
     }
 
     @Given("the right indicator is not blinking")
     public void the_right_indicator_is_not_blinking() {
-        Assert.assertEquals(base.car.getRightIndicator().getState(),Blinking.NONFLASHING);
+        Assert.assertEquals(base.car.getRightIndicator().getBlinkingState(),Blinking.NONFLASHING);
     }
 
     @Given("the low beam headlight is on")
@@ -314,12 +313,12 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @Given("the left indicator is blinking")
     public void the_left_indicator_is_blinking() {
-        base.car.getLeftIndicator().setState(Blinking.FLASHING);
+        base.car.getLeftIndicator().setBlinkingState(Blinking.FLASHING);
     }
 
     @Given("the right indicator is blinking")
     public void the_right_indicator_is_blinking() {
-        base.car.getRightIndicator().setState(Blinking.FLASHING);
+        base.car.getRightIndicator().setBlinkingState(Blinking.FLASHING);
     }
     @Given("the left cornering light is off")
     public void the_left_cornering_light_is_off() {
@@ -343,7 +342,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @And("the right low beam headlight is on")
     public void theRightLowBeamHeadlightIsOn() {
-        Assert.assertEquals(base.car.getRightIndicator().getLowBeamState(), Headlight.LOWBEAM);
+        Assert.assertEquals(base.car.getRightIndicator().getBeamState(), Headlight.LOWBEAM);
     }
 
     @Then("the left tail light will be on")
@@ -353,7 +352,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @And("the left low beam headlight is on")
     public void theLeftLowBeamHeadlightIsOn() {
-        Assert.assertEquals(base.car.getLeftIndicator().getLowBeamState(), Headlight.LOWBEAM);
+        Assert.assertEquals(base.car.getLeftIndicator().getBeamState(), Headlight.LOWBEAM);
     }
 
     @And("the brightness of the lights will be 10% of the normal brightness")

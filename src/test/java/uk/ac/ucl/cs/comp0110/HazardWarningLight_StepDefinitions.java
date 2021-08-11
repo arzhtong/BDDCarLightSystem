@@ -18,8 +18,8 @@ public class HazardWarningLight_StepDefinitions {
 
     @When("the flashing cycle of indicators are released")
     public void the_flashing_cycle_of_indicators_are_released() {
-        car.getLeftIndicator().setState(Blinking.FLASHING);
-        car.getRightIndicator().setState(Blinking.FLASHING);
+        car.getLeftIndicator().setBlinkingState(Blinking.FLASHING);
+        car.getRightIndicator().setBlinkingState(Blinking.FLASHING);
     }
 
     @Then("the duration of the cycle should be 1 second")
@@ -56,7 +56,7 @@ public class HazardWarningLight_StepDefinitions {
     public void the_flashing_cycle_of_tip_blinking_is_occuring() {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
         car.tipPitmanArm(PitmanArmPosition.UPWARD5,400);
-        car.getRightIndicator().setFlashState(Flashing.BRIGHT);
+        car.getRightIndicator().setIndicatorBulbState(IndicatorBulb.BRIGHT);
     }
 
     @When("the pitman arm is moved in the direction blinking position")
@@ -66,13 +66,13 @@ public class HazardWarningLight_StepDefinitions {
 
     @Then("the direction blinking cycle will start when the direction indicator turns dark current cycle of tip-blinking is finished")
     public void the_direction_blinking_cycle_will_start_when_the_current_cycle_of_tip_blinking_is_finished() {
-        Assert.assertEquals(car.getRightIndicator().getFlashState(),Flashing.BRIGHT);
+        Assert.assertEquals(car.getRightIndicator().getIndicatorBulbState(), IndicatorBulb.BRIGHT);
     }
 
     @When("the flashing cycle of direction blinking is occuring with the cycle being bright")
     public void the_flashing_cycle_of_direction_blinking_is_occuring() {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
-        car.getRightIndicator().setFlashState(Flashing.BRIGHT);
+        car.getRightIndicator().setIndicatorBulbState(IndicatorBulb.BRIGHT);
     }
 
     @When("the pitman arm is moved in the tip-blinking position")
@@ -82,7 +82,7 @@ public class HazardWarningLight_StepDefinitions {
 
     @Then("the tip blinking cycle will start when the direction indicator turns dark and the cycle is finished")
     public void the_tip_blinking_cycle_will_start_when_the_current_cycle_of_direction_blinking_is_finished() {
-        Assert.assertEquals(car.getRightIndicator().getFlashState(),Flashing.BRIGHT);
+        Assert.assertEquals(car.getRightIndicator().getIndicatorBulbState(), IndicatorBulb.BRIGHT);
     }
     @Given("there is a tip-blinking cycle occuring on the right direction indicator")
     public void there_is_a_tip_blinking_cycle_occuring_on_the_right_direction_indicator() {
@@ -106,7 +106,7 @@ public class HazardWarningLight_StepDefinitions {
     }
     @Given("the left indicator is bright")
     public void the_left_indicator_is_bright() {
-        car.getLeftIndicator().setFlashState(Flashing.BRIGHT);
+        car.getLeftIndicator().setIndicatorBulbState(IndicatorBulb.BRIGHT);
     }
 
 
@@ -122,12 +122,12 @@ public class HazardWarningLight_StepDefinitions {
     }
     @Then("tip-blinking on right starts when direction blinking cycle finishes")
     public void tip_blinking_on_right_starts_when_direction_blinking_cycle_finishes() {
-        Assert.assertEquals(car.getRightIndicator().getCycle(),false);
+        Assert.assertEquals(car.getRightIndicator().getTipBlinkingState(),false);
     }
 
     @Then("direction-blinking on right starts when tip-blinking cycle finishes")
     public void direction_blinking_on_right_starts_when_tip_blinking_cycle_finishes() {
-        Assert.assertEquals(car.getLeftIndicator().getCycle(),true);
+        Assert.assertEquals(car.getLeftIndicator().getTipBlinkingState(),true);
     }
 
 

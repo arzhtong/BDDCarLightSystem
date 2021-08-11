@@ -6,7 +6,7 @@ import static org.mockito.Mockito.mock;
 
 public class BaseUtil {
     public Clock clock=mock(Clock.class);
-    public Car car=new Car(clock);
+    public Car car=new Car();
 
 
 }

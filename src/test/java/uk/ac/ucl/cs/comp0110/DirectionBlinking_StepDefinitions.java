@@ -81,7 +81,7 @@ public class DirectionBlinking_StepDefinitions{
     @When("the pitman arm is moved in a downward position from upward position during the 3 flashing cycles of tip-blinking")
     public void the_pitman_arm_is_moved_in_a_downward_position_from_upward_position_during_the_flashing_cycles_of_tip_blinking() {
         base.car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
-        base.car.getRightIndicator().setCycle(true);
+        base.car.getRightIndicator().isTipBlinkingOn(true);
         base.car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
 
     }
@@ -99,7 +99,7 @@ public class DirectionBlinking_StepDefinitions{
     @When("the pitman arm is moved in an upward position from downward during the 3 flashing cycles of tip-blinking")
     public void the_pitman_arm_is_moved_in_an_upward_position_from_downward_during_the_flashing_cycles_of_tip_blinking() {
         base.car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
-        base.car.getLeftIndicator().setCycle(true);
+        base.car.getLeftIndicator().isTipBlinkingOn(true);
         base.car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
     }
 
@@ -116,7 +116,7 @@ public class DirectionBlinking_StepDefinitions{
     @When("the hazard warning switch is engaged during the 3 flashing cycles of tip-blinking")
     public void the_hazard_warning_switch_is_engaged_during_the_flashing_cycles_of_tip_blinking() {
         base.car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
-        base.car.getRightIndicator().setCycle(true);
+        base.car.getRightIndicator().isTipBlinkingOn(true);
         base.car.pressHazardSwitch(true);
     }
 
@@ -350,7 +350,7 @@ public class DirectionBlinking_StepDefinitions{
 
     @Given("all right indicators are flashing for 3 flashing cycles")
     public void all_right_indicators_are_flashing_for_flashing_cycles() {
-        base.car.getRightIndicator().setCycle(true);
+        base.car.getRightIndicator().isTipBlinkingOn(true);
     }
     @When("the driver closes the door")
     public void the_driver_closes_the_door() {
