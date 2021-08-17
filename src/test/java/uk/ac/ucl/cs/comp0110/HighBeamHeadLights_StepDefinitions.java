@@ -10,89 +10,89 @@ import static org.mockito.Mockito.mock;
 
 
 public class HighBeamHeadLights_StepDefinitions {
-    private BaseUtil base;
-    public HighBeamHeadLights_StepDefinitions(BaseUtil base){
-        this.base=base;
+    private World world;
+    public HighBeamHeadLights_StepDefinitions(World world){
+        this.world = world;
     }
     @When("the driver moves pitman arm towards the driver")
     public void the_driver_moves_pitman_arm_towards_the_driver() {
-        base.car.setPitmanArmPosition(PitmanArmPosition.FORWARD);
+        world.car.setPitmanArmPosition(PitmanArmPosition.FORWARD);
     }
 
     @Then("the high beam headlight will turn on")
     public void the_high_beam_headlight_will_turn_on() {
-        Assert.assertEquals(base.car.getHeadLightBeamState(),Headlight.HIGHBEAM);
+        Assert.assertEquals(world.car.getHeadLightBeamState(),Headlight.HIGHBEAM);
     }
 
     @When("the driver moves pitman arm left")
     public void theDriverMovesPitmanArmLeft() {
-        base.car.setPitmanArmPosition(PitmanArmPosition.BACKWARD);
+        world.car.setPitmanArmPosition(PitmanArmPosition.BACKWARD);
     }
 
     @And("the headlight will have a fixed area of 220m")
     public void theHeadlightWillHaveAFixedAreaOfM() {
-        base.car.setHeadLightIlluminationArea(220);
+        world.car.setHeadLightIlluminationArea(220);
 
     }
 
     @And("the headlight will have 100% luminous strength")
     public void theHeadlightWillHaveLuminousStrength() {
-        base.car.setHeadLightLuminousStrength(100);
+        world.car.setHeadLightLuminousStrength(100);
     }
 
     @And("no light of incoming vehicle is detected by camera")
     public void noLightOfIncomingVehicleIsDetectedByCamera() {
-        base.car.isIncomingVehicleDetectedByCamera(false);
+        world.car.isIncomingVehicleDetectedByCamera(false);
     }
 
     @And("the street should be illuminated in a manner based on vehicle speed within 2 seconds")
     public void theStreetShouldBeIlluminatedInAMannerBasedOnVehicleSpeedWithinSeconds() {
-        Assert.assertTrue(base.car.getTimeForHeadlightToIlluminate()<2);
+        Assert.assertTrue(world.car.getTimeForHeadlightToIlluminate()<2);
     }
 
 
     @Given("the vehicle drives faster than 30km per hour")
     public void theVehicleDrivesFasterThanKmPerHour() {
-        base.car.setDrivingSpeed(35);
+        world.car.setDrivingSpeed(35);
     }
 
     @Given("the vehicle drives slower than 30km per hour")
     public void theVehicleDrivesSlowerThanKmPerHour() {
-        base.car.setDrivingSpeed(25);
+        world.car.setDrivingSpeed(25);
     }
 
     @When("the camera recognizes lights of advancing vehicle")
     public void theCameraRecognizesLightsOfAdvancingVehicle() {
-        base.car.isIncomingVehicleDetectedByCamera(true);
+        world.car.isIncomingVehicleDetectedByCamera(true);
     }
 
     @Then("the high beam headlight changes to low beam headlight within 0.5 seconds")
     public void theHighBeamHeadlightChangesToLowBeamHeadlightWithinSeconds() {
-        Assert.assertTrue(base.car.getTimeForHeadlightToIlluminate()<0.5);
+        Assert.assertTrue(world.car.getTimeForHeadlightToIlluminate()<0.5);
     }
 
     @And("the headlight will have an area of 65 metres")
     public void theHeadlightWillHaveAnAreaOfMetres() {
-        Assert.assertEquals(base.car.getIlluminationArea(),65);
+        Assert.assertEquals(world.car.getIlluminationArea(),65);
     }
 
     @And("the headlight will have reduced luminous strength")
     public void theHeadlightWillHaveReducedLuminousStrength() {
-        Assert.assertTrue(base.car.getLuminiousStrength()<100);
+        Assert.assertTrue(world.car.getLuminiousStrength()<100);
     }
 
     @Given("the high beam headlight is on")
     public void theHighBeamHeadlightIsOn() {
-        base.car.setHeadLightBeam(Headlight.HIGHBEAM);
+        world.car.setHeadLightBeam(Headlight.HIGHBEAM);
     }
 
     @When("the camera stops recognising lights of anymore advancing vehicles")
     public void theCameraStopsRecognisingLightsOfAnymoreAdvancingVehicles() {
-        base.car.isIncomingVehicleDetectedByCamera(false);
+        world.car.isIncomingVehicleDetectedByCamera(false);
     }
 
     @Then("the high beam headlight will turn on after 2 seconds")
     public void theHighBeamHeadlightWillTurnOnAfterSeconds() {
-        Assert.assertTrue(base.car.getTimeForHeadlightToIlluminate()>2);
+        Assert.assertTrue(world.car.getTimeForHeadlightToIlluminate()>2);
     }
 }

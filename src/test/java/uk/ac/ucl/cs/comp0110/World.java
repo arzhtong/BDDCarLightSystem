@@ -4,7 +4,7 @@ import java.time.Clock;
 
 import static org.mockito.Mockito.mock;
 
-public class BaseUtil {
+public class World {
     public Clock clock=mock(Clock.class);
     public Car car=new Car();
 

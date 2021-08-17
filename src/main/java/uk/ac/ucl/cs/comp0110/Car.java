@@ -473,13 +473,12 @@ public class Car {
     /**
      *  This method decides how the indicator will behave when the pitman arm is tipped into a tip-blinking
      *  position for a certain amount of time.
-     * @param position The position of the pitman arm
      * @param timeInTipBlinkingPosition The time that the pitman arm is held in a tip-blinking position
      */
-    public void tipPitmanArm(PitmanArmPosition position,double timeInTipBlinkingPosition) {
+    public void tipPitmanArm(double timeInTipBlinkingPosition) {
         setNumberofFlashCycles(0);
 
-        if (position == PitmanArmPosition.UPWARD5) {
+        if (pitmanArmState == PitmanArmPosition.UPWARD5) {
             setPitmanArmPosition(PitmanArmPosition.UPWARD5);
             if (timeInTipBlinkingPosition < 500) {
                 rightIndicator.isTipBlinkingOn(true);
@@ -487,7 +486,7 @@ public class Car {
                 rightIndicator.isTipBlinkingOn(false);
             }
         }
-        if (position == PitmanArmPosition.DOWNWARD5) {
+        if (pitmanArmState == PitmanArmPosition.DOWNWARD5) {
             setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
             if (timeInTipBlinkingPosition < 500) {
                 leftIndicator.isTipBlinkingOn(true);
@@ -734,10 +733,10 @@ public class Car {
      * @return The blinking state of the indicator that corresponds to the direction the driver is signalling
      */
     public Blinking getBlinkingState(String direction){
-        if (direction.equals("Right")){
+        if (direction.equals("right")){
             return rightIndicator.getBlinkingState();
         }
-        if (direction.equals("Left")){
+        if (direction.equals("left")){
             return leftIndicator.getBlinkingState();
         }
         return null;
@@ -1089,5 +1088,7 @@ public class Car {
     public int getLuminiousStrength(){
         return leftIndicator.getIlluminationStrengthPercentage();
     }
+
+
 }
 

@@ -4,7 +4,7 @@ Feature:
   depending on the speed of the car and the brake pedal.
 
   Background:
-    Given the ignition is on
+    Given ignition is on
 
     Rule: As long as the pitman arm is pulled towards the driver, the high beam headlight is active
 
@@ -13,7 +13,8 @@ Feature:
       When the driver moves pitman arm towards the driver
       Then the high beam headlight will turn on
 
-    Rule: If the light rotary switch is on, pushing the pitman arm to the left will activate high beam headlights will a fixed illmination area
+    Rule: If the light rotary switch is on, pushing the pitman arm back will activate high beam headlights will a fixed illmination area
+      of 220m and 100% luminous strength.
 
     @requirement(ELS-31)
     Scenario: Driver engages high beam headlight with fixed illumination area
@@ -63,10 +64,8 @@ Feature:
   Rule: If no advancing vehicle is recognized any more, the high beam illumination is restored after 2 seconds
 
   @requirement(ELS-35)
-  Scenario: No advancing vehicles are recognised anymore with low beam headlight on
-  Given the low beam headlight is on
-  And the camera recognizes lights of advancing vehicle
-  When the camera stops recognising lights of anymore advancing vehicles
+  Scenario: Camera cannot find anymore advancing vehicles
+  Given the camera stops recognising lights of anymore advancing vehicles
   Then the high beam headlight will turn on after 2 seconds
 
 

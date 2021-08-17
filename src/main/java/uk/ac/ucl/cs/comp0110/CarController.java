@@ -184,7 +184,7 @@ public class CarController {
             model.stopTimer();
         }else{
             model.stopTimer();
-            model.tipPitmanArm(PitmanArmPosition.DOWNWARD5,model.getTimeInTipBlinkingPosition());
+            model.tipPitmanArm(model.getTimeInTipBlinkingPosition());
         }
     }
     public void rightTipBlinkingPressed(){
@@ -194,7 +194,7 @@ public class CarController {
             model.stopTimer();
         }else{
             model.stopTimer();
-            model.tipPitmanArm(PitmanArmPosition.UPWARD5,model.getTimeInTipBlinkingPosition());
+            model.tipPitmanArm(model.getTimeInTipBlinkingPosition());
         }
     }
     public void hazardSwitchPressed(){
