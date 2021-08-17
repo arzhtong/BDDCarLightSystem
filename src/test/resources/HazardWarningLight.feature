@@ -44,8 +44,7 @@ This feature defines the different pulse ratios and states for indicators when e
     Given ignition is on
     When the ignition is off
     And the driver deactivates hazard warning switch
-    Then the right indicator will not blink
-    But the left indicator will not blink
+    Then the indicators will not blink
 
     @requirement(ELS-12)
   Scenario: Driver engages hazard warning switch with ignition off

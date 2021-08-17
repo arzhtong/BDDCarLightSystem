@@ -17,9 +17,9 @@ And the driver moved pitman arm <Pitman Arm>
 Then the parking light is <Parking Light>
   Examples:
     | Ignition Key | Light Switch | Pitman Arm | Parking Light |
-    | On           | On           | Downward   | true          |
-    | Off          | On           | Upward     | true          |
-    | Off          | Off          | Upward     | false         |
+    | on           | on           | downward   | inactive      |
+    | off          | on           | upward     | active        |
+    | off          | off          | upward     | inactive      |
 
 
 

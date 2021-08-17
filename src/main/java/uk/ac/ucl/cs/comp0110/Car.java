@@ -98,9 +98,6 @@ public class Car {
             countAmbientLightTime();
         }
         }
-        /*
-        This method sets the length of time that the pitman arm is held in a tip-blinking position
-         */
 
 
     /**
@@ -269,7 +266,8 @@ public class Car {
      */
     public void setPitmanArmPosition(PitmanArmPosition position) {
         pitmanArmState=position;
-
+        leftIndicator.isTipBlinkingOn(false);
+        rightIndicator.isTipBlinkingOn(false);
         if (ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION){
             if (position==PitmanArmPosition.UPWARD7 || position==PitmanArmPosition.UPWARD5){
 
@@ -480,7 +478,7 @@ public class Car {
 
         if (pitmanArmState == PitmanArmPosition.UPWARD5) {
             setPitmanArmPosition(PitmanArmPosition.UPWARD5);
-            if (timeInTipBlinkingPosition < 500) {
+            if (timeInTipBlinkingPosition < 500 && ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION) {
                 rightIndicator.isTipBlinkingOn(true);
             }else{
                 rightIndicator.isTipBlinkingOn(false);
@@ -488,7 +486,7 @@ public class Car {
         }
         if (pitmanArmState == PitmanArmPosition.DOWNWARD5) {
             setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
-            if (timeInTipBlinkingPosition < 500) {
+            if (timeInTipBlinkingPosition < 500 && ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION) {
                 leftIndicator.isTipBlinkingOn(true);
             }else{
                 leftIndicator.isTipBlinkingOn(false);
@@ -882,7 +880,6 @@ public class Car {
             public void run() {
                 setHeadLightBeam(Headlight.LOWBEAM);
                 setHeadLightIlluminationArea(65);
-                System.out.println("working");
                 calculateLuminousStrength();
                 timeForHeadLightToIlluminate++;
                 stopTimer();
@@ -1088,7 +1085,11 @@ public class Car {
     public int getLuminiousStrength(){
         return leftIndicator.getIlluminationStrengthPercentage();
     }
-
-
+public boolean indicatorsAreBlinking(){
+    if (leftIndicator.getBlinkingState()==Blinking.FLASHING && rightIndicator.getBlinkingState()==Blinking.FLASHING){
+        return true;
+    }
+    return false;
+}
 }
 

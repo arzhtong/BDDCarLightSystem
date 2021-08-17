@@ -20,6 +20,10 @@ public class Transformers {
                     return PitmanArmPosition.UPWARD7;
                 case "downward":
                     return PitmanArmPosition.DOWNWARD7;
+                case "backward":
+                    return PitmanArmPosition.BACKWARD;
+                case "forward":
+                    return PitmanArmPosition.FORWARD;
 
             }
         } catch (IllegalArgumentException e) {
@@ -35,6 +39,21 @@ public class Transformers {
         } catch (IllegalArgumentException e) {
             return null;
         }
+    }
+    @ParameterType("\\w+")
+    public boolean parkingLightStatus(String parkingStatus) {
+        try {
+            switch(parkingStatus){
+                case "active":
+                    return true;
+                case "inactive":
+                    return false;
+            }
+
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+        return false;
     }
     @ParameterType("\\w+")
     public IgnitionStatus ignitionState(String ignitionStatus) {

@@ -1,5 +1,4 @@
 package uk.ac.ucl.cs.comp0110;
-import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -174,6 +173,7 @@ public class DirectionBlinking_StepDefinitions{
     @Given("ignition is {ignitionState}")
     public void ignition_is_on(IgnitionStatus ignitionState) {
         World.car.isIgnitionOn(ignitionState);
+
     }
 
 //    @When("the driver moves/moved pitman arm downward")
@@ -196,6 +196,7 @@ public class DirectionBlinking_StepDefinitions{
     @When("the driver turns {ignitionState} ignition")
     public void the_driver_turns_on_ignition(IgnitionStatus ignitionState) {
         World.car.isIgnitionOn(ignitionState);
+
     }
 
     @When("the driver inserts the key without turning on ignition")
@@ -359,9 +360,11 @@ public class DirectionBlinking_StepDefinitions{
     }
 
     @Then("the vehicle flashes/flashed all {indicatingDirection} indicators synchronously")
-    public void theVehicleFlashesAllIndicatorsSynchronously(String indicatingDirection) {
-        Assert.assertEquals(World.car.getBlinkingState(indicatingDirection), Blinking.FLASHING);
+    public void theVehicleFlashesAllIndicatorsSynchronously(String directionToIndicate) {
+        Assert.assertEquals(World.car.getBlinkingState(directionToIndicate), Blinking.FLASHING);
     }
-
-
+    @Then("the indicators will not blink")
+    public void theIndicatorsWillNotBlink() {
+        Assert.assertEquals(World.car.indicatorsAreBlinking(),false);
+    }
 }

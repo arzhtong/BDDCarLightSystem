@@ -13,8 +13,8 @@ public class ParkingLight_StepDefinitions {
         this.world=world;
     }
 
-//    @Then("the parking light is {parkingLightStatus}")
-//    public void the_parking_light_is_on(boolean parkingLightStatus) {
-//        Assert.assertEquals(world.car.getParkingLightEngaged(),parkingLightStatus);
-//    }
+    @Then("the parking light is {parkingLightStatus}")
+    public void the_parking_light_is_on(boolean parkingLightStatus) {
+        Assert.assertEquals(world.car.getParkingLightEngaged(),parkingLightStatus);
+    }
 }

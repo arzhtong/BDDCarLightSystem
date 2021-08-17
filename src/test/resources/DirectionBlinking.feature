@@ -73,9 +73,9 @@ Feature: Direction Blinking Indicator
 
     @requirement(ELS-2,ELS-5)
       Scenario: Driver turns on ignition while in tip-blinking position
-      Given the ignition is off
+      Given ignition is off
       And the driver moves pitman arm upward in tip-blinking position for less than 0.5 seconds
-      When the driver turns the ignition on
+      When the driver turns on ignition
       Then the vehicle will not have flashing cycles
 
     Rule: Interruption request of tip-blinking flashing cycle will stop the current cycle and the new requested cycle starts
@@ -101,12 +101,6 @@ Feature: Direction Blinking Indicator
       Then the vehicle flashes all left indicators synchronously
       And the vehicle flashes all right indicators synchronously
 
-    @requirement(ELS-3,ELS-5)
-    Scenario: Driver turns off ignition and signals left
-    Given the driver moved pitman arm upward
-    When the driver turns the ignition off
-    And the driver moves pitman arm downward
-    Then the left indicator tip-blinking will stop
 
     Rule: If the pitman arm is held for more than 0.5 seconds in a tip-blinking position then direction indicators cycles are released until pitman arm leaves the position
 

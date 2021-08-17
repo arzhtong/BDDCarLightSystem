@@ -24,10 +24,10 @@ public class HighBeamHeadLights_StepDefinitions {
         Assert.assertEquals(world.car.getHeadLightBeamState(),Headlight.HIGHBEAM);
     }
 
-    @When("the driver moves pitman arm left")
-    public void theDriverMovesPitmanArmLeft() {
-        world.car.setPitmanArmPosition(PitmanArmPosition.BACKWARD);
-    }
+//    @When("the driver moves pitman arm left")
+//    public void theDriverMovesPitmanArmLeft() {
+//        world.car.setPitmanArmPosition(PitmanArmPosition.BACKWARD);
+//    }
 
     @And("the headlight will have a fixed area of 220m")
     public void theHeadlightWillHaveAFixedAreaOfM() {

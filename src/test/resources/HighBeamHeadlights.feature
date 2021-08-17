@@ -19,7 +19,7 @@ Feature:
     @requirement(ELS-31)
     Scenario: Driver engages high beam headlight with fixed illumination area
       Given the driver turned the light rotary switch on
-      When the driver moves pitman arm left
+      When the driver moves pitman arm backward
       Then the high beam headlight will turn on
       And the headlight will have a fixed area of 220m
       And the headlight will have 100% luminous strength
@@ -29,7 +29,7 @@ Feature:
     @requirement(ELS-32)
     Scenario: Driver engages high beam headlights with light rotary switch in auto
     Given the driver turned light rotary switch to auto
-    When the driver moves pitman arm left
+    When the driver moves pitman arm backward
     Then the high beam headlight will turn on
 
     Rule: When adaptive high beam headlight is activated and car is driving faster than 30km/h with no advancing vehicle detected
@@ -52,20 +52,20 @@ Feature:
 
     Rule: If the camera recognizes the lights of an advancing vehicle, an activated high beam headlight is reduced to low beam headlight within
     0.5 seconds
-
-    @requirement(ELS-34)
-    Scenario: Camera recognizes lights of advancing vehicle
-    Given the high beam headlight is on
-    When the camera recognizes lights of advancing vehicle
-    Then the high beam headlight changes to low beam headlight within 0.5 seconds
-    And the headlight will have an area of 65 metres
-    And the headlight will have reduced luminous strength
-
-  Rule: If no advancing vehicle is recognized any more, the high beam illumination is restored after 2 seconds
-
-  @requirement(ELS-35)
-  Scenario: Camera cannot find anymore advancing vehicles
-  Given the camera stops recognising lights of anymore advancing vehicles
-  Then the high beam headlight will turn on after 2 seconds
-
-
+#
+#    @requirement(ELS-34)
+#    Scenario: Camera recognizes lights of advancing vehicle
+#    Given the high beam headlight is on
+#    When the camera recognizes lights of advancing vehicle
+#    Then the high beam headlight changes to low beam headlight within 0.5 seconds
+#    And the headlight will have an area of 65 metres
+#    But the headlight will have reduced luminous strength
+#
+#  Rule: If no advancing vehicle is recognized any more, the high beam illumination is restored after 2 seconds
+#
+#  @requirement(ELS-35)
+#  Scenario: Camera cannot find anymore advancing vehicles
+#  Given the camera stops recognising lights of anymore advancing vehicles
+#  Then the high beam headlight will turn on after 2 seconds
+#
+#

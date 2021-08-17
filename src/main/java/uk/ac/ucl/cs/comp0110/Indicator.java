@@ -30,6 +30,7 @@ public class Indicator {
         clock=new SystemClock();
         clock.useFixedClockAt(LocalDateTime.now());
         dimmedLightPercentage=0;
+        durationOfHazardCycle=1;
     }
     public IndicatorBulb getIndicatorBulbState(){
         return indicatorBulbState;
