@@ -6,8 +6,6 @@ import org.junit.Assert;
 import java.time.Instant;
 
 public class ParkingLight_StepDefinitions {
-    private Instant currentTime;
-    private SystemClock myClock;
     private World world;
     public ParkingLight_StepDefinitions(World world){
         this.world=world;

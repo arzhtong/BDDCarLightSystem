@@ -20,20 +20,22 @@ Then the parking light is <Parking Light>
     | on           | on           | downward   | inactive      |
     | off          | on           | upward     | active        |
     | off          | off          | upward     | inactive      |
+    | off          | on           | downward   | active        |
+    | on           | off          | neutral    | inactive             |
 
 
-
-  @requirement(ELS-28)
-Scenario: Driver engaged right parking light
-Given the ignition is off
-And the driver turned the light rotary switch on
-And the driver moves pitman arm upward
-Then the left low beam headlight is on
-And the right tail light will be on
+#
+#  @requirement(ELS-28)
+#Scenario: Driver engaged right parking light
+#Given the ignition is off
+#And the driver turned the light rotary switch on
+#And the driver moves pitman arm upward
+#Then the left low beam headlight is on
+#And the right tail light will be on
 
 @requirement(ELS-28)
 Scenario: Driver engages left parking light with ambient light on
-Given the ignition is off
+Given ignition is off
 And the ambient light is on
 And the driver turns the light rotary switch on
 And the exterior brightness is below 200lx
@@ -44,7 +46,7 @@ And the left low beam headlight is on
 
 @requirement(ELS-28)
 Scenario: Driver engages right parking light with ambient light on
-Given the ignition is off
+Given ignition is off
 And the ambient light is on
 And the driver turns the light rotary switch on
 And the exterior brightness is below 200lx

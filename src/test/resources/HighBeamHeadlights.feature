@@ -6,12 +6,19 @@ Feature:
   Background:
     Given ignition is on
 
-    Rule: As long as the pitman arm is pulled towards the driver, the high beam headlight is active
+  Rule: When high beam headlights activate, tail lights are activated
 
-    @requirement(ELS-30)
-    Scenario: Driver engages high beam headlight
-      When the driver moves pitman arm towards the driver
-      Then the high beam headlight will turn on
+  @requirement(ELS-22)
+  Scenario: Driver engages high beam headlights
+    Given the high beam headlight is on
+    Then the tail light will be activated
+#
+#  Rule: As long as the pitman arm is pulled towards the driver, the high beam headlight is active
+#
+#    @requirement(ELS-30)
+#    Scenario: Driver engages high beam headlight
+#      When the driver moves pitman arm towards the driver
+#      Then the high beam headlight will turn on
 
     Rule: If the light rotary switch is on, pushing the pitman arm back will activate high beam headlights will a fixed illmination area
       of 220m and 100% luminous strength.
@@ -27,12 +34,22 @@ Feature:
     Rule: When the light rotary switch is in auto, the high beam headlights are activated by moving the pitman arm to the back
 
     @requirement(ELS-32)
-    Scenario: Driver engages high beam headlights with light rotary switch in auto
-    Given the driver turned light rotary switch to auto
+    Scenario Outline: Driver engages high beam headlights with light rotary switch in auto
+    Given the driver turned the light rotary switch to auto
     When the driver moves pitman arm backward
     Then the high beam headlight will turn on
 
-    Rule: When adaptive high beam headlight is activated and car is driving faster than 30km/h with no advancing vehicle detected
+    Examples:
+
+      | Light Rotary Switch | Pitman Direction | High Beam Headlight |
+      | auto                | backward         | on                  |
+      | auto                | upward           | off                  |
+      | on                  | upward           | off                 |
+      | off                 | downward         | off                 |
+      |                     |                  |                     |
+
+
+  Rule: When adaptive high beam headlight is activated and car is driving faster than 30km/h with no advancing vehicle detected
           the street should be illuminated within 2 seconds.
 
     @requirement(ELS-33)

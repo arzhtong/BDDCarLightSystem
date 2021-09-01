@@ -14,6 +14,6 @@ Then the low beam headlights will be activated
 
 @requirement(ELS-17)
 Scenario: Daytime running light engaged with ignition off
-Given the ignition is off
+Given ignition is off
 And the driver turned daytime running light on
-Then the low beam headlight will be deactivated
+Then the low beam headlights will be deactivated

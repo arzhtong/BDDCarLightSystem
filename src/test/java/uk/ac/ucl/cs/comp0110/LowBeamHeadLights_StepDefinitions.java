@@ -1,6 +1,5 @@
 package uk.ac.ucl.cs.comp0110;
 import io.cucumber.java.Before;
-import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -11,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 
 public class LowBeamHeadLights_StepDefinitions{
     private Instant currentTime;
@@ -28,62 +26,35 @@ public class LowBeamHeadLights_StepDefinitions{
 //        when(base.clock.instant()).thenAnswer((invocation)->currentTime);
 //        myClock=new SystemClock();
     }
-    @When("the driver turns the light rotary switch to the on position")
-    public void the_driver_turns_the_light_rotary_switch_to_the_on_position() {
-        world.car.turnLightRotarySwitch(LightRotarySwitchState.ON);
+
+
+    @Then("the low beam headlights will be activated")
+    public void the_low_beam_headlights_will_be_activated() {
+        Assert.assertEquals(world.car.getIndicatorBeamState(), Headlight.LOWBEAM);
     }
 
-    @Then("the low beam headlight will be activated")
-    public void the_low_beam_headlight_will_be_activated() {
-        Assert.assertEquals(world.car.getHeadLightBeamState(), Headlight.LOWBEAM);
+    @Then("the low beam headlights will be deactivated")
+    public void the_low_beam_headlights_will_be_deactivated() {
+        Assert.assertEquals(world.car.getIndicatorBeamState(), Headlight.INACTIVE);
     }
 
-    @When("the driver (turns||turned) the light rotary switch to the off position")
-    public void the_driver_turns_the_light_rotary_switch_to_the_off_position() {
-        world.car.turnLightRotarySwitch(LightRotarySwitchState.OFF);
-    }
 
-    @Then("the low beam headlight will be deactivated")
-    public void the_low_beam_headlight_will_be_deactivated() {
-        Assert.assertEquals(world.car.getHeadLightBeamState(), Headlight.INACTIVE);
-    }
-    @Given("the ignition is off")
-    public void the_ignition_is_off() {
-        world.car.isIgnitionOn(IgnitionStatus.NOKEYINSERTED);
-    }
-
-    @When("the driver turns/turned the light rotary switch {lightRotarySwitchState}")
+    @When("the driver turns/turned the light rotary switch (to ){lightRotarySwitchState}")
     public void the_driver_turns_the_light_rotary_switch_on(LightRotarySwitchState lightRotarySwitchState) {
         world.car.turnLightRotarySwitch(lightRotarySwitchState);
     }
 
     @Then("the low beam headlight is activated with 50% brightness")
     public void the_low_beam_headlight_is_activated_with_brightness() {
-        Assert.assertEquals(world.car.getHeadLight().getLightDimmingPercentage(),50);
-    }
-    @When("the driver turns/turned the light rotary switch to auto")
-    public void the_driver_turns_the_light_rotary_switch_to_auto() {
-        world.car.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
+        Assert.assertEquals(world.car.getRightIndicator().getLightDimmingPercentage(),50);
     }
 
-    @Given("light rotary switch is auto")
-    public void light_rotary_switch_is_auto() {
-        world.car.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
-    }
 
-    @When("the driver turns the ignition on")
-    public void the_driver_turns_the_ignition_on() {
-        world.car.isIgnitionOn(IgnitionStatus.KEYINIGNITIONONPOSITION);
-    }
 
-    @Then("the low beam headlights will be activated")
-    public void the_low_beam_headlights_will_be_activated() {
-        Assert.assertEquals(world.car.getHeadLightBeamState(), Headlight.LOWBEAM);
-    }
 
     @Then("the low beam headlights will not be activated")
     public void the_low_beam_headlights_will_not_be_activated() {
-        Assert.assertEquals(world.car.getHeadLightBeamState(), Headlight.INACTIVE);
+        Assert.assertEquals(world.car.getIndicatorBeamState(), Headlight.INACTIVE);
     }
 
     @When("the driver opens/opened the door")
@@ -103,10 +74,7 @@ public class LowBeamHeadLights_StepDefinitions{
         world.car.isAllDoorsClosed(false);
     }
 
-    @Given("the driver turns/turned light rotary switch to auto")
-    public void the_driver_turns_light_rotary_switch_to_auto() {
-        world.car.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
-    }
+
 
     @When("the exterior brightness is below/above 200lx")
     public void the_exterior_brightness_is_below_200lx() {
@@ -123,13 +91,17 @@ public class LowBeamHeadLights_StepDefinitions{
     public void the_exterior_brightness_is_above_200lx() {
         world.car.setExteriorBrightnessLuminosity(300);
     }
-    @When("the driver engages/engaged the darkness switch")
-    public void the_driver_engages_the_darkness_switch() {
+    @When("the driver activates/activated the darkness switch")
+    public void the_driver_activates_the_darkness_switch() {
         world.car.pressDarknessSwitch(true);
+    }
+    @When("the driver deactivates/deactivated the darkness switch")
+    public void the_driver_deactivates_the_darkness_switch() {
+        world.car.pressDarknessSwitch(false);
     }
     @Then("the low beam tail light will be activated")
     public void the_low_beam_tail_light_will_be_activated() {
-        Assert.assertEquals(world.car.getHeadLightBeamState(), Headlight.LOWBEAM);
+        Assert.assertEquals(world.car.getIndicatorBeamState(), Headlight.LOWBEAM);
     }
 
     @When("the car is from the USA")
@@ -217,7 +189,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @Given("the low beam headlight is on")
     public void the_low_beam_headlight_is_on() {
-        world.car.setHeadLightBeamState(Headlight.LOWBEAM);
+        world.car.setIndicatorBeamState(Headlight.LOWBEAM);
     }
 
     @When("the driver turns the wheel by more than 10 degrees")
@@ -240,9 +212,13 @@ public class LowBeamHeadLights_StepDefinitions{
     public void the_left_indicator_is_blinking() {
         world.car.getLeftIndicator().setBlinkingState(Blinking.FLASHING);
     }
-
     @Given("the right indicator is blinking")
     public void the_right_indicator_is_blinking() {
+        world.car.getRightIndicator().setBlinkingState(Blinking.FLASHING);
+    }
+
+    @Given("the indicator is blinking")
+    public void the_indicator_is_blinking() {
         world.car.getRightIndicator().setBlinkingState(Blinking.FLASHING);
     }
 
@@ -278,7 +254,7 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @Then("the low beam headlight is activated with 100% brightness")
     public void theLowBeamHeadlightIsActivatedWithBrightness() {
-        Assert.assertEquals(world.car.getHeadLight().getLightDimmingPercentage(),0);
+        Assert.assertEquals(world.car.getRightIndicator().getLightDimmingPercentage(),0);
     }
 
 //    @When("the driver turns the light rotary switch off")
@@ -288,6 +264,23 @@ public class LowBeamHeadLights_StepDefinitions{
 
     @Given("the driver activated low beam headlights")
     public void theDriverActivatedLowBeamHeadlights() {
-        world.car.setHeadLightBeamState(Headlight.LOWBEAM);
+        world.car.setIndicatorBeamState(Headlight.LOWBEAM);
     }
+
+    @Then("the tail light will be activated")
+    public void theTailLightWillBeActivated() {
+        Assert.assertEquals(world.car.getRightIndicator().getTailLightState(),true);
+    }
+
+    @Then("the tail light will be deactivated")
+    public void theTailLightWillBeDeactivated() {
+        Assert.assertEquals(world.car.getRightIndicator().getTailLightState(),false);
+    }
+
+    @Given("the driver deactivated low beam headlights")
+    public void theDriverDeactivatedLowBeamHeadlights() {
+        world.car.setIndicatorBeamState(Headlight.INACTIVE);
+    }
+
+
 }

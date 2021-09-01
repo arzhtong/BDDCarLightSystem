@@ -21,7 +21,7 @@ public class HighBeamHeadLights_StepDefinitions {
 
     @Then("the high beam headlight will turn on")
     public void the_high_beam_headlight_will_turn_on() {
-        Assert.assertEquals(world.car.getHeadLightBeamState(),Headlight.HIGHBEAM);
+        Assert.assertEquals(world.car.getIndicatorBeamState(),Headlight.HIGHBEAM);
     }
 
 //    @When("the driver moves pitman arm left")
@@ -94,5 +94,10 @@ public class HighBeamHeadLights_StepDefinitions {
     @Then("the high beam headlight will turn on after 2 seconds")
     public void theHighBeamHeadlightWillTurnOnAfterSeconds() {
         Assert.assertTrue(world.car.getTimeForHeadlightToIlluminate()>2);
+    }
+
+    @Then("the high beam tail light will be activated")
+    public void theHighBeamTailLightWillBeActivated() {
+        Assert.assertEquals(world.car.getRightIndicator().getTailLightState(),true);
     }
 }
