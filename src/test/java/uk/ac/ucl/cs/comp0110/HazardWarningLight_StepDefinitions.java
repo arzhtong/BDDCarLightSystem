@@ -1,5 +1,5 @@
 package uk.ac.ucl.cs.comp0110;
-import io.cucumber.java.ParameterType;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -11,10 +11,9 @@ public class HazardWarningLight_StepDefinitions {
     private Car car = new Car();
     private PitmanArmPosition pitmanArmState;
 
-
     @Given("the hazard warning light switch is engaged")
     public void the_hazard_warning_light_switch_is_engaged() {
-        car.setHazardSwitch(true);
+        car.pressHazardSwitch(true);
     }
 
     @When("the flashing cycle of indicators are released")
@@ -28,14 +27,14 @@ public class HazardWarningLight_StepDefinitions {
         Assert.assertEquals(car.getLengthOfHazardCycle(),1);
     }
 
-    @When("the hazard warning light switch is deactivated")
-    public void the_hazard_warning_light_switch_is_deactivated() {
-        car.setHazardSwitch(false);
+    @When("the pitarm is in direction blinking left")
+    public void the_pitarm_is_in_direction_blinking_left() {
+        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
     }
 
-    @When("pitarm is in direction blinking left")
-    public void pitarm_is_in_direction_blinking_left() {
-        car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
+    @When("the hazard warning light switch is deactivated")
+    public void the_hazard_warning_light_switch_is_deactivated() {
+        car.pressHazardSwitch(false);
     }
 
     @Then("the direction blinking cycle for the left indicator should start")
@@ -43,8 +42,8 @@ public class HazardWarningLight_StepDefinitions {
         Assert.assertEquals(car.getBlinkingState("Left"),Blinking.FLASHING);
     }
 
-    @When("pitarm is in direction blinking right")
-    public void pitarm_is_in_direction_blinking_right() {
+    @When("the pitarm is in direction blinking right")
+    public void the_pitarm_is_in_direction_blinking_right() {
         car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
     }
 
@@ -93,12 +92,43 @@ public class HazardWarningLight_StepDefinitions {
 
     @When("the hazard warning light switch is pressed")
     public void the_hazard_warning_light_switch_is_pressed() {
-       car.setHazardSwitch(true);
+       car.pressHazardSwitch(true);
     }
 
     @Then("the right indicator ongoing tip-blinking will stop")
     public void the_right_indicator_ongoing_tip_blinking_will_stop() {
         Assert.assertEquals(car.getFlashingCycles("Right"),false);
     }
+
+    @And("the driver has turned ambient light off")
+    public void theDriverHasTurnedAmbientLightOff() {
+        car.engageAmbientLight(false);
+    }
+    @Given("the left indicator is bright")
+    public void the_left_indicator_is_bright() {
+        car.getLeftIndicator().setFlashState(Flashing.BRIGHT);
+    }
+
+
+
+    @When("the driver deactivates hazard warning switch")
+    public void the_driver_deactivates_hazard_warning_switch() {
+        car.pressHazardSwitch(false);
+    }
+
+    @Then("the left indicator will not blink")
+    public void the_left_indicator_will_not_blink() {
+        Assert.assertEquals(car.getBlinkingState("Left"),Blinking.NONFLASHING);
+    }
+    @Then("tip-blinking on right starts when direction blinking cycle finishes")
+    public void tip_blinking_on_right_starts_when_direction_blinking_cycle_finishes() {
+        Assert.assertEquals(car.getRightIndicator().getCycle(),false);
+    }
+
+    @Then("direction-blinking on right starts when tip-blinking cycle finishes")
+    public void direction_blinking_on_right_starts_when_tip_blinking_cycle_finishes() {
+        Assert.assertEquals(car.getLeftIndicator().getCycle(),true);
+    }
+
 
 }

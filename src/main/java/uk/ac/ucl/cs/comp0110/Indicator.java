@@ -1,18 +1,36 @@
 package uk.ac.ucl.cs.comp0110;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+
 enum Blinking{
     FLASHING,NONFLASHING
 }
 enum Flashing{
     BRIGHT,DARK
 }
+enum LowBeam {
+    ACTIVE,INACTIVE
+}
 public class Indicator {
     private Blinking blinkingState;
-    private boolean flashCycle;
-    private int dimmedLight;
+    private boolean flashing;
     private int hazardCycleLength;
     private int numberofFlashCycles;
     private Flashing flashState;
+    private boolean isCorneringLightOn;
+    private boolean isTailLightOn;
+    private int dimmedLightPercentage;
+    private int ambientLightDuration;
+    private LowBeam lowBeam;
+    private SystemClock clock;
 
+    public Indicator(){
+        blinkingState=Blinking.NONFLASHING;
+        clock=new SystemClock();
+        clock.useFixedClockAt(LocalDateTime.now());
+        dimmedLightPercentage=0;
+    }
     public Flashing getFlashState(){
         return flashState;
     }
@@ -20,27 +38,17 @@ public class Indicator {
         this.flashState=flashState;
     }
 
-
-    public Indicator(){
-        blinkingState=Blinking.NONFLASHING;
-    }
     public void setState(Blinking blinkingState){
         this.blinkingState=blinkingState;
     }
     public Blinking getState(){
         return blinkingState;
     }
-    public void setCycle(boolean flashCycle){
-        this.flashCycle=flashCycle;
+    public void setCycle(boolean flashing){
+        this.flashing=flashing;
     }
     public boolean getCycle(){
-        return flashCycle;
-    }
-    public void setDimmedLight(int dimmedLight){
-        this.dimmedLight=dimmedLight;
-    }
-    public int getDimmedLight(){
-        return dimmedLight;
+        return flashing;
     }
     public void setHazardCycleLength(int hazardCycleLength){
         this.hazardCycleLength=hazardCycleLength;
@@ -54,5 +62,41 @@ public class Indicator {
     public int getNumberofFlashCycles(){
         return numberofFlashCycles;
     }
+    public void isCorneringLightOn(boolean isCorneringLightOn){
+        this.isCorneringLightOn=isCorneringLightOn;
+    }
+    public boolean getCorneringLightState(){
+        return isCorneringLightOn;
+    }
+    public void isTailLightOn(boolean isTailLightOn){
+        this.isTailLightOn=isTailLightOn;
+    }
+    public boolean getTailLightState(){
+        return isTailLightOn;
+    }
+    public void setLightDimmingPercentage(int dimmedLightPercentage){
+        this.dimmedLightPercentage=dimmedLightPercentage;
+    }
+    public int getLightDimmingPercentage(){
+        return dimmedLightPercentage;
+    }
+    public int getAmbientLightDuration(){
+        return ambientLightDuration;
+    }
+    public void setAmberLightDuration(int ambientLightDuration){
 
+    }
+    public void setAmbientLightDuration(){
+
+    }
+
+    public void setLowBeamState(LowBeam lowBeam){
+        this.lowBeam = lowBeam;
+    }
+    public LowBeam getLowBeamState(){
+        return lowBeam;
+    }
+    public SystemClock getClock(){
+        return clock;
+    }
 }

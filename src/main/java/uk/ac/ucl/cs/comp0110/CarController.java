@@ -55,6 +55,12 @@ public class CarController {
                 keyInsertedPressed();
             }
         });
+        view.getLightRotarySwitch().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lightRotarySwitchPressed();
+            }
+        });
         view.getLeftTipBlinking().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -77,26 +83,77 @@ public class CarController {
                 rightTipBlinkingPressed();
             }
         });
+        view.getDoorPosition().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                doorPressed();
+            }
+        });
+        view.getAmbientLight().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ambientLightPressed();
+            }
+        });
+        view.getDayTimeRunningLight().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dayTimeRunningLightPressed();
+            }
+        });
+        view.getExteriorBrightness().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exteriorBrightnessPressed();
+            }
+        });
+        view.getDarknessSwitch().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                darknessSwitchPressed();
+            }
+        });
+        view.getSpeedOfCar().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                carDuration();
+            }
+        });
+        view.getPassCorner().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                passedCorner();
+            }
+        });
+        view.getNumberOfDegreesSteeringWheelTurned().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                numberOfDegreesSteeringWheelTurned();
+            }
+        });
+        view.getReverseGear().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                reverseGearEngaged();
+            }
+        });
     }
-
 
 
     public void leftDirectionPressed() {
 
-        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getFlashingCycles("Left")==false) {
+        if (model.getBlinkingState("Left") == Blinking.FLASHING && model.getHazardSwitchState()==false) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         } else {
-            model.setNumberofFlashCycles(0);
             model.setPitmanArmPosition(PitmanArmPosition.DOWNWARD7);
         }
     }
     public void rightDirectionPressed() {
 
-        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getFlashingCycles("Right")==false) {
+        if (model.getBlinkingState("Right") == Blinking.FLASHING && model.getHazardSwitchState()==false) {
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
 
         }else{
-            model.setNumberofFlashCycles(0);
             model.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
         }
 
@@ -108,7 +165,6 @@ public class CarController {
             model.stopTimer();
         }else{
             model.stopTimer();
-            model.setNumberofFlashCycles(0);
             model.tipPitmanArm(PitmanArmPosition.DOWNWARD5,model.getLengthOfTimeHeld());
         }
     }
@@ -117,18 +173,16 @@ public class CarController {
         if (model.getBlinkingState("Right")==Blinking.FLASHING && model.getFlashingCycles("Right")==true){
             model.setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
             model.stopTimer();
-            model.setNumberofFlashCycles(0);
         }else{
-            model.setNumberofFlashCycles(0);
             model.stopTimer();
             model.tipPitmanArm(PitmanArmPosition.UPWARD5,model.getLengthOfTimeHeld());
         }
     }
     public void hazardSwitchPressed(){
         if (model.getHazardSwitchState()==false){
-            model.setHazardSwitch(true);
+            model.pressHazardSwitch(true);
         }else{
-            model.setHazardSwitch(false);
+            model.pressHazardSwitch(false);
 
         }
     }
@@ -149,5 +203,63 @@ public class CarController {
     public void keyInPosition(){
         model.isIgnitionOn(IgnitionStatus.KEYINIGNITIONONPOSITION);
         model.checkPitmanArmState();
+    }
+    public void lightRotarySwitchPressed(){
+        if (view.getLightRotarySwitch().getSelectedItem().equals("On")){
+            model.turnLightRotarySwitch(LightRotarySwitchState.ON);
+        }
+        if (view.getLightRotarySwitch().getSelectedItem().equals("Off")){
+            model.turnLightRotarySwitch(LightRotarySwitchState.OFF);
+        }
+        if (view.getLightRotarySwitch().getSelectedItem().equals("Auto")){
+            model.turnLightRotarySwitch(LightRotarySwitchState.AUTO);
+        }
+    }
+    public void dayTimeRunningLightPressed(){
+        if (model.getDayTimeRunningLight()==false){
+            model.engageDayTimeRunningLight(true);
+        }else{
+            model.engageDayTimeRunningLight(false);
+        }
+    }
+    public void doorPressed(){
+        if (model.getAllDoorsClosed()==true){
+            model.isAllDoorsClosed(false);
+        }else{
+            model.isAllDoorsClosed(true);
+        }
+    }
+    public void ambientLightPressed(){
+        if (model.getAmbientLight()==true){
+            model.engageAmbientLight(false);
+        }else{
+            model.engageAmbientLight(true);
+        }
+    }
+    public void exteriorBrightnessPressed(){
+        model.setExteriorBrightness(Integer.parseInt(view.getExteriorBrightness().getText()));
+    }
+    public void darknessSwitchPressed(){
+        if (model.getDarknessSwitch()==true){
+            model.pressDarknessSwitch(false);
+        }else{
+            model.pressDarknessSwitch(true);
+        }
+    }
+    public void carDuration(){
+        model.setDrivingSpeed(Integer.parseInt(view.getSpeedOfCar().getText()));
+    }
+    public void passedCorner(){
+        model.countDurationOfPassingCornerTime();
+    }
+    public void numberOfDegreesSteeringWheelTurned(){
+        model.setDegreesSteeringWheelTurned(Integer.parseInt(view.getNumberOfDegreesSteeringWheelTurned().getText()));
+    }
+    public void reverseGearEngaged(){
+        if (model.getReverseGearEngaged()==false){
+            model.isReverseGearEngaged(true);
+        }else{
+            model.isReverseGearEngaged(false);
+        }
     }
 }
