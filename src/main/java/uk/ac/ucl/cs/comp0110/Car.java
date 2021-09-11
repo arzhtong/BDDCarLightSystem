@@ -1,406 +1,543 @@
 package uk.ac.ucl.cs.comp0110;
-import java.time.Clock;
-import java.time.Instant;
 import java.util.TimerTask;
 import java.util.Timer;
 
 enum PitmanArmPosition{
-    UPWARD7,DOWNWARD7,NEUTRAL,UPWARD5,DOWNWARD5
+    UPWARD7,DOWNWARD7,NEUTRAL,UPWARD5,DOWNWARD5,FORWARD, BACKWARD
 }
-enum IgnitionStatus{
-    NOKEYINSERTED,KEYINSERTED,KEYINIGNITIONONPOSITION
-}
+    enum IgnitionStatus{
+        NOKEYINSERTED,KEYINSERTED,KEYINIGNITIONONPOSITION
+    }
 enum LightRotarySwitchState{
     ON,OFF,AUTO
 }
 
+/**
+ * This is the model of the MVC Architecture being used to design a simulated car following the
+ * requirements of the ABZ Case Study 2020.
+ * @author Arzhan Tong
+ */
 public class Car {
     private IgnitionStatus ignitionState;
     private PitmanArmPosition pitmanArmState;
     private Indicator leftIndicator;
     private Indicator rightIndicator;
-    private Light headLight;
-    private int lengthOfTimeHeld;
     private Timer timer;
-    private boolean hazardSwitchState;
+    private boolean hazardWarningSwitchOn;
     private boolean inUSAOrCanada;
     private boolean allDoorsClosed;
-    private boolean dayTimeRunningLight;
-    private boolean ambientLight;
-    private int exteriorBrightness;
+    private boolean dayTimeRunningLightEngaged;
+    private boolean ambientLightingEngaged;
+    private int exteriorBrightnessLuminosity;
     private int lowBeamHeadlightDuration;
-    private boolean darknessSwitch;
-    private Light tailLight;
+    private boolean darknessModeSwitchOn;
     private int numberofFlashCycles;
-    private int durationOfPassingCorner;
-    private int drivingSpeed;
+    private int durationBeforePassingCorner;
+    private double drivingSpeed;
     private int numberOfDegreesSteeringWheelTurned;
     private LightRotarySwitchState lightRotarySwitchState;
     private boolean reverseGearEngaged;
     private boolean parkingLightEngaged;
-    private Clock clock;
-    public Car(){
-        parkingLightEngaged=false;
+    private boolean incomingVehicleDetectedByCamera;
+    private static int timeForHeadLightToIlluminate;
+    private TimeMachine timeMachine;
+    private int timeInTipBlinkingPosition;
 
-        allDoorsClosed=true;
-        reverseGearEngaged=false;
-        numberOfDegreesSteeringWheelTurned=0;
-        lightRotarySwitchState=LightRotarySwitchState.OFF;
-        leftIndicator=new Indicator();
-        headLight=new Light();
-        tailLight=new Light();
-        rightIndicator=new Indicator();
-        leftIndicator.setState(Blinking.NONFLASHING);
-        rightIndicator.setState(Blinking.NONFLASHING);
-        lengthOfTimeHeld=0;
-        numberofFlashCycles=0;
-        hazardSwitchState=false;
-        darknessSwitch=false;
+    public Car(TimeMachine timeMachine) {
+        timeForHeadLightToIlluminate = 0;
+        parkingLightEngaged = false;
+        incomingVehicleDetectedByCamera = false;
+        allDoorsClosed = true;
+        reverseGearEngaged = false;
+        numberOfDegreesSteeringWheelTurned = 0;
+        lightRotarySwitchState = LightRotarySwitchState.OFF;
+        leftIndicator = new Indicator();
+        rightIndicator = new Indicator();
+        leftIndicator.setBlinkingState(Blinking.NONFLASHING);
+        rightIndicator.setBlinkingState(Blinking.NONFLASHING);
+        timeInTipBlinkingPosition=0;
+        numberofFlashCycles = 0;
+        hazardWarningSwitchOn = false;
+        darknessModeSwitchOn = false;
+        this.timeMachine=timeMachine;
+        setHeadLightBeam(Headlight.INACTIVE);
     }
-    public Car(Clock clock){
-        parkingLightEngaged=false;
-        this.clock=clock;
-        allDoorsClosed=true;
-        reverseGearEngaged=false;
-        numberOfDegreesSteeringWheelTurned=0;
-        lightRotarySwitchState=LightRotarySwitchState.OFF;
-        leftIndicator=new Indicator();
-        headLight=new Light();
-        tailLight=new Light();
-        rightIndicator=new Indicator();
-        leftIndicator.setState(Blinking.NONFLASHING);
-        rightIndicator.setState(Blinking.NONFLASHING);
-        lengthOfTimeHeld=0;
-        numberofFlashCycles=0;
-        hazardSwitchState=false;
-        darknessSwitch=false;
-    }
+
+    /**
+     * This method sets the ignition status of the car and sets any states that should be set for the
+     * indicators based on ignition status.
+     * @param ignitionState The ignition state of the car
+     */
     public void isIgnitionOn(IgnitionStatus ignitionState) {
-
         this.ignitionState = ignitionState;
-        setParkingLightState();
+        isVehicleParking();
+        checkDayTimeRunningLightActive();
         if (pitmanArmState==PitmanArmPosition.DOWNWARD7){
-            leftIndicator.setState(Blinking.FLASHING);
+            leftIndicator.setBlinkingState(Blinking.FLASHING);
         }else if (pitmanArmState==PitmanArmPosition.UPWARD7){
-            rightIndicator.setState(Blinking.FLASHING);
+            rightIndicator.setBlinkingState(Blinking.FLASHING);
         }
         if (ignitionState == IgnitionStatus.KEYINSERTED || ignitionState == IgnitionStatus.NOKEYINSERTED) {
-            leftIndicator.setState(Blinking.NONFLASHING);
-            rightIndicator.setState(Blinking.NONFLASHING);
-            leftIndicator.setCycle(false);
-            rightIndicator.setCycle(false);
+            leftIndicator.setBlinkingState(Blinking.NONFLASHING);
+            rightIndicator.setBlinkingState(Blinking.NONFLASHING);
+            leftIndicator.isTipBlinkingOn(false);
+            rightIndicator.isTipBlinkingOn(false);
             if (pitmanArmState == PitmanArmPosition.DOWNWARD5 || pitmanArmState == PitmanArmPosition.UPWARD5) {
                 pitmanArmState = PitmanArmPosition.NEUTRAL;
             }
         }
-        if (ambientLight == true && ignitionState==IgnitionStatus.NOKEYINSERTED) {
+        if (ambientLightingEngaged && ignitionState==IgnitionStatus.NOKEYINSERTED) {
+
+           countAmbientLightTime();
+
+        }
+        if (ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION){
+            ambientLightingEngaged=false;
+
+        }
+        if (ambientLightingEngaged && getHeadLightAmbientLightDuration()<30){
             countAmbientLightTime();
         }
-        if (ambientLight==true && getHeadLightAmbientLightDuration()<30000){
-            stopTimer();
-            countAmbientLightTime();
-        }
+
         }
 
 
-    public void setLengthOfTimeHeld(int lengthOfTimeHeld){
-        this.lengthOfTimeHeld=lengthOfTimeHeld;
-
-    }
-
-    public void pressHazardSwitch(boolean hazardSwitchState){
-        this.hazardSwitchState=hazardSwitchState;
-        if (hazardSwitchState==false){
-            leftIndicator.setState(Blinking.NONFLASHING);
-            rightIndicator.setState(Blinking.NONFLASHING);
+    /**
+     *
+     * @param hazardWarningSwitchOn Whether the hazard switch is engaged
+     */
+    public void pressHazardSwitch(boolean hazardWarningSwitchOn){
+        this.hazardWarningSwitchOn =hazardWarningSwitchOn;
+        if (!hazardWarningSwitchOn){
+            leftIndicator.setBlinkingState(Blinking.NONFLASHING);
+            rightIndicator.setBlinkingState(Blinking.NONFLASHING);
             if (pitmanArmState==PitmanArmPosition.DOWNWARD7){
-                leftIndicator.setState(Blinking.FLASHING);
+                leftIndicator.setBlinkingState(Blinking.FLASHING);
             }
             if (pitmanArmState==PitmanArmPosition.UPWARD7){
-                rightIndicator.setState(Blinking.FLASHING);
+                rightIndicator.setBlinkingState(Blinking.FLASHING);
             }
 
         }
-        if (hazardSwitchState==true){
+        if (hazardWarningSwitchOn){
 
-                leftIndicator.setState(Blinking.FLASHING);
-                rightIndicator.setState(Blinking.FLASHING);
-                leftIndicator.setCycle(false);
-                rightIndicator.setCycle(false);
-                leftIndicator.setHazardCycleLength(1);
-                rightIndicator.setHazardCycleLength(1);
+                leftIndicator.setBlinkingState(Blinking.FLASHING);
+                rightIndicator.setBlinkingState(Blinking.FLASHING);
+                leftIndicator.isTipBlinkingOn(false);
+                rightIndicator.isTipBlinkingOn(false);
 
         }
 
     }
+
+    /**
+     *
+     * @param numberOfDegreesSteeringWheelTurned The number of degrees that the steering wheel is turned clockwise or
+     *                                           anti-clockwise
+     */
     public void setDegreesSteeringWheelTurned(int numberOfDegreesSteeringWheelTurned){
         this.numberOfDegreesSteeringWheelTurned=numberOfDegreesSteeringWheelTurned;
         checkCorneringLight();
 
     }
+
     public void checkPitmanArmState(){
-        if (hazardSwitchState==true){
-            rightIndicator.setState(Blinking.FLASHING);
-            leftIndicator.setState(Blinking.FLASHING);
+        if (hazardWarningSwitchOn){
+            rightIndicator.setBlinkingState(Blinking.FLASHING);
+            leftIndicator.setBlinkingState(Blinking.FLASHING);
         }
-
         if (pitmanArmState==PitmanArmPosition.UPWARD7){
-
-            rightIndicator.setState(Blinking.FLASHING);
+            rightIndicator.setBlinkingState(Blinking.FLASHING);
         }
         if (pitmanArmState==PitmanArmPosition.DOWNWARD7){
-            leftIndicator.setState(Blinking.FLASHING);
+            leftIndicator.setBlinkingState(Blinking.FLASHING);
         }
     }
-    public void pressDarknessSwitch(boolean darknessSwitch){
-        if (darknessSwitch==true){
-            engageAmbientLight(false);
+
+    /**
+     *
+     * @param darknessSwitchEngaged Whether the darkness switch is engaged
+     */
+    public void pressDarknessSwitch(boolean darknessSwitchEngaged){
+        if (darknessSwitchEngaged){
+            if (ambientLightingEngaged){
+                pressAmbientLightButton(false);
+            }
             leftIndicator.isCorneringLightOn(false);
             rightIndicator.isCorneringLightOn(false);
         }else{
             checkCorneringLight();
         }
-        this.darknessSwitch=darknessSwitch;
+        this.darknessModeSwitchOn =darknessSwitchEngaged;
 
     }
+
+    /**
+     * @param inUSAOrCanada Whether the car was sold in the USA or Canada
+     */
     public void setInUSAOrCanada(boolean inUSAOrCanada){
         this.inUSAOrCanada=inUSAOrCanada;
 
-        if (inUSAOrCanada==true){
-            headLight.setLightDimmingPercentage(50);
-            headLight.setLightDimmingPercentage(50);
+        if (inUSAOrCanada){
+            leftIndicator.setLightDimmingPercentage(50);
+            rightIndicator.setLightDimmingPercentage(50);
         }else{
-            headLight.setLightDimmingPercentage(0);
-            headLight.setLightDimmingPercentage(0);
+            leftIndicator.setLightDimmingPercentage(0);
+            rightIndicator.setLightDimmingPercentage(0);
         }
     }
+
+    /**
+     *  This method sets the number of flash cycles that has occurred by the indicator
+     *  when the pitman arm is in a tip-blinking position.
+     * @param numberofFlashCycles The number of flash cycles that has occurred
+     */
     public void setNumberofFlashCycles(int numberofFlashCycles){
         if (numberofFlashCycles==3){
             setNumberofFlashCycles(0);
-            setLengthOfTimeHeld(0);
+            //timeInTipBlinkingPosition=0;
             setPitmanArmPosition(PitmanArmPosition.NEUTRAL);
         }
-        if (leftIndicator.getState()==Blinking.FLASHING){
+        if (leftIndicator.getBlinkingState()==Blinking.FLASHING){
             leftIndicator.setNumberofFlashCycles(numberofFlashCycles);
         }
-        if (rightIndicator.getState()==Blinking.FLASHING){
+        if (rightIndicator.getBlinkingState()==Blinking.FLASHING){
             rightIndicator.setNumberofFlashCycles(numberofFlashCycles);
         }
     }
-    public void engageDayTimeRunningLight(boolean dayTimeRunningLight){
-        this.dayTimeRunningLight=dayTimeRunningLight;
-        if (dayTimeRunningLight==true && (ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION || ignitionState==IgnitionStatus.KEYINSERTED)){
-            setLightBeam(LowBeam.ACTIVE);
-
+    public void setIndicatorToBlink(String direction){
+        if (direction.equals("right")){
+            rightIndicator.setBlinkingState(Blinking.FLASHING);
+        }
+        if (direction.equals("left")){
+            leftIndicator.setBlinkingState(Blinking.FLASHING);
+        }
+    }
+    public void checkDayTimeRunningLightActive(){
+        if (dayTimeRunningLightEngaged && (ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION || ignitionState==IgnitionStatus.KEYINSERTED) && lightRotarySwitchState!=LightRotarySwitchState.AUTO){
+            setHeadLightBeam(Headlight.LOWBEAM);
         }else{
-            setLightBeam(LowBeam.INACTIVE);
+            setHeadLightBeam(Headlight.INACTIVE);
 
         }
     }
-    public void engageAmbientLight(boolean ambientLight){
-        if (darknessSwitch==false) {
-            this.ambientLight = ambientLight;
+    /**
+     *
+     * @param dayTimeRunningLightEngaged Whether the daytime running light is engaged
+     */
+    public void pressDayTimeRunningLightButton(boolean dayTimeRunningLightEngaged){
+        this.dayTimeRunningLightEngaged =dayTimeRunningLightEngaged;
+        checkDayTimeRunningLightActive();
+    }
+
+    /**
+     *
+     * @param ambientLightEngaged Whether the ambient light is engaged
+     */
+    public void pressAmbientLightButton(boolean ambientLightEngaged){
+
+        if (!darknessModeSwitchOn) {
+            this.ambientLightingEngaged = ambientLightEngaged;
         }
-        if (ambientLight==true && darknessSwitch==false){
-            setLightBeam(LowBeam.ACTIVE);
-            countAmbientLightTime();
+        if (ambientLightEngaged && !darknessModeSwitchOn && lightRotarySwitchState!=LightRotarySwitchState.AUTO){
+            setHeadLightBeam(Headlight.LOWBEAM);
         }else{
-            setLightBeam(LowBeam.INACTIVE);
+            setHeadLightBeam(Headlight.INACTIVE);
+
         }
     }
+
+    /**
+     *  This method checks the position of the doors in the car which can determine whether to set the low beam headlights
+     *   depending on if all doors are shut.
+     * @param allDoorsClosed Whether all doors of the car are shut
+     */
     public void isAllDoorsClosed(boolean allDoorsClosed){
-        this.allDoorsClosed=allDoorsClosed;
-        if (ambientLight==true && getHeadLightAmbientLightDuration()<30000 && exteriorBrightness>200) {
-            countAmbientLightTime();
+        this.allDoorsClosed =allDoorsClosed;
+        if (ambientLightingEngaged && timeMachine.getNumSeconds()<30 && exteriorBrightnessLuminosity >200) {
+            //countAmbientLightTime(35);
+            //t1.start();
+
         }
-        if (allDoorsClosed==true && exteriorBrightness<200 && ambientLight==true){
-            setLightBeam(LowBeam.INACTIVE);
+        if (allDoorsClosed && exteriorBrightnessLuminosity <200 && ambientLightingEngaged){
+            setHeadLightBeam(Headlight.INACTIVE);
         }
-        if (allDoorsClosed==false && ambientLight==true){
-            if (exteriorBrightness<200) {
-               setLightBeam(LowBeam.ACTIVE);
+        if (!allDoorsClosed && ambientLightingEngaged){
+            if (exteriorBrightnessLuminosity <200) {
+               setHeadLightBeam(Headlight.LOWBEAM);
             }
             }
         }
 
+    /**
+     * This method sets the numerous possible pitman arm positions and the state of the indicator(s) based
+     * on this. Some positions may have an affect on the cornering light.
+     * @param position The position of the pitman arm
+     */
     public void setPitmanArmPosition(PitmanArmPosition position) {
         pitmanArmState=position;
-
+        leftIndicator.isTipBlinkingOn(false);
+        rightIndicator.isTipBlinkingOn(false);
+        leftIndicator.isCorneringLightOn(false);
+        rightIndicator.isCorneringLightOn(false);
+        isVehicleParking();
         if (ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION){
             if (position==PitmanArmPosition.UPWARD7 || position==PitmanArmPosition.UPWARD5){
-
                 setNumberofFlashCycles(0);
-
-                rightIndicator.setState(Blinking.FLASHING);
-                leftIndicator.setState(Blinking.NONFLASHING);
+                rightIndicator.setBlinkingState(Blinking.FLASHING);
+                leftIndicator.setBlinkingState(Blinking.NONFLASHING);
             }
             if (position==PitmanArmPosition.DOWNWARD7 || position==PitmanArmPosition.DOWNWARD5){
 
                 setNumberofFlashCycles(0);
-                leftIndicator.setState(Blinking.FLASHING);
-                rightIndicator.setState(Blinking.NONFLASHING);
+                leftIndicator.setBlinkingState(Blinking.FLASHING);
+                rightIndicator.setBlinkingState(Blinking.NONFLASHING);
 
             }
             if (position==PitmanArmPosition.DOWNWARD7 || position==PitmanArmPosition.UPWARD7){
                 checkCorneringLight();
-                leftIndicator.setCycle(false);
-                rightIndicator.setCycle(false);
+                leftIndicator.isTipBlinkingOn(false);
+                rightIndicator.isTipBlinkingOn(false);
+            }
+            if (position==PitmanArmPosition.FORWARD){
+                setHeadLightBeam(Headlight.HIGHBEAM);
+                checkIncomingVehicleDetectedByCamera();
+            }
+            if (position==PitmanArmPosition.BACKWARD){
+
+                if (lightRotarySwitchState==LightRotarySwitchState.ON){
+                    setHeadLightBeam(Headlight.HIGHBEAM);
+                    setHeadLightIlluminationArea(220);
+                    setHeadLightLuminousStrength(100);
+                }
+                if (lightRotarySwitchState==LightRotarySwitchState.AUTO){
+                    setHeadLightBeam(Headlight.HIGHBEAM);
+                }
+
             }
 
             if (position ==PitmanArmPosition.NEUTRAL){
+
+                leftIndicator.setBlinkingState(Blinking.NONFLASHING);
+                rightIndicator.setBlinkingState(Blinking.NONFLASHING);
                 checkCorneringLight();
-                leftIndicator.setState(Blinking.NONFLASHING);
-                rightIndicator.setState(Blinking.NONFLASHING);
-                leftIndicator.setCycle(false);
-                rightIndicator.setCycle(false);
+                leftIndicator.isTipBlinkingOn(false);
+                rightIndicator.isTipBlinkingOn(false);
                 darkenIndicators();
             }
         }
         checkReverseGearEngaged();
-        setParkingLightState();
+
     }
+
+    /**
+     *
+     * @param drivingSpeed The speed of the car
+     */
     public void setDrivingSpeed(int drivingSpeed){
         this.drivingSpeed=drivingSpeed;
-        if (getHeadLightBeamState()== LowBeam.ACTIVE){
+        leftIndicator.isCorneringLightOn(false);
+        rightIndicator.isCorneringLightOn(false);
+        if (getIndicatorBeamState()== Headlight.LOWBEAM){
             checkCorneringLight();
         }
     }
+    /**
+    This method sets the state of the cornering light which may depend on other factors such as
+    degrees turned by steering wheel and driving speed of the car.
+     */
     public void checkCorneringLight(){
-        leftIndicator.isCorneringLightOn(false);
-        rightIndicator.isCorneringLightOn(false);
-        if (leftIndicator.getState()==Blinking.FLASHING && drivingSpeed<10){
+        if (leftIndicator.getBlinkingState()==Blinking.FLASHING && drivingSpeed<10 && leftIndicator.getBeamState()==Headlight.LOWBEAM){
             leftIndicator.isCorneringLightOn(true);
         }
-        if (rightIndicator.getState()==Blinking.FLASHING && drivingSpeed<10){
+        if (rightIndicator.getBlinkingState()==Blinking.FLASHING && drivingSpeed<10 && rightIndicator.getBeamState()==Headlight.LOWBEAM){
             rightIndicator.isCorneringLightOn(true);
         }
-        if (numberOfDegreesSteeringWheelTurned>=10 && leftIndicator.getState()==Blinking.NONFLASHING && rightIndicator.getState()==Blinking.NONFLASHING
+        if (numberOfDegreesSteeringWheelTurned>=10 && leftIndicator.getBlinkingState()==Blinking.NONFLASHING && rightIndicator.getBlinkingState()==Blinking.NONFLASHING
         && drivingSpeed>0 && drivingSpeed <10){
             rightIndicator.isCorneringLightOn(true);
+            leftIndicator.isCorneringLightOn(false);
         }
-        if (numberOfDegreesSteeringWheelTurned>=10 && leftIndicator.getState()==Blinking.NONFLASHING && rightIndicator.getState()==Blinking.NONFLASHING
-                && drivingSpeed<0 && drivingSpeed >-10){
+        if (numberOfDegreesSteeringWheelTurned<=-10 && leftIndicator.getBlinkingState()==Blinking.NONFLASHING && rightIndicator.getBlinkingState()==Blinking.NONFLASHING
+                && drivingSpeed>0 && drivingSpeed<10){
+
             leftIndicator.isCorneringLightOn(true);
-        }
-    }
-    public void setExteriorBrightness(int exteriorBrightness){
-        this.exteriorBrightness=exteriorBrightness;
-        if (lightRotarySwitchState==LightRotarySwitchState.AUTO && exteriorBrightness<200){
-            setLightBeam(LowBeam.ACTIVE);
-            countLowBeamTime();
-        }
-        if (lightRotarySwitchState==LightRotarySwitchState.AUTO && exteriorBrightness>250){
-            setLightBeam(LowBeam.INACTIVE);
-        }
-    }
-    public void setHeadLightBeamState(LowBeam beamState){
-        leftIndicator.setLowBeamState(beamState);
-        rightIndicator.setLowBeamState(beamState);
-    }
-    public void setLightBeam(LowBeam beamState){
-        if (beamState== LowBeam.ACTIVE){
-            setHeadLightBeamState(LowBeam.ACTIVE);
-            if (inUSAOrCanada){
-                leftIndicator.setState(Blinking.FLASHING);
-                rightIndicator.setState(Blinking.FLASHING);
-            }else{
-//                tailLight.setLowBeamState(LowBeam.ACTIVE);
-            }
-        }else if (beamState== LowBeam.INACTIVE){
-            setHeadLightBeamState(LowBeam.INACTIVE);
-            if (inUSAOrCanada){
-                leftIndicator.setState(Blinking.NONFLASHING);
-                rightIndicator.setState(Blinking.NONFLASHING);
-            }else{
-               // tailLight.setLowBeamState(LowBeam.INACTIVE);
-            }
+            rightIndicator.isCorneringLightOn(false);
         }
     }
 
+    /**
+     *
+     * @param exteriorBrightnessLuminosity The brightness of the outside of the car
+     */
+    public void setExteriorBrightnessLuminosity(int exteriorBrightnessLuminosity){
+        this.exteriorBrightnessLuminosity = exteriorBrightnessLuminosity;
+        if (lightRotarySwitchState==LightRotarySwitchState.AUTO && exteriorBrightnessLuminosity <200){
+            setHeadLightBeam(Headlight.LOWBEAM);
+            countTimeToSetLowBeam();
+        }
+        if (lightRotarySwitchState==LightRotarySwitchState.AUTO && exteriorBrightnessLuminosity >250){
+            setHeadLightBeam(Headlight.INACTIVE);
+        }
+    }
+
+    /**
+     * This method ensures that both the left and right indicators are set to the same
+     * state when the headlight is active/inactive.
+     * @param beamState The state of the headlight
+     */
+    public void setIndicatorBeamState(Headlight beamState){
+        leftIndicator.setBeamState(beamState);
+        rightIndicator.setBeamState(beamState);
+        if (beamState==Headlight.INACTIVE){
+            leftIndicator.isTailLightOn(false);
+            rightIndicator.isTailLightOn(false);
+        }else{
+            leftIndicator.isTailLightOn(true);
+            rightIndicator.isTailLightOn(true);
+        }
+    }
+    /**
+     * This method ensures that both the left and right indicators are set to the same
+     * state regarding blinking
+     * @param blinkingState The state of whether indicator is blinking
+     */
+    public void setIndicatorBlinkingState(Blinking blinkingState){
+        leftIndicator.setBlinkingState(blinkingState);
+        rightIndicator.setBlinkingState(blinkingState);
+    }
+
+    /**
+     *
+     * @param beamState The state of the Headlight
+     */
+    public void setHeadLightBeam(Headlight beamState){
+        if (beamState== Headlight.LOWBEAM){
+            setIndicatorBeamState(Headlight.LOWBEAM);
+            if (inUSAOrCanada){
+                setIndicatorBlinkingState(Blinking.FLASHING);
+            }
+
+        }else if (beamState== Headlight.INACTIVE){
+            setIndicatorBeamState(Headlight.INACTIVE);
+            if (inUSAOrCanada){
+                setIndicatorBlinkingState(Blinking.NONFLASHING);
+            }
+        }else if (beamState==Headlight.HIGHBEAM){
+            setIndicatorBeamState(Headlight.HIGHBEAM);
+        }
+    }
+
+    /**
+     *
+     * @param lowBeamHeadlightDuration The time that the headlight is in a low beam state
+     */
     public void setLowBeamHeadlightDuration(int lowBeamHeadlightDuration){
         this.lowBeamHeadlightDuration=lowBeamHeadlightDuration;
     }
+
+    /**
+     *  This method determines the position of the light rotary switch which will have
+     *  an affect on the headlight state and brightness.
+     * @param lightRotarySwitchState The position of the light rotary switch
+     */
     public void turnLightRotarySwitch(LightRotarySwitchState lightRotarySwitchState) {
-        headLight.setLightDimmingPercentage(0);
-        headLight.setLightDimmingPercentage(0);
+        setHeadLightLightDimmingPercentage(0);
 
-        if (ignitionState == IgnitionStatus.KEYINIGNITIONONPOSITION) {
+        if (ignitionState == IgnitionStatus.KEYINIGNITIONONPOSITION || ignitionState==IgnitionStatus.KEYINSERTED) {
             this.lightRotarySwitchState = lightRotarySwitchState;
-            headLight.setLightDimmingPercentage(0);
-            headLight.setLightDimmingPercentage(0);
-
+            setHeadLightLightDimmingPercentage(0);
             if (lightRotarySwitchState == LightRotarySwitchState.ON) {
+                leftIndicator.setBlinkingState(Blinking.NONFLASHING);
+                rightIndicator.setBlinkingState(Blinking.NONFLASHING);
                 checkCorneringLight();
-                setLightBeam(LowBeam.ACTIVE);
+                setHeadLightBeam(Headlight.LOWBEAM);
             }
             if (lightRotarySwitchState == LightRotarySwitchState.OFF) {
-                headLight.setLightDimmingPercentage(0);
-                headLight.setLightDimmingPercentage(0);
-                setLightBeam(LowBeam.INACTIVE);
+                setHeadLightLightDimmingPercentage(0);
+                setHeadLightBeam(Headlight.INACTIVE);
             }
-
-
+            if (lightRotarySwitchState==LightRotarySwitchState.AUTO && (ignitionState==IgnitionStatus.KEYINSERTED || ignitionState==IgnitionStatus.NOKEYINSERTED)) {
+                setHeadLightLightDimmingPercentage(0);
+                setHeadLightBeam(Headlight.INACTIVE);
+            }
         }
         if (ignitionState == IgnitionStatus.NOKEYINSERTED) {
             if (this.lightRotarySwitchState == LightRotarySwitchState.OFF) {
                 this.lightRotarySwitchState = lightRotarySwitchState;
                 if (lightRotarySwitchState == LightRotarySwitchState.ON) {
-                    setParkingLightState();
-                   headLight.setLightDimmingPercentage(50);
-                    headLight.setLightDimmingPercentage(50);
-                    setLightBeam(LowBeam.ACTIVE);
+                    isVehicleParking();
+                    setHeadLightLightDimmingPercentage(50);
+                    setHeadLightBeam(Headlight.LOWBEAM);
                 }
             }
             this.lightRotarySwitchState=lightRotarySwitchState;
             if (lightRotarySwitchState==LightRotarySwitchState.AUTO){
-                setLightBeam(LowBeam.INACTIVE);
+                setHeadLightBeam(Headlight.INACTIVE);
             }
             if (lightRotarySwitchState==LightRotarySwitchState.OFF){
-                setLightBeam(LowBeam.INACTIVE);
+                setHeadLightBeam(Headlight.INACTIVE);
             }
         }
-
         this.lightRotarySwitchState=lightRotarySwitchState;
     }
-    public void setDurationOfPassingCorner(int durationOfPassingCorner){
-        this.durationOfPassingCorner=durationOfPassingCorner;
-        if (durationOfPassingCorner==5){
+
+    /**
+     *
+     * @param durationBeforePassingCorner The time taken for a car to pass a corner
+     */
+    public void setDurationBeforePassingCorner(int durationBeforePassingCorner){
+        this.durationBeforePassingCorner = durationBeforePassingCorner;
+        if (durationBeforePassingCorner ==5){
             leftIndicator.isCorneringLightOn(false);
             rightIndicator.isCorneringLightOn(false);
         }
     }
 
-    public void tipPitmanArm(PitmanArmPosition position,double time) {
+    /**
+     *  This method decides how the indicator will behave when the pitman arm is tipped into a tip-blinking
+     *  position for a certain amount of time.
+     * @param timeInTipBlinkingPosition The time that the pitman arm is held in a tip-blinking position
+     */
+    public void tipPitmanArm(int timeInTipBlinkingPosition){
         setNumberofFlashCycles(0);
-        if (position == PitmanArmPosition.UPWARD5) {
-            setPitmanArmPosition(PitmanArmPosition.UPWARD5);
-            if (time < 500) {
-                rightIndicator.setCycle(true);
+
+        if (pitmanArmState == PitmanArmPosition.UPWARD5) {
+            if (timeInTipBlinkingPosition<5 && ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION) {
+                rightIndicator.isTipBlinkingOn(true);
             }else{
-                rightIndicator.setCycle(false);
+                rightIndicator.isTipBlinkingOn(false);
             }
         }
-        if (position == PitmanArmPosition.DOWNWARD5) {
-            setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
-            if (time < 500) {
-                leftIndicator.setCycle(true);
+        if (pitmanArmState == PitmanArmPosition.DOWNWARD5) {
+            if (timeInTipBlinkingPosition<5 &&ignitionState==IgnitionStatus.KEYINIGNITIONONPOSITION) {
+                leftIndicator.isTipBlinkingOn(true);
+
             }else{
-                leftIndicator.setCycle(false);
+                leftIndicator.isTipBlinkingOn(false);
             }
         }
     }
-    public void setParkingLightState(){
+    /**
+        This method determines whether the car is parking and therefore will have an affect on the determine the state
+        of the indicator(s) and brightness
+     */
+    public void isVehicleParking(){
         if (ignitionState==IgnitionStatus.NOKEYINSERTED && lightRotarySwitchState==LightRotarySwitchState.ON){
             if (pitmanArmState==PitmanArmPosition.DOWNWARD5 || pitmanArmState==PitmanArmPosition.DOWNWARD7){
                 parkingLightEngaged=true;
                 leftIndicator.setLightDimmingPercentage(10);
                 leftIndicator.isTailLightOn(true);
-                leftIndicator.setLowBeamState(LowBeam.ACTIVE);
-                rightIndicator.setLightDimmingPercentage(10);
-            }else if (pitmanArmState==PitmanArmPosition.UPWARD5 || pitmanArmState==PitmanArmPosition.UPWARD7){
+                leftIndicator.setBeamState(Headlight.LOWBEAM);
+                rightIndicator.setBeamState(Headlight.INACTIVE);
                 rightIndicator.setLightDimmingPercentage(10);
 
-                rightIndicator.setLowBeamState(LowBeam.ACTIVE);
+            }else if (pitmanArmState==PitmanArmPosition.UPWARD5 || pitmanArmState==PitmanArmPosition.UPWARD7){
+                parkingLightEngaged=true;
+                rightIndicator.setLightDimmingPercentage(10);
+                leftIndicator.setLightDimmingPercentage(10);
+                rightIndicator.setBeamState(Headlight.LOWBEAM);
+                leftIndicator.setBeamState(Headlight.INACTIVE);
                 rightIndicator.isTailLightOn(true);
 
             }else{
@@ -408,19 +545,31 @@ public class Car {
             }
         }
     }
+
+    /**
+     *
+     * @param reverseGearEngaged Whether the reverse gear of the car is engaged
+     */
     public void isReverseGearEngaged(boolean reverseGearEngaged){
         this.reverseGearEngaged=reverseGearEngaged;
         checkReverseGearEngaged();
 
     }
+    /**
+    This method sets the states of the cornering lights after checking the state of the reverse gear.
+     */
     public void checkReverseGearEngaged(){
-        if (reverseGearEngaged==true){
-            if (leftIndicator.getState()==Blinking.FLASHING){
+        if (reverseGearEngaged){
+            if (leftIndicator.getBlinkingState()==Blinking.FLASHING){
                 rightIndicator.isCorneringLightOn(true);
-            }else if (rightIndicator.getState()==Blinking.FLASHING){
+                leftIndicator.isCorneringLightOn(false);
+            }else if (rightIndicator.getBlinkingState()==Blinking.FLASHING){
                 leftIndicator.isCorneringLightOn(true);
+                rightIndicator.isCorneringLightOn(false);
             }
         }else{
+            leftIndicator.isCorneringLightOn(false);
+            rightIndicator.isCorneringLightOn(false);
             checkCorneringLight();
 
             this.reverseGearEngaged=false;
@@ -428,139 +577,273 @@ public class Car {
 
     }
 
-    public void darkenIndicators(){
-        if (leftIndicator.getState()==Blinking.FLASHING) {
-            rightIndicator.setFlashState(Flashing.DARK);
-        }
-        if (rightIndicator.getState()==Blinking.FLASHING) {
-            leftIndicator.setFlashState(Flashing.DARK);
+    /**
+     *
+     * @param incomingVehicleDetectedByCamera Whether the car has been detected by a camera
+     */
+    public void isIncomingVehicleDetectedByCamera(boolean incomingVehicleDetectedByCamera){
+        this.incomingVehicleDetectedByCamera=incomingVehicleDetectedByCamera;
+        checkIncomingVehicleDetectedByCamera();
+
+    }
+    /**
+        This method sets the headlight state as well as how much area is illuminated and the luminous strength,
+        depending on whether the car has been detected by camera and other factors.
+     */
+    public void checkIncomingVehicleDetectedByCamera() {
+        if (!incomingVehicleDetectedByCamera && drivingSpeed > 30 && getIndicatorBeamState() == Headlight.LOWBEAM) {
+            calculateIlluminationArea();
+            calculateLuminousStrength();
+            countTimeToSetHighBeam();
+        } else if (incomingVehicleDetectedByCamera && getIndicatorBeamState() == Headlight.HIGHBEAM) {
+            countTimeToSetLowBeam();
+        } else if (!incomingVehicleDetectedByCamera && getIndicatorBeamState() == Headlight.LOWBEAM) {
+            countTimeToSetHighBeam();
+
         }
     }
+
+    /**
+    This method darkens the indicator to ensure a cycle is finished when there is a change in the pitman arm position
+    and before there is a change to the state of the indicator.
+     **/
+    public void darkenIndicators(){
+        if (leftIndicator.getBlinkingState()==Blinking.FLASHING) {
+            rightIndicator.setIndicatorBulbState(IndicatorBulb.DARK);
+        }
+        if (rightIndicator.getBlinkingState()==Blinking.FLASHING) {
+            leftIndicator.setIndicatorBulbState(IndicatorBulb.DARK);
+        }
+    }
+    /**
+       @return The ignition state of the car
+     **/
     public IgnitionStatus getIgnitionState(){
         return ignitionState;
     }
 
-    public Light getTailLight(){
-        return tailLight;
+    /**
+     *
+     * @return How long the headlight should be illuminated for
+     */
+    public int getTimeForHeadlightToIlluminate(){
+        return timeForHeadLightToIlluminate;
     }
 
+    /**
+     *
+     * @return The position of the light rotary switch
+     */
     public LightRotarySwitchState getLightRotarySwitchState(){
         return lightRotarySwitchState;
     }
-    public Flashing getFlashState(){
-        if (rightIndicator.getState()==Blinking.FLASHING){
-            return rightIndicator.getFlashState();
+
+    /**
+     *
+     * @return The state of the indicator at a point in time as to whether the bulb is bright or dark
+     */
+    public IndicatorBulb getFlashState(){
+        if (rightIndicator.getBlinkingState()==Blinking.FLASHING){
+            return rightIndicator.getIndicatorBulbState();
         }
-        if (leftIndicator.getState()==Blinking.FLASHING){
-            return leftIndicator.getFlashState();
+        if (leftIndicator.getBlinkingState()==Blinking.FLASHING){
+            return leftIndicator.getIndicatorBulbState();
         }
         return null;
 
     }
-    public LowBeam getHeadLightBeamState(){
-        if (leftIndicator.getLowBeamState()==LowBeam.ACTIVE && rightIndicator.getLowBeamState()==LowBeam.ACTIVE){
-            return LowBeam.ACTIVE;
-        }else{
-            return LowBeam.INACTIVE;
+
+    /**
+     *
+     * @return The state of the headlight as Lowbeam, Highbeam or Inactive.
+     */
+    public Headlight getIndicatorBeamState(){
+        if (leftIndicator.getBeamState()==rightIndicator.getBeamState()){
+            return leftIndicator.getBeamState();
         }
+        return null;
     }
-    public int getExteriorBrightness(){
-        return exteriorBrightness;
+
+    /**
+     *
+     * @return The brightness of the outside of the car
+     */
+    public int getExteriorBrightnessLuminosity(){
+        return exteriorBrightnessLuminosity;
     }
+
+    /**
+     *
+     * @return The duration that the low beam headlight is active
+     */
     public int getLowBeamHeadlightDuration(){
         return lowBeamHeadlightDuration;
     }
+
+    /**
+     * This method changes the state of the flashing of the indicator from bright to dark and vice versa
+     */
     public void changeFlashState() {
-        if (rightIndicator.getState() == Blinking.FLASHING) {
-            if (rightIndicator.getFlashState() == Flashing.BRIGHT) {
-                rightIndicator.setFlashState(Flashing.DARK);
+        if (rightIndicator.getBlinkingState() == Blinking.FLASHING) {
+            if (rightIndicator.getIndicatorBulbState() == IndicatorBulb.BRIGHT) {
+                rightIndicator.setIndicatorBulbState(IndicatorBulb.DARK);
             } else {
-                rightIndicator.setFlashState(Flashing.BRIGHT);
+                rightIndicator.setIndicatorBulbState(IndicatorBulb.BRIGHT);
             }
         }
-        if (leftIndicator.getState() == Blinking.FLASHING) {
-            if (leftIndicator.getFlashState() == Flashing.BRIGHT) {
-                leftIndicator.setFlashState(Flashing.DARK);
+        if (leftIndicator.getBlinkingState() == Blinking.FLASHING) {
+            if (leftIndicator.getIndicatorBulbState() == IndicatorBulb.BRIGHT) {
+                leftIndicator.setIndicatorBulbState(IndicatorBulb.DARK);
             } else {
-                leftIndicator.setFlashState(Flashing.BRIGHT);
+                leftIndicator.setIndicatorBulbState(IndicatorBulb.BRIGHT);
             }
         }
     }
-    public boolean getHazardSwitchState(){
-        return hazardSwitchState;
+
+    /**
+     *
+     * @return Whether the car has been detected by a camera
+     */
+    public boolean getIncomingVehicleDetectedByCamera(){
+        return incomingVehicleDetectedByCamera;
     }
-    public int getLengthOfHazardCycle(){
-        return leftIndicator.getHazardCycleLength();
+
+    /**
+     *
+     * @return Whether the hazard switch has been pressed
+     */
+    public boolean getHazardWarningSwitchOn(){
+        return hazardWarningSwitchOn;
     }
+
+    /**
+     *
+     * @param direction The direction that the driver is signalling
+     * @return The percentage of the brightness dimming of the indicator that corresponds to the direction indicated
+     */
     public int getDimmedLightStatus(String direction){
-        if (direction.equals("Right")){
-            return headLight.getLightDimmingPercentage();
+        if (direction.equals("right")){
+            return rightIndicator.getLightDimmingPercentage();
         }
-        if (direction.equals("Left")){
-            return headLight.getLightDimmingPercentage();
+        if (direction.equals("left")){
+            return leftIndicator.getLightDimmingPercentage();
         }
         return 0;
     }
 
-    public int getLengthOfTimeHeld(){
-        return lengthOfTimeHeld;
-    }
-    public Light getHeadLight(){
-        return headLight;
-    }
 
+    /**
+     *
+     * @return The length of time the pitman arm is held in a tip-blinking position
+     */
 
+    /**
+     *
+     * @param direction The direction that the driver is signalling
+     * @return The blinking state of the indicator that corresponds to the direction the driver is signalling
+     */
     public Blinking getBlinkingState(String direction){
-        if (direction.equals("Right")){
-            return rightIndicator.getState();
+        if (direction.equals("right")){
+            return rightIndicator.getBlinkingState();
         }
-        if (direction.equals("Left")){
-            return leftIndicator.getState();
+        if (direction.equals("left")){
+            return leftIndicator.getBlinkingState();
         }
         return null;
     }
+
+    /**
+     *
+     * @return The position of the pitman arm
+     */
     public PitmanArmPosition getPitmanArmState(){
         return pitmanArmState;
     }
-    public boolean getFlashingCycles(String direction){
-        if (direction.equals("Right")){
-            return rightIndicator.getCycle();
+
+    /**
+     *
+     * @param direction The direction the driver is signalling
+     * @return Whether the three flashing cycles of tip-blinking is occurring for the indicator corresponding to the
+     * direction the driver is signalling
+     */
+    public boolean checkFlashingCyclesAreOccurring(String direction){
+        if (direction.equals("right")){
+            return rightIndicator.getTipBlinkingOccurring();
         }
-        if (direction.equals("Left")){
-            return leftIndicator.getCycle();
+        if (direction.equals("left")){
+            return leftIndicator.getTipBlinkingOccurring();
         }
         return false;
     }
+
+    /**
+     *
+     * @return The left indicator
+     */
     public Indicator getLeftIndicator() {
 
         return leftIndicator;
     }
+    /**
+     *
+     * @return Whether the parking light of the car is engaged
+     */
+    public boolean getParkingLightEngaged(){
+        return parkingLightEngaged;
+    }
+    /**
+     *
+     * @return The right indicator
+     */
     public Indicator getRightIndicator() {
         return rightIndicator;
     }
+
+    /**
+     * Uses a timer to count the time that the pitman arm is held in a tip-blinking position
+     */
     public void countTimeInPosition() {
-        lengthOfTimeHeld=0;
+        timeInTipBlinkingPosition=0;
         timer=new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                lengthOfTimeHeld++;
+                timeInTipBlinkingPosition++;
             }
         }, 1,1);
 
     }
+    public void checkToResetAmbientLightDuration(boolean doorsClosed,IgnitionStatus ignitionState){
+        if (doorsClosed==this.allDoorsClosed && ignitionState==this.getIgnitionState()){
+            setHeadLightBeam(Headlight.INACTIVE);
+        }
+
+    }
+    public TimeMachine getTimeMachine(){
+        return timeMachine;
+    }
+    public int getTimeInTipBlinkingPosition(){
+        return timeInTipBlinkingPosition;
+    }
+
+    /**
+     * Uses a timer to count the time it takes for a car to pass a corner when driving
+     */
+
     public void countDurationOfPassingCornerTime(){
-        durationOfPassingCorner=0;
+        durationBeforePassingCorner =0;
         timer=new Timer();
+        leftIndicator.setBlinkingState(Blinking.NONFLASHING);
+        rightIndicator.setBlinkingState(Blinking.NONFLASHING);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                durationOfPassingCorner++;
-                if (durationOfPassingCorner==5000){
+                durationBeforePassingCorner++;
+                if (durationBeforePassingCorner ==5000){
                     leftIndicator.isCorneringLightOn(false);
                     rightIndicator.isCorneringLightOn(false);
-                    leftIndicator.setState(Blinking.NONFLASHING);
-                    rightIndicator.setState(Blinking.NONFLASHING);
+                    leftIndicator.setBlinkingState(Blinking.NONFLASHING);
+                    rightIndicator.setBlinkingState(Blinking.NONFLASHING);
                     stopTimer();
                 }
             }
@@ -568,91 +851,270 @@ public class Car {
 
     }
 
-    public void countAmbientLightTime(){
-//        SystemClock currentTime=new SystemClock();
-//
-//        Clock newClock=currentTime.setTime(10);
-//        System.out.println(LocalTime.now(currentTime.getConstantClock()));
-        leftIndicator.setAmberLightDuration(0);
-        rightIndicator.setAmberLightDuration(0);
-        checkAmberLightDuration();
+    /**
+     * Uses a timer to count how long it takes for a car to set the headlight to highbeam
+     */
+    public void countTimeToSetHighBeam() {
+
+        timer = new Timer();
+
+        if (!incomingVehicleDetectedByCamera) {
+            timer.schedule(new TimerTask() {
+                int x=0;
+                @Override
+                public void run() {
+                    x++;
+                    ++Car.timeForHeadLightToIlluminate;
+                    if (Car.timeForHeadLightToIlluminate>2){
+                        setHeadLightBeam(Headlight.HIGHBEAM);
+                        Car.timeForHeadLightToIlluminate=x;
+                        stopTimer();
+
+                    }
+                }
+
+            }, 1, 1);
+
+        } else {
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    setHeadLightBeam(Headlight.HIGHBEAM);
+                    timeForHeadLightToIlluminate++;
+                    stopTimer();
+                }
+            }, 1, 1);
+
+        }
+    }
+
+    /**
+     *
+     * @param timeForHeadLightToIlluminate Integer value for number of seconds it takes for headlight to illuminate
+     */
+    public void setTimeForHeadLightToIlluminate(int timeForHeadLightToIlluminate){
+        this.timeForHeadLightToIlluminate=timeForHeadLightToIlluminate;
+    }
+
+    /**
+     * Uses a timer to count how long it takes for a car to set the headlight to lowbeam
+     */
+    public void countTimeToSetLowBeam(){
+
         timer=new Timer();
-        setLightBeam(LowBeam.ACTIVE);
+        timeForHeadLightToIlluminate=0;
         timer.schedule(new TimerTask() {
-            int x=leftIndicator.getAmbientLightDuration();
+            @Override
+            public void run() {
+                setHeadLightBeam(Headlight.LOWBEAM);
+                setHeadLightIlluminationArea(65);
+                calculateLuminousStrength();
+                timeForHeadLightToIlluminate++;
+                stopTimer();
+            }
+        }, 1,1);
+
+    }
+    public void checkToSetHighBeam(){
+        if(!incomingVehicleDetectedByCamera && getIndicatorBeamState() == Headlight.LOWBEAM){
+            setHeadLightBeam(Headlight.HIGHBEAM);
+        }
+    }
+
+    /**
+     * Uses a timer to count how long the car has ambient light on
+     */
+    public void countAmbientLightTime() {
+        leftIndicator.setAmbientLightDuration(0);
+        rightIndicator.setAmbientLightDuration(0);
+        checkAmbientLightDuration();
+        timer = new Timer();
+        setHeadLightBeam(Headlight.LOWBEAM);
+        timer.schedule(new TimerTask() {
+            int x = leftIndicator.getAmbientLightDuration();
+
             @Override
             public void run() {
                 x++;
-                leftIndicator.setAmberLightDuration(x);
-                rightIndicator.setAmberLightDuration(x);
-                checkAmberLightDuration();
-                if (getHeadLightAmbientLightDuration()==30000){
-                    setLightBeam(LowBeam.INACTIVE);
+                leftIndicator.setAmbientLightDuration(x);
+                rightIndicator.setAmbientLightDuration(x);
+                checkAmbientLightDuration();
+                if (getHeadLightAmbientLightDuration() == 30000) {
+                    setHeadLightBeam(Headlight.INACTIVE);
                     stopTimer();
                 }
             }
-        }, 1,1);
-
+        }, 1, 1);
 
     }
-    public void checkAmberLightDuration(){
-        if (getHeadLightAmbientLightDuration()>30000){
-            setLightBeam(LowBeam.INACTIVE);
+
+
+
+    /**
+     * Determines whether to set headlight to inactive based on time that ambient light is on
+     */
+    public void checkAmbientLightDuration(){
+        if (getHeadLightAmbientLightDuration()>30){
+            setHeadLightBeam(Headlight.INACTIVE);
         }
     }
+
+
+
+
+        /**
+         *
+         * @return Number of seconds that ambient light is on
+         */
     public int getHeadLightAmbientLightDuration(){
         return leftIndicator.getAmbientLightDuration();
     }
-    public void countLowBeamTime(){
 
-        lowBeamHeadlightDuration=0;
-        timer=new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                lowBeamHeadlightDuration++;
-                if (lowBeamHeadlightDuration>3000 && exteriorBrightness>250){
-                    setLightBeam(LowBeam.INACTIVE);
-                    stopTimer();
-                }
-            }
-        }, 1,1);
-
-
+    /**
+     * Sets the area that is illuminated outside the car by the headlights based on driving speed
+     */
+    public void calculateIlluminationArea(){
+        if (drivingSpeed>=165){
+            setHeadLightIlluminationArea(300);
+        }else{
+            setHeadLightIlluminationArea((int)drivingSpeed+100);
+        }
     }
+
+    /**
+     * Calculates the intensity of the luminosity of the headlights based on driving speed
+     */
+    public void calculateLuminousStrength(){
+        if (drivingSpeed>=120){
+            setHeadLightLuminousStrength(100);
+        }else{
+            setHeadLightLuminousStrength((int)drivingSpeed-10);
+        }
+    }
+
+    /**
+     * Stops any timer that is taking place
+     */
     public void stopTimer(){
 
         timer.cancel();
     }
+
+    /**
+     *
+     * @return The number of cycles that have occurred when tip-blinking is taking place
+     */
     public int getNumberofFlashCycles(){
-        if (leftIndicator.getState()==Blinking.FLASHING){
+        if (leftIndicator.getBlinkingState()==Blinking.FLASHING){
             return leftIndicator.getNumberofFlashCycles();
         }
-        if (rightIndicator.getState()==Blinking.FLASHING){
+        if (rightIndicator.getBlinkingState()==Blinking.FLASHING){
             return rightIndicator.getNumberofFlashCycles();
         }
         return 0;
     }
-    public boolean getDayTimeRunningLight(){
-        return dayTimeRunningLight;
+
+    /**
+     *
+     * @return Whether daytime running light is active
+     */
+    public boolean getDayTimeRunningLightEngaged(){
+        return dayTimeRunningLightEngaged;
     }
+
+    /**
+     *
+     * @return Whether all doors of the car are shut
+     */
     public boolean getAllDoorsClosed(){
         return allDoorsClosed;
     }
-    public boolean getAmbientLight(){
-        return ambientLight;
+
+    /**
+     *
+     * @return Whether the ambient light is active
+     */
+    public boolean getAmbientLightingEngaged(){
+        return ambientLightingEngaged;
     }
-    public boolean getDarknessSwitch(){
-        return darknessSwitch;
+
+    /**
+     *
+     * @return Whether darkness mode is active
+     */
+    public boolean getDarknessModeSwitchOn(){
+        return darknessModeSwitchOn;
     }
+
+    /**
+     *
+     * @return Whether the reverse gear has been engaged
+     */
     public boolean getReverseGearEngaged(){
         return reverseGearEngaged;
     }
-    public boolean getParkingLightEngaged(){
-        return parkingLightEngaged;
+
+    /**
+     *
+     * @param illuminationArea The area that is to be illuminated by the headlights
+     */
+    public void setHeadLightIlluminationArea(int illuminationArea){
+        leftIndicator.setIlluminationArea(illuminationArea);
+        rightIndicator.setIlluminationArea(illuminationArea);
     }
-    public void printTheTime(){
-        System.out.println(Instant.now(clock));
+    /**
+     *
+     * @param lightDimmingPercentage The percentage of how much to dim the light
+     */
+    public void setHeadLightLightDimmingPercentage(int lightDimmingPercentage){
+        leftIndicator.setLightDimmingPercentage(lightDimmingPercentage);
+        rightIndicator.setLightDimmingPercentage(lightDimmingPercentage);
     }
+
+    /**
+     *
+     * @param luminousStrengthPercentage The luminosity strength of the headlights
+     */
+    public void setHeadLightLuminousStrength(int luminousStrengthPercentage){
+        leftIndicator.setIlluminationStrengthPercentage(luminousStrengthPercentage);
+        rightIndicator.setIlluminationStrengthPercentage(luminousStrengthPercentage);
+    }
+
+    /**
+     *
+     * @return The area that is illuminated outside the car
+     */
+    public int getIlluminationArea(){
+        return leftIndicator.getIlluminationArea();
+    }
+
+    /**
+     *
+     * @return The strength of the luminosity of the headlights
+     */
+    public int getLuminiousStrength(){
+        return leftIndicator.getIlluminationStrengthPercentage();
+    }
+public boolean indicatorsAreBlinking(){
+    return leftIndicator.getBlinkingState() == Blinking.FLASHING && rightIndicator.getBlinkingState() == Blinking.FLASHING;
+}
+public boolean checkCorneringLightIsOn(String direction){
+        if (direction.equals("left")){
+            return leftIndicator.getCorneringLightState();
+        }
+        if (direction.equals("right")){
+            return rightIndicator.getCorneringLightState();
+        }
+       return false;
+}
+public void isCorneringLightOn(String directionOfCorneringLight,boolean corneringLightOn){
+        if (directionOfCorneringLight.equals("left")){
+            leftIndicator.isCorneringLightOn(corneringLightOn);
+        }
+        if (directionOfCorneringLight.equals("right")){
+            rightIndicator.isCorneringLightOn(corneringLightOn);
+        }
+}
 }
 

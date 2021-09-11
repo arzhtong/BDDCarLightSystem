@@ -1,60 +1,49 @@
 package uk.ac.ucl.cs.comp0110;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-
 enum Blinking{
     FLASHING,NONFLASHING
 }
-enum Flashing{
+enum IndicatorBulb {
     BRIGHT,DARK
 }
-enum LowBeam {
-    ACTIVE,INACTIVE
+enum Headlight {
+    LOWBEAM,HIGHBEAM,INACTIVE
 }
 public class Indicator {
     private Blinking blinkingState;
-    private boolean flashing;
-    private int hazardCycleLength;
+    private boolean tipBlinkingOn;
     private int numberofFlashCycles;
-    private Flashing flashState;
-    private boolean isCorneringLightOn;
-    private boolean isTailLightOn;
+    private IndicatorBulb indicatorBulbState;
+    private boolean corneringLightOn;
+    private boolean tailLightOn;
     private int dimmedLightPercentage;
     private int ambientLightDuration;
-    private LowBeam lowBeam;
-    private SystemClock clock;
-
+    private Headlight headlightBeam;
+    private int illuminationArea;
+    private int illuminationStrengthPercentage;
     public Indicator(){
         blinkingState=Blinking.NONFLASHING;
-        clock=new SystemClock();
-        clock.useFixedClockAt(LocalDateTime.now());
+        indicatorBulbState=IndicatorBulb.DARK;
         dimmedLightPercentage=0;
     }
-    public Flashing getFlashState(){
-        return flashState;
+    public IndicatorBulb getIndicatorBulbState(){
+        return indicatorBulbState;
     }
-    public void setFlashState(Flashing flashState){
-        this.flashState=flashState;
+    public void setIndicatorBulbState(IndicatorBulb indicatorBulbState){
+        this.indicatorBulbState = indicatorBulbState;
     }
 
-    public void setState(Blinking blinkingState){
+    public void setBlinkingState(Blinking blinkingState){
         this.blinkingState=blinkingState;
     }
-    public Blinking getState(){
+    public Blinking getBlinkingState(){
         return blinkingState;
     }
-    public void setCycle(boolean flashing){
-        this.flashing=flashing;
+    public void isTipBlinkingOn(boolean tipBlinkingOn){
+        this.tipBlinkingOn =tipBlinkingOn;
     }
-    public boolean getCycle(){
-        return flashing;
-    }
-    public void setHazardCycleLength(int hazardCycleLength){
-        this.hazardCycleLength=hazardCycleLength;
-    }
-    public int getHazardCycleLength(){
-        return hazardCycleLength;
+    public boolean getTipBlinkingOccurring(){
+        return tipBlinkingOn;
     }
     public void setNumberofFlashCycles(int numberofFlashCycles){
         this.numberofFlashCycles=numberofFlashCycles;
@@ -63,16 +52,16 @@ public class Indicator {
         return numberofFlashCycles;
     }
     public void isCorneringLightOn(boolean isCorneringLightOn){
-        this.isCorneringLightOn=isCorneringLightOn;
+        this.corneringLightOn =isCorneringLightOn;
     }
     public boolean getCorneringLightState(){
-        return isCorneringLightOn;
+        return corneringLightOn;
     }
     public void isTailLightOn(boolean isTailLightOn){
-        this.isTailLightOn=isTailLightOn;
+        this.tailLightOn =isTailLightOn;
     }
     public boolean getTailLightState(){
-        return isTailLightOn;
+        return tailLightOn;
     }
     public void setLightDimmingPercentage(int dimmedLightPercentage){
         this.dimmedLightPercentage=dimmedLightPercentage;
@@ -83,20 +72,26 @@ public class Indicator {
     public int getAmbientLightDuration(){
         return ambientLightDuration;
     }
-    public void setAmberLightDuration(int ambientLightDuration){
-
-    }
-    public void setAmbientLightDuration(){
-
+    public void setAmbientLightDuration(int ambientLightDuration){
+        this.ambientLightDuration=ambientLightDuration;
     }
 
-    public void setLowBeamState(LowBeam lowBeam){
-        this.lowBeam = lowBeam;
+    public void setBeamState(Headlight headlightBeam){
+        this.headlightBeam = headlightBeam;
     }
-    public LowBeam getLowBeamState(){
-        return lowBeam;
+    public Headlight getBeamState(){
+        return headlightBeam;
     }
-    public SystemClock getClock(){
-        return clock;
+    public void setIlluminationArea(int illuminationArea){
+        this.illuminationArea=illuminationArea;
+    }
+    public int getIlluminationArea(){
+        return illuminationArea;
+    }
+    public void setIlluminationStrengthPercentage(int illuminationStrengthPercentage){
+        this.illuminationStrengthPercentage=illuminationStrengthPercentage;
+    }
+    public int getIlluminationStrengthPercentage(){
+        return illuminationStrengthPercentage;
     }
 }
