@@ -23,15 +23,11 @@ public class HazardWarningLight_StepDefinitions {
         world.car.getRightIndicator().setBlinkingState(Blinking.FLASHING);
     }
 
-    @Then("the duration of the cycle should be 1 second")
-    public void the_duration_of_the_cycle_should_be_second() {
-        Assert.assertEquals(world.car.getLengthOfHazardCycle(),1);
-    }
 
     @When("the flashing cycle of tip-blinking is occuring with the cycle being bright")
     public void the_flashing_cycle_of_tip_blinking_is_occuring() {
         world.car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
-        world.car.tipPitmanArm(400);
+//        world.car.tipPitmanArm(400);
         world.car.getRightIndicator().setIndicatorBulbState(IndicatorBulb.BRIGHT);
     }
 
@@ -63,7 +59,7 @@ public class HazardWarningLight_StepDefinitions {
     }
     @Then("tip-blinking on right starts when direction blinking cycle finishes")
     public void tip_blinking_on_right_starts_when_direction_blinking_cycle_finishes() {
-        Assert.assertEquals(world.car.getRightIndicator().getTipBlinkingOccurring(),false);
+        Assert.assertFalse(world.car.getRightIndicator().getTipBlinkingOccurring());
     }
 
 

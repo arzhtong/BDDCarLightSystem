@@ -20,18 +20,18 @@ Feature: Direction Blinking Indicator
 
 
      @requirement(ELS-1,ELS-5)
-     Scenario Outline: Driver turns on ignition when the pitman arm is up
+     Scenario Outline: Driver turns on ignition when the pitman arm is in signalling position
        Given ignition is off
        And the driver moved pitman arm <Pitman Direction>
        When the driver turns on ignition
        Then the vehicle flashes all <Indicating Direction> indicators synchronously
 
-     Examples:
-       | Pitman Direction | Indicating Direction |  |
-       | upward           | right                |  |
-       | downward         | left                 |  |
+       Examples:
+         | Pitman Direction | Indicating Direction |  |
+         | upward           | right                |  |
+         | downward         | left                 |  |
 
-    @requirement(ELS-1,ELS-5)
+     @requirement(ELS-1,ELS-5)
      Scenario Outline: Driver changes signalling direction
        Given the driver moved pitman arm <Pitman Direction>
        And the vehicle flashed all <Indicating Direction> indicators synchronously
@@ -45,12 +45,12 @@ Feature: Direction Blinking Indicator
         | downward         | left                 | upward               | right                    |
 
 
-      @requirement(ELS-1,ELS-5)
-   Scenario: Driver inserts key without turning on ignition with pitman arm up
-     Given ignition is off
-     And the driver moved pitman arm upward
-     When the driver inserts the key without turning on ignition
-     Then the right indicator will not blink
+     @requirement(ELS-1,ELS-5)
+     Scenario: Driver inserts key without turning on ignition with pitman arm up
+       Given ignition is off
+       And the driver moved pitman arm upward
+       When the driver inserts the key without turning on ignition
+       Then the right indicator will not blink
 
     Rule: Tip-Blinking flashes for three cycles when pitman arm is held in tip-blinking position for less than 0.5 seconds
 
@@ -64,11 +64,8 @@ Feature: Direction Blinking Indicator
       When the driver moves pitman arm upward in tip-blinking position for less than 0.5 seconds
       Then all right indicators should flash for 3 flashing cycles
 
-
-
-
-      @requirement(ELS-1,ELS-2,ELS-5)
-      Scenario Outline: Driver changes tip-blinking from one side to turning on another side
+    @requirement(ELS-1,ELS-2,ELS-5)
+    Scenario Outline: Driver changes tip-blinking from one side to turning on another side
       Given the driver moved pitman arm <Initial Pitman Direction> in tip-blinking position
       And the pitman arm is held for less than 0.5 seconds
       When the driver moves pitman arm <New Pitman Direction>
@@ -81,15 +78,15 @@ Feature: Direction Blinking Indicator
 
 
 
-      @requirement(ELS-2,ELS-5)
-      Scenario: Driver stops ignition while tip-blinking on right
+    @requirement(ELS-2,ELS-5)
+    Scenario: Driver stops ignition while tip-blinking on right
       Given ignition is on
       And all right indicators are flashing for 3 cycles
       When the driver turns the ignition off
       Then the vehicle will not have flashing cycles
 
-    @requirement(ELS-2,ELS-5)
-      Scenario: Driver turns on ignition while in tip-blinking position
+   @requirement(ELS-2,ELS-5)
+    Scenario: Driver turns on ignition while in tip-blinking position
       Given ignition is off
       And the driver moves pitman arm upward in tip-blinking position for less than 0.5 seconds
       When the driver turns on ignition
@@ -110,8 +107,8 @@ Feature: Direction Blinking Indicator
         | upward                   | downward             | right                      | left                   |
         | downward                 | upward               | left                       | right                  |
 
-      @requirement(ELS-3,ELS-5)
-      Scenario Outline: Driver changes tip-blinking to signalling on opposite side
+    @requirement(ELS-3,ELS-5)
+    Scenario Outline: Driver changes tip-blinking to signalling on opposite side
       Given the driver moved pitman arm <Initial Pitman Direction> in tip-blinking position for less than 0.5 seconds
       When the driver moves pitman arm <New Pitman Direction>
       Then the <Initial Flashing Indicator> indicator tip-blinking will stop
@@ -124,20 +121,25 @@ Feature: Direction Blinking Indicator
         | downward                 | upward               | left                       | right                  |
 
 
-      @requirement(ELS-3,ELS-5)
-      Scenario: Driver engages hazard warning switch while tip-blinking right
-        Given the driver moves pitman arm upward in tip-blinking position for less than 0.5 seconds
-        When the driver engages the hazard warning switch
-        Then the vehicle flashes all left indicators synchronously
-        And the vehicle flashes all right indicators synchronously
+    @requirement(ELS-3,ELS-5)
+    Scenario: Driver engages hazard warning switch while tip-blinking right
+      Given the driver moves pitman arm upward in tip-blinking position for less than 0.5 seconds
+      When the driver engages the hazard warning switch
+      Then the vehicle flashes all left indicators synchronously
+      And the vehicle flashes all right indicators synchronously
 
 
     Rule: If the pitman arm is held for more than 0.5 seconds in a tip-blinking position then direction indicators cycles are released until pitman arm leaves the position
 
     @requirement(ELS-4,ELS-5)
-    Scenario: Driver signals turning right with tip-blinking position
+    Scenario: Driver signals turning with tip-blinking position
       When the driver moves pitman arm upward in tip-blinking position for more than 0.5 seconds
       Then the vehicle flashes all right indicators synchronously
+
+    @requirement(ELS-4,ELS-5)
+    Scenario: Driver signals turning with tip-blinking position
+      When the driver moves pitman arm downward in tip-blinking position for more than 0.5 seconds
+      Then the vehicle flashes all left indicators synchronously
 
     @requirement(ELS-4,ELS-5)
       Scenario: Driver stops signalling right with tip-blinking position
@@ -159,46 +161,15 @@ Feature: Direction Blinking Indicator
       Given the vehicle flashes all <Indicator Direction> indicators synchronously by a car from <Country of Sold Car>
       Then the daytime running light must be dimmed by <Dimmed Light Percentage>
 
-    Examples:
+      Examples:
 
-      | Indicator Direction | Country of Sold Car | Dimmed Light Percentage |  |
-      | right               | USA                 | 50%                     |  |
-      | right               | Canada              | 50%                     |  |
-      | left                | USA                 | 50%                     |  |
-      | left                | Canada              | 50%                     |  |
-      | right               | UK                  | 0%                      |  |
-      | left                | UK                  | 0%                      |  |
-
-
-
-
-
-#    @requirement(ELS-6)
-#    Scenario: Driver signals right with car from UK
-#      Given the driver moves pitman arm upward by a car from the UK
-#      Then the daytime running light will not be dimmed
-
-    Rule: When pitman arm is engaged in the same direction, the current cycle must finish before new command is started
-
-    @requirement(ELS-7)
-    Scenario: Engage the pitman arm in upward signalling position during 3 flashing cycles when already engaged upward.
-      Given the driver moves pitman arm upward in tip-blinking position for less than 0.5 seconds
-      When the driver moves pitman arm upward
-      Then the 3 flashing cycles must finish before the right indicators flash synchronously
-
-    @requirement(ELS-7)
-    Scenario: Engage pitman arm in downward tip-blinking position during 3 flashing cycles when already engaged downward.
-      Given the driver moves pitman arm downward in tip-blinking position for less than 0.5 seconds
-      When the driver moves pitman arm downward again in tip-blinking position for less than 0.5 seconds
-      Then the 3 flashing cycles must finish before the left indicators start the new cycle of tip-blinking
-
-    @requirement(ELS-29)
-    Scenario: Driver engaged indicator
-      Given the indicator is blinking
-      Then the brightness of the indicator is 100%
-
-
-
+        | Indicator Direction | Country of Sold Car | Dimmed Light Percentage |  |
+        | right               | USA                 | 50%                     |  |
+        | right               | Canada              | 50%                     |  |
+        | left                | USA                 | 50%                     |  |
+        | left                | Canada              | 50%                     |  |
+        | right               | UK                  | 0%                      |  |
+        | left                | UK                  | 0%                      |  |
 
 
 

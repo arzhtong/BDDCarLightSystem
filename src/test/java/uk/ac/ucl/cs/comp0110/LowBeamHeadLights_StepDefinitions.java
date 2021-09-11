@@ -13,18 +13,11 @@ import java.time.Instant;
 
 public class LowBeamHeadLights_StepDefinitions{
     private Instant currentTime;
-    private SystemClock myClock;
     private World world;
+    private TimeMachine timeMachine=new TimeMachine();
     public LowBeamHeadLights_StepDefinitions(World world){
 
         this.world = world;
-    }
-
-    @Before
-    public void setup(){
-//        currentTime=Instant.EPOCH;
-//        when(base.clock.instant()).thenAnswer((invocation)->currentTime);
-//        myClock=new SystemClock();
     }
 
 
@@ -74,12 +67,6 @@ public class LowBeamHeadLights_StepDefinitions{
         world.car.isAllDoorsClosed(false);
     }
 
-
-
-    @When("the exterior brightness is below/above 200lx")
-    public void the_exterior_brightness_is_below_200lx() {
-        world.car.setExteriorBrightnessLuminosity(150);
-    }
 
     @Then("low beam headlight will be active at least 3 seconds")
     public void low_beam_headlight_will_be_active_at_least_seconds() {
@@ -207,6 +194,10 @@ public class LowBeamHeadLights_StepDefinitions{
     public void the_driver_turns_the_wheel_to_right_within_degrees() {
         world.car.setDegreesSteeringWheelTurned(10);
     }
+    @When("the driver turns the wheel to left within 10 degrees")
+    public void the_driver_turns_the_wheel_to_left_within_degrees() {
+        world.car.setDegreesSteeringWheelTurned(-10);
+    }
 
     @Given("the left indicator is blinking")
     public void the_left_indicator_is_blinking() {
@@ -283,4 +274,8 @@ public class LowBeamHeadLights_StepDefinitions{
     }
 
 
+    @And("the exterior brightness is below 200lx")
+    public void theExteriorBrightnessIsBelowLx() {
+        world.car.setExteriorBrightnessLuminosity(150);
+    }
 }

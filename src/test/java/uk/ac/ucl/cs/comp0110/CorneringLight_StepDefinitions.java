@@ -16,7 +16,7 @@ public class CorneringLight_StepDefinitions {
     }
     @Then("the {indicatingDirection} cornering light will be on")
     public void the_left_cornering_light_will_be_on(String corneringLightDirection) {
-        Assert.assertEquals(world.car.getCorneringLightState(corneringLightDirection),true);
+        Assert.assertEquals(world.car.checkCorneringLightIsOn(corneringLightDirection),true);
     }
 
     @Given("the {indicatingDirection} cornering light is on")
@@ -36,7 +36,7 @@ public class CorneringLight_StepDefinitions {
 
     @Then("the {indicatingDirection} cornering light will be off")
     public void the_left_cornering_light_will_turn_off(String directionOfCorneringLight) {
-        Assert.assertEquals(world.car.getCorneringLightState(directionOfCorneringLight),false);
+        Assert.assertEquals(world.car.checkCorneringLightIsOn(directionOfCorneringLight),false);
     }
 
 }

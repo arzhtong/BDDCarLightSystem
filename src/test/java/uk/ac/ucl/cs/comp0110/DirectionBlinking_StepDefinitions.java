@@ -6,13 +6,14 @@ import org.junit.Before;
 
 public class DirectionBlinking_StepDefinitions{
     private Car car;
+    private TimeMachine timeMachine;
     public World World;
     public DirectionBlinking_StepDefinitions(World World){
         this.World = World;
     }
     @Before
     public void initializeState(){
-       car=new Car();
+       car=new Car(timeMachine);
     }
 
 
@@ -20,7 +21,7 @@ public class DirectionBlinking_StepDefinitions{
 
     @Then("all {indicatingDirection} indicators should flash for 3 flashing cycles")
     public void all_right_indicators_should_flash_for_flashing_cycles(String indicatingDirection) {
-        Assert.assertTrue(World.car.getFlashingCycles(indicatingDirection));
+        Assert.assertTrue(World.car.checkFlashingCyclesAreOccurring(indicatingDirection));
     }
 
     @When("the pitman arm is moved in a downward position from upward position during the 3 flashing cycles of tip-blinking")
@@ -54,7 +55,7 @@ public class DirectionBlinking_StepDefinitions{
 
     @Then("flash-cycles are released for all direction indicators on the right until the pitman arm leaves tip-blinking right")
     public void flash_cycles_are_released_for_all_direction_indicators_on_the_right_until_the_pitman_arm_leaves_tip_blinking_right() {
-        Assert.assertEquals(World.car.getFlashingCycles("Right"),false);
+        Assert.assertEquals(World.car.checkFlashingCyclesAreOccurring("Right"),false);
     }
     @When("direction blinking is engaged on the blinking side by a car sold in the {countryCarSoldIn}")
     public void direction_blinking_is_engaged_on_the_blinking_side_by_a_car_sold_in_the_USA(boolean isCarFromUSAOrCanada) {
@@ -66,25 +67,25 @@ public class DirectionBlinking_StepDefinitions{
     @When("the pitman arm is moved in an upward direction blinking position during the 3 flashing cycles where the pitman arm was in an upward position")
     public void the_pitman_arm_is_moved_in_an_upward_direction_blinking_position_during_the_flashing_cycles_where_the_pitman_arm_was_in_an_upward_position() {
         World.car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
-        World.car.tipPitmanArm(400);
+//        World.car.tipPitmanArm(400);
         World.car.setPitmanArmPosition(PitmanArmPosition.UPWARD7);
     }
 
     @Then("the 3 flashing cycles must finish before the right indicators start the direction blinking")
     public void the_flashing_cycles_must_finish_before_the_right_indicators_start_the_direction_blinking() {
-        Assert.assertEquals(World.car.getFlashingCycles("Right"),true);
+        Assert.assertEquals(World.car.checkFlashingCyclesAreOccurring("Right"),true);
     }
     @When("the pitman arm is moved in a downward tip-blinking position during the 3 flashing cycles where the pitman arm was in a downward position")
     public void the_pitman_arm_is_moved_in_a_downward_tip_blinking_position_during_the_flashing_cycles_where_the_pitman_arm_was_in_a_downward_position() {
         World.car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
-        World.car.tipPitmanArm(400);
+//        World.car.tipPitmanArm(400);
         World.car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
     }
 
 
     @Then("the 3 flashing cycles must finish before the left indicators start the new cycle of tip-blinking")
     public void the_flashing_cycles_must_finish_before_the_left_indicators_start_the_new_cycle_of_tip_blinking() {
-        Assert.assertEquals(World.car.getFlashingCycles("Left"),true);
+        Assert.assertEquals(World.car.checkFlashingCyclesAreOccurring("Left"),true);
     }
 
     @Given("ignition is {ignitionState}")
@@ -106,7 +107,7 @@ public class DirectionBlinking_StepDefinitions{
     }
 
 
-    @When("the driver inserts the key without turning on ignition")
+    @When("the driver inserts/inserted the key without turning on ignition")
     public void the_driver_inserts_the_key_without_turning_on_ignition() {
         World.car.isIgnitionOn(IgnitionStatus.KEYINSERTED);
     }
@@ -118,7 +119,7 @@ public class DirectionBlinking_StepDefinitions{
 
     @Then("all {indicatingDirection} indicators flash for 3 flashing cycles")
     public void all_right_indicators_flash_for_flashing_cycles(String directionToIndicate) {
-        Assert.assertTrue(World.car.getFlashingCycles(directionToIndicate));
+        Assert.assertTrue(World.car.checkFlashingCyclesAreOccurring(directionToIndicate));
     }
 
 
@@ -136,12 +137,12 @@ public class DirectionBlinking_StepDefinitions{
 
     @Then("the vehicle will not have flashing cycles")
     public void the_vehicle_will_not_have_flashing_cycles() {
-        Assert.assertEquals(World.car.getFlashingCycles("Right"),false);
+        Assert.assertEquals(World.car.checkFlashingCyclesAreOccurring("Right"),false);
     }
 
     @When("the pitman arm is held for less than 0.5 seconds")
     public void the_pitman_arm_is_held_for_less_than_seconds() {
-        World.car.tipPitmanArm(300);
+//        World.car.tipPitmanArm(300);
     }
 
     @When("the driver engages/engaged the hazard warning switch")
@@ -164,13 +165,15 @@ public class DirectionBlinking_StepDefinitions{
     @When("the pitman arm is held for less than 0.5 seconds downward position")
     public void the_pitman_arm_is_held_for_less_than_seconds_downward_position() {
         World.car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
-        World.car.tipPitmanArm(250);
+        World.timeMachine.testTimeForTipBlinking(0.3,World.car);
+//        World.car.tipPitmanArm(250);
     }
 
     @Given("the pitman arm is held {armPosition} for less than 0.5 seconds")
     public void the_pitman_arm_is_held_downward_for_less_than_seconds(PitmanArmPosition armPosition) {
         World.car.setPitmanArmPosition(armPosition);
-        World.car.tipPitmanArm(300);
+        World.timeMachine.testTimeForTipBlinking(0.3,World.car);
+//        World.car.tipPitmanArm(300);
     }
 
 
@@ -183,12 +186,14 @@ public class DirectionBlinking_StepDefinitions{
     @When("the driver moved/moves pitman arm downward (again )in tip-blinking position for less than 0.5 seconds")
     public void theDriverMovesPitmanArmDownwardInTipBlinkingPositionForLessThanSeconds() {
         World.car.setPitmanArmPosition(PitmanArmPosition.DOWNWARD5);
-        World.car.tipPitmanArm(300);
+//        World.car.tipPitmanArm(300);
+        World.timeMachine.testTimeForTipBlinking(0.3,World.car);
     }
     @When("the driver moved/moves pitman arm upward (again )in tip-blinking position for less than 0.5 seconds")
     public void theDriverMovesPitmanArmUpwardInTipBlinkingPositionForLessThanSeconds() {
         World.car.setPitmanArmPosition(PitmanArmPosition.UPWARD5);
-        World.car.tipPitmanArm(300);
+//        World.car.tipPitmanArm(300);
+        World.timeMachine.testTimeForTipBlinking(0.3,World.car);
     }
 
 
@@ -225,13 +230,11 @@ public class DirectionBlinking_StepDefinitions{
     @Given("the vehicle flashes all {indicatingDirection} indicators synchronously by a car from {countryCarSoldIn}")
     public void theVehicleFlashesAllIndicatorDirectionIndicatorsSynchronouslyByACarFromCountryOfSoldCar(String directionToIndicate,boolean countryCarSoldIn) {
         World.car.setInUSAOrCanada(countryCarSoldIn);
-        World.car.setBlinkingState(directionToIndicate);
+        World.car.setIndicatorToBlink(directionToIndicate);
     }
 
     @Then("the daytime running light must be dimmed by {dimmedLightPercentage}%")
     public void theDaytimeRunningLightMustBeDimmedByDimmedLightPercentage(int percentageOfDimmedLight) {
-        System.out.println(World.car.getRightIndicator().getLightDimmingPercentage());
-        System.out.println(percentageOfDimmedLight);
         Assert.assertEquals(World.car.getRightIndicator().getLightDimmingPercentage(),percentageOfDimmedLight);
     }
 
@@ -243,7 +246,8 @@ public class DirectionBlinking_StepDefinitions{
     @When("the driver moves/moved pitman arm {armPosition} in tip-blinking position for more than 0.5 seconds")
     public void theDriverMovesPitmanArmUpwardInTipBlinkingPositionForMoreThanSeconds(PitmanArmPosition armPosition) {
         World.car.setPitmanArmPosition(armPosition);
-        World.car.tipPitmanArm(600);
+        World.timeMachine.testTimeForTipBlinking(0.3,World.car);
+//        World.car.tipPitmanArm(600);
     }
 
     @But("right indicators will stop flashing when pitman arm leaves tip-blinking position")

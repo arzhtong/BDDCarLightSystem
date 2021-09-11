@@ -61,25 +61,6 @@ public class HighBeamHeadLights_StepDefinitions {
         world.car.setDrivingSpeed(25);
     }
 
-    @When("the camera recognizes lights of advancing vehicle")
-    public void theCameraRecognizesLightsOfAdvancingVehicle() {
-        world.car.isIncomingVehicleDetectedByCamera(true);
-    }
-
-    @Then("the high beam headlight changes to low beam headlight within 0.5 seconds")
-    public void theHighBeamHeadlightChangesToLowBeamHeadlightWithinSeconds() {
-        Assert.assertTrue(world.car.getTimeForHeadlightToIlluminate()<0.5);
-    }
-
-    @And("the headlight will have an area of 65 metres")
-    public void theHeadlightWillHaveAnAreaOfMetres() {
-        Assert.assertEquals(world.car.getIlluminationArea(),65);
-    }
-
-    @And("the headlight will have reduced luminous strength")
-    public void theHeadlightWillHaveReducedLuminousStrength() {
-        Assert.assertTrue(world.car.getLuminiousStrength()<100);
-    }
 
     @Given("the high beam headlight is on")
     public void theHighBeamHeadlightIsOn() {
@@ -88,16 +69,22 @@ public class HighBeamHeadLights_StepDefinitions {
 
     @When("the camera stops recognising lights of anymore advancing vehicles")
     public void theCameraStopsRecognisingLightsOfAnymoreAdvancingVehicles() {
-        world.car.isIncomingVehicleDetectedByCamera(false);
+       world.car.isIncomingVehicleDetectedByCamera(false);
     }
 
     @Then("the high beam headlight will turn on after 2 seconds")
     public void theHighBeamHeadlightWillTurnOnAfterSeconds() {
-        Assert.assertTrue(world.car.getTimeForHeadlightToIlluminate()>2);
+        Assert.assertTrue(world.timeMachine.getNumSeconds()>=2);
     }
 
-    @Then("the high beam tail light will be activated")
-    public void theHighBeamTailLightWillBeActivated() {
-        Assert.assertEquals(world.car.getRightIndicator().getTailLightState(),true);
+    @And("2 seconds have passed")
+    public void secondsHavePassed() {
+        world.timeMachine.testTimeForSettingHighBeam(3,world.car);
     }
+    @And("2 seconds have not passed")
+    public void secondsHaveNotPassed() {
+        world.timeMachine.testTimeForSettingHighBeam(1,world.car);
+    }
+
+
 }

@@ -1,7 +1,5 @@
 package uk.ac.ucl.cs.comp0110;
 
-import java.time.LocalDateTime;
-
 enum Blinking{
     FLASHING,NONFLASHING
 }
@@ -14,7 +12,6 @@ enum Headlight {
 public class Indicator {
     private Blinking blinkingState;
     private boolean tipBlinkingOn;
-    private int durationOfHazardCycle;
     private int numberofFlashCycles;
     private IndicatorBulb indicatorBulbState;
     private boolean corneringLightOn;
@@ -22,21 +19,18 @@ public class Indicator {
     private int dimmedLightPercentage;
     private int ambientLightDuration;
     private Headlight headlightBeam;
-    private SystemClock clock;
     private int illuminationArea;
     private int illuminationStrengthPercentage;
     public Indicator(){
         blinkingState=Blinking.NONFLASHING;
-        clock=new SystemClock();
-        clock.useFixedClockAt(LocalDateTime.now());
+        indicatorBulbState=IndicatorBulb.DARK;
         dimmedLightPercentage=0;
-        durationOfHazardCycle=1;
     }
     public IndicatorBulb getIndicatorBulbState(){
         return indicatorBulbState;
     }
     public void setIndicatorBulbState(IndicatorBulb indicatorBulbState){
-        this.indicatorBulbState = this.indicatorBulbState;
+        this.indicatorBulbState = indicatorBulbState;
     }
 
     public void setBlinkingState(Blinking blinkingState){
@@ -50,12 +44,6 @@ public class Indicator {
     }
     public boolean getTipBlinkingOccurring(){
         return tipBlinkingOn;
-    }
-    public void setDurationOfHazardCycle(int durationOfHazardCycle){
-        this.durationOfHazardCycle = durationOfHazardCycle;
-    }
-    public int getDurationOfHazardCycle(){
-        return durationOfHazardCycle;
     }
     public void setNumberofFlashCycles(int numberofFlashCycles){
         this.numberofFlashCycles=numberofFlashCycles;
@@ -93,9 +81,6 @@ public class Indicator {
     }
     public Headlight getBeamState(){
         return headlightBeam;
-    }
-    public SystemClock getClock(){
-        return clock;
     }
     public void setIlluminationArea(int illuminationArea){
         this.illuminationArea=illuminationArea;

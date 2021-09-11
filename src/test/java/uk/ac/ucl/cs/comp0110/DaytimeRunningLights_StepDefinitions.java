@@ -11,15 +11,15 @@ public class DaytimeRunningLights_StepDefinitions {
     }
     @And("the driver turns off daytime running light")
     public void theDriverTurnsOffDaytimeRunningLight() {
-        world.car.engageDayTimeRunningLight(false);
+        world.car.pressDayTimeRunningLightButton(false);
     }
     @Given("daytime running light is on")
     public void daytime_running_light_is_on() {
-        world.car.engageDayTimeRunningLight(true);
+        world.car.pressDayTimeRunningLightButton(true);
     }
     @When("the driver turns/turned daytime running light on")
     public void the_driver_turns_daytime_running_light_on() {
-        world.car.engageDayTimeRunningLight(true);
+        world.car.pressDayTimeRunningLightButton(true);
     }
 
 }
