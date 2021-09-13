@@ -1,7 +1,6 @@
 Feature: Cornering Light
 
-  If the low beam headlights are activated and direction blinking is requested, the cornering light is activated, when the
-  vehicle drives slower than 10 km/h.
+ The cornei
 
   Background:
     Given ignition is on
