@@ -5,4 +5,6 @@ Case Study 2020. The project uses the Cucumber Framework for writing the gherkin
 step definitions and the implementation of the requirement. The aim is to find issues in requirements such as conflicts as well hoping that the use of BDD can make ambiguous requirements
 more clearer. By doing this we can help ensure that the implementation of requirements will not cause malfunctions due to misunderstandings caused.
 
+All necessary dependencies required for the running of the project are stored in the pom file using the Maven Build System.
+
 More information regarding the case study can be found here: https://abz2021.uni-ulm.de/resources/files/casestudyABZ2020v1.2.pdf
