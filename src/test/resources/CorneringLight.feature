@@ -1,6 +1,7 @@
 Feature: Cornering Light
 
- The cornei
+ The cornering light feature is used for activating the cornering lights. This feature defines the states for which the
+  corner lights are activated.
 
   Background:
     Given ignition is on

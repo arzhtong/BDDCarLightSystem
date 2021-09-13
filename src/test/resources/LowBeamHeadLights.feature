@@ -72,15 +72,6 @@ Feature: Low Beam Headlights
         But the low beam headlights will be deactivated
 
 
-
-#    @requirement(ELS-18)
-#    Scenario: Driver activated ambient lights with ignition off and exterior brightness below 200lx
-#    Given the ignition is off
-#    And the driver turned on ambient light
-#    And the exterior brightness is below 200lx
-#    And the driver turns light rotary switch to auto
-#    Then the low beam headlights will be deactivated
-
     Rule: When low beam headlights activate, tail lights are activated
 
     @requirement(ELS-22)
